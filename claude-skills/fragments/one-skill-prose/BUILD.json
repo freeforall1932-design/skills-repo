@@ -72,7 +72,7 @@
     "local/document-summary": {
       "bucket": "write-prose",
       "entry": "written/document-summary.md",
-      "sha": "767e09bc1efb"
+      "sha": "eb206d2d81c4"
     },
     "local/grug-engine": {
       "bucket": "think-first",
