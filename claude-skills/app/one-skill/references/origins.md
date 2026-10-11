@@ -607,7 +607,7 @@ _you_ say: complexity *very*, *very* bad
 
 > `local` / `philosophies` / the merged precedence table is a ruling; this is the evidence behind it
 
-> **Merge note.** Verbatim, with the paths updated for where those files now live: the merge moved the per-variant skills under `legacy/`, and a skill that tells an agent to run a script at a path that no longer exists is a defect. Each substitution is a declared literal, checked at build time. A pointer that left the skill folder for its own build tooling cannot resolve once installed, so it became plain text.
+> **Merge note.** The argument behind the tables in `SKILL.md`, kept because a rule nobody can argue with gets renegotiated every session. Where a table here disagrees with the precedence file, `SKILL.md` is current: these rows were written while be-brief was still a routed skill, and its half of the split is now this repo's own document rule.
 
 The three philosophies in this repo are usually presented as a stack — grug
 thinks, caveman speaks, be-brief writes. That story is *mostly* true, but it

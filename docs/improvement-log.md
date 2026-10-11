@@ -3,6 +3,68 @@
 Chronicles substantive changes and the reasoning behind them. Entries are
 dated; newest first.
 
+## 2026-10-11 — a review pass: what the last round got wrong, plus two packs
+
+**Change:** the merge was read back end to end instead of grown, two archives the owner
+committed were integrated (`Engineering-1.2.0-v1.zip` → 10 skills, `Skill creator
+copy-v1.zip` → the authoring half), and be-brief was retired into `legacy/` with one
+carve-out rewritten for this bundle. Ten sources now route **78 skills into 11 reference
+files (90k words)** behind a **2395-word** `SKILL.md`; **54 tests**.
+
+**What the review found, because a review that finds nothing is a rubber stamp.**
+
+* **Two pins in `sources.json` were not real revisions.** The last round recorded
+  `2e08b91e0a7d…` and `388cbe3b6c32…` — seven characters I had extended into forty by
+  hand. GitHub answers `422` for both. Nothing noticed, because a pin that is never
+  fetched cannot fail: `sync` ran `git fetch <ref>` with `check=False` and, when it
+  failed, left the clone on the default branch. `strix` and `archify` had already drifted
+  that way (manifest said `62b4964`, tree held `f7a32ae6`). Now: a failed fetch dies, a
+  checked-out SHA is compared with the pin, and a short SHA is rejected offline in
+  `validate_pins`, so CI sees it without the network.
+* **A manifest excused a file that does not exist** — a retired be-brief record cited
+  `references/audit.md`, which the legacy tree never had. An excuse reads as a decision,
+  so a nonexistent path is worse than no path: `validate_records` now refuses any cast-aside
+  record whose `path` is not vendored.
+* **A ruling in the hand-written layer shipped as a broken sentence**: "Both are right
+  about their reader: a produce goes to one place". Nobody could parse it, including me,
+  for a full round. Rewritten, and the four precedence rows plus the `write-prose` layer
+  label that still named the retired skill now name *the document register*.
+* **Retiring be-brief was only safe because of what else went with it.** The old `unified`
+  variant — the previous single-file edition of this same bundle — carried a second,
+  older copy of the layers and command tables and told the reader to pair with
+  `be-brief-output`. Two stale copies of a routing table in one skill is how a merge starts
+  lying, so `unified/SKILL.md`, its examples, and its two reference files (each verified
+  byte-identical to a routed copy) went to `legacy/` too. What was still carrying weight —
+  summarising a long document — was rewritten as `one-skill/written/document-summary.md`,
+  grug's complexity budget and caveman's compress-only rule in a professional register,
+  and marked `authored: true` so `SOURCES.md` labels it as this bundle's own text instead of
+  inventing an upstream for it.
+* **The two packs stayed honest by being small.** None of the ten engineering skills is
+  `disable-model-invocation` upstream, so none of them is offered as a named command here —
+  my first pass marked all ten as commands, which cost 194 words of always-loaded budget and
+  invented an interface upstream never had. Their `~~source control` steps are already
+  conditional, so the text needed no edits, and the one line that pointed at the plugin's
+  `CONNECTORS.md` was replaced with the convention spelled out inline.
+* **Provenance quoting must survive markdown.** `SOURCES.md` prints the exact upstream line
+  a `replace` deleted; a line containing a pipe reflowed the table row, and a line containing
+  backticks needed a `` … `` span, which the fragment-link test then mistook for a dangling
+  link. Both sides now share one `mask_code_spans`.
+
+**Two more things the review turned up.** `pytest` from the repository root aborted at
+collection because `legacy/coding-agents/tests/test_compile.py` imported PyYAML at module
+level while its own two frontmatter checks had already declared it a soft dependency — half a
+fix, and the worse half: a frozen tree that cannot be collected hides every other result. It
+skips now (102 passed, 10 skipped from the root). And the budget number needed explaining: the
+builder's `split()` count is 38 words higher than `wc -w` on the same bytes, because
+`str.split()` also breaks on no-break spaces. It is the stricter of the two, which is the right
+direction for a limit to be wrong in, and `README.md` now says which measure it quotes.
+
+**Also:** `BUILD.json` records the checksum of every entry, sibling doc and `core/` file, and
+`check` reads it back *before* rebuilding — the work list's item 4, which the mirror diff only
+half-covered: a hand-edit inside `upstream/` landed on both sides of that comparison, so it
+reported "stale, run `install`" and invited baking the edit in. The message now names the
+drifted input and offers `sync` as the other option.
+
 ## 2026-10-10 (later) — five more sources, an implementability filter, and fragments
 
 **Change:** the merge gained `usestrix/strix` (4 of 9 skills), `mem0ai/mem0` (1 of 6),
@@ -35,7 +97,10 @@ every skill the *upstream tree* contains (`discover` → `discovered_upstream` i
 `PROVENANCE.json`), so a source that vendors one flat file per skill — anti-slop, and
 this repo's own `legacy/` — cannot pass the gate by having been copied narrowly.
 
-**What it cost:** `SKILL.md` was 4 words from its 2400 budget before this round. Two
+**What it cost:** `SKILL.md` sat at 2398 of its 2400 words before this round — the
+builder's own counter, which is 38 higher than `wc -w` on the same bytes because
+`str.split()` also breaks on no-break spaces, and being stricter is the right way for
+a budget to be wrong. Two
 new router rows and 19 new command/trigger lines were paid for by moving the
 nine-row provenance table out of the always-on file into `SOURCES.md` (licenses now
 sit in each reference file's head, where the text they cover is actually read),

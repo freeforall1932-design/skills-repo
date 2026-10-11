@@ -14,7 +14,10 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 | [Caveman commit — the message format](#caveman-commit-the-message-format) | `caveman` | always |
 | [To spec — conversation into a published spec](#to-spec-conversation-into-a-published-spec) | `mattpocock-skills` | command |
 | [Third-party integration, the additive way](#third-party-integration-the-additive-way) | `mem0` | always |
+| [Deploy checklist — verify before shipping](#deploy-checklist-verify-before-shipping) | `engineering-plugin` | always |
 | [To tickets — tracer-bullet vertical slices with blocking edges](#to-tickets-tracer-bullet-vertical-slices-with-blocking-edges) | `mattpocock-skills` | command |
+| [Incident response — triage, communicate, write the postmortem](#incident-response-triage-communicate-write-the-postmortem) | `engineering-plugin` | always |
+| [Standup — summarise recent work into yesterday, today, blockers](#standup-summarise-recent-work-into-yesterday-today-blockers) | `engineering-plugin` | always |
 | [Implement — build the described work, drive tdd, close with review](#implement-build-the-described-work-drive-tdd-close-with-review) | `mattpocock-skills` | command |
 | [Implement spec — whole spec on one branch, subagents on the frontier](#implement-spec-whole-spec-on-one-branch-subagents-on-the-frontier) | `mattpocock-skills` | command |
 | [Code review — standards axis and spec axis, in parallel](#code-review-standards-axis-and-spec-axis-in-parallel) | `mattpocock-skills` | always |
@@ -358,6 +361,83 @@ review** (reject plans that mutate existing exports or name client-side
 call sites), and **step 10 self-healing loop** (refuse to "fix" principle
 violations — surface them instead).
 
+## Deploy checklist — verify before shipping
+
+> `engineering-plugin` / `eng-deploy-checklist` / about to release, especially with migrations or feature flags in the change
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Generate a pre-deployment checklist to verify readiness before shipping.
+
+### Usage
+
+```
+/deploy-checklist $ARGUMENTS
+```
+
+### Output
+
+```markdown
+### Deploy Checklist: [Service/Release]
+**Date:** [Date] | **Deployer:** [Name]
+
+#### Pre-Deploy
+- [ ] All tests passing in CI
+- [ ] Code reviewed and approved
+- [ ] No known critical bugs in release
+- [ ] Database migrations tested (if applicable)
+- [ ] Feature flags configured (if applicable)
+- [ ] Rollback plan documented
+- [ ] On-call team notified
+
+#### Deploy
+- [ ] Deploy to staging and verify
+- [ ] Run smoke tests
+- [ ] Deploy to production (canary if available)
+- [ ] Monitor error rates and latency for 15 min
+- [ ] Verify key user flows
+
+#### Post-Deploy
+- [ ] Confirm metrics are nominal
+- [ ] Update release notes / changelog
+- [ ] Notify stakeholders
+- [ ] Close related tickets
+
+#### Rollback Triggers
+- Error rate exceeds [X]%
+- P50 latency exceeds [X]ms
+- [Critical user flow] fails
+```
+
+### Customization
+
+Tell me about your deploy and I'll customize the checklist:
+- "We use feature flags" → adds flag verification steps
+- "This includes a database migration" → adds migration-specific checks
+- "This is a breaking API change" → adds consumer notification steps
+
+### If Connectors Available
+
+If **~~source control** is connected:
+- Pull the release diff and list of changes
+- Verify all PRs are approved and merged
+
+If **~~CI/CD** is connected:
+- Check build and test status automatically
+- Verify pipeline is green before deploy
+
+If **~~monitoring** is connected:
+- Pre-fill rollback trigger thresholds from current baselines
+- Set up post-deploy metric watch
+
+### Tips
+
+1. **Run before every deploy** — Even routine ones. Checklists prevent "I forgot to..."
+2. **Customize once, reuse** — Tell me your stack and I'll remember your deploy process.
+3. **Include rollback criteria** — Decide when to roll back before you deploy, not during.
+
 ## To tickets — tracer-bullet vertical slices with blocking edges
 
 > `mattpocock-skills` / `to-tickets` / a plan has to become work
@@ -459,6 +539,237 @@ The end-to-end behaviour this ticket makes work, from the user's perspective, no
 </issue-template>
 
 In either form, avoid specific file paths or code snippets: they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+
+## Incident response — triage, communicate, write the postmortem
+
+> `engineering-plugin` / `eng-incident-response` / production is down, or an alert is being escalated into a real incident
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Manage an incident from detection through postmortem.
+
+### Usage
+
+```
+/incident-response $ARGUMENTS
+```
+
+### Modes
+
+```
+/incident-response new [description]     # Start a new incident
+/incident-response update [status]       # Post a status update
+/incident-response postmortem            # Generate postmortem from incident data
+```
+
+If no mode is specified, ask what phase the incident is in.
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    INCIDENT RESPONSE                               │
+├─────────────────────────────────────────────────────────────────┤
+│  Phase 1: TRIAGE                                                  │
+│  ✓ Assess severity (SEV1-4)                                     │
+│  ✓ Identify affected systems and users                          │
+│  ✓ Assign roles (IC, comms, responders)                         │
+│                                                                    │
+│  Phase 2: COMMUNICATE                                              │
+│  ✓ Draft internal status update                                  │
+│  ✓ Draft customer communication (if needed)                     │
+│  ✓ Set up war room and cadence                                   │
+│                                                                    │
+│  Phase 3: MITIGATE                                                 │
+│  ✓ Document mitigation steps taken                               │
+│  ✓ Track timeline of events                                      │
+│  ✓ Confirm resolution                                            │
+│                                                                    │
+│  Phase 4: POSTMORTEM                                               │
+│  ✓ Blameless postmortem document                                 │
+│  ✓ Timeline reconstruction                                       │
+│  ✓ Root cause analysis (5 whys)                                  │
+│  ✓ Action items with owners                                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Severity Classification
+
+| Level | Criteria | Response Time |
+|-------|----------|---------------|
+| SEV1 | Service down, all users affected | Immediate, all-hands |
+| SEV2 | Major feature degraded, many users affected | Within 15 min |
+| SEV3 | Minor feature issue, some users affected | Within 1 hour |
+| SEV4 | Cosmetic or low-impact issue | Next business day |
+
+### Communication Guidance
+
+Provide clear, factual updates at regular cadence. Include: what's happening, who's affected, what we're doing, when the next update is.
+
+### Output — Status Update
+
+```markdown
+### Incident Update: [Title]
+**Severity:** SEV[1-4] | **Status:** Investigating | Identified | Monitoring | Resolved
+**Impact:** [Who/what is affected]
+**Last Updated:** [Timestamp]
+
+#### Current Status
+[What we know now]
+
+#### Actions Taken
+- [Action 1]
+- [Action 2]
+
+#### Next Steps
+- [What's happening next and ETA]
+
+#### Timeline
+| Time | Event |
+|------|-------|
+| [HH:MM] | [Event] |
+```
+
+### Output — Postmortem
+
+```markdown
+### Postmortem: [Incident Title]
+**Date:** [Date] | **Duration:** [X hours] | **Severity:** SEV[X]
+**Authors:** [Names] | **Status:** Draft
+
+#### Summary
+[2-3 sentence plain-language summary]
+
+#### Impact
+- [Users affected]
+- [Duration of impact]
+- [Business impact if quantifiable]
+
+#### Timeline
+| Time (UTC) | Event |
+|------------|-------|
+| [HH:MM] | [Event] |
+
+#### Root Cause
+[Detailed explanation of what caused the incident]
+
+#### 5 Whys
+1. Why did [symptom]? → [Because...]
+2. Why did [cause 1]? → [Because...]
+3. Why did [cause 2]? → [Because...]
+4. Why did [cause 3]? → [Because...]
+5. Why did [cause 4]? → [Root cause]
+
+#### What Went Well
+- [Things that worked]
+
+#### What Went Poorly
+- [Things that didn't work]
+
+#### Action Items
+| Action | Owner | Priority | Due Date |
+|--------|-------|----------|----------|
+| [Action] | [Person] | P0/P1/P2 | [Date] |
+
+#### Lessons Learned
+[Key takeaways for the team]
+```
+
+### If Connectors Available
+
+If **~~monitoring** is connected:
+- Pull alert details and metrics
+- Show graphs of affected metrics
+
+If **~~incident management** is connected:
+- Create or update incident in PagerDuty/Opsgenie
+- Page on-call responders
+
+If **~~chat** is connected:
+- Post status updates to incident channel
+- Create war room channel
+
+### Tips
+
+1. **Start writing immediately** — Don't wait for complete information. Update as you learn more.
+2. **Keep updates factual** — What we know, what we've done, what's next. No speculation.
+3. **Postmortems are blameless** — Focus on systems and processes, not individuals.
+
+## Standup — summarise recent work into yesterday, today, blockers
+
+> `engineering-plugin` / `eng-standup` / a daily update is due from commits, PRs and ticket moves
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Generate a standup update by pulling together recent activity across your tools.
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        STANDUP                                    │
+├─────────────────────────────────────────────────────────────────┤
+│  STANDALONE (always works)                                       │
+│  ✓ Tell me what you worked on and I'll structure it             │
+│  ✓ Format for daily standup (yesterday / today / blockers)      │
+│  ✓ Keep it concise and action-oriented                          │
+├─────────────────────────────────────────────────────────────────┤
+│  SUPERCHARGED (when you connect your tools)                      │
+│  + Source control: Recent commits and PRs                        │
+│  + Project tracker: Ticket status changes                        │
+│  + Chat: Relevant discussions and decisions                      │
+│  + CI/CD: Build and deploy status                                │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### What I Need From You
+
+**Option A: Let me pull it**
+If your tools are connected, just say `/standup` and I'll gather everything automatically.
+
+**Option B: Tell me what you did**
+"Worked on the auth migration, reviewed 3 PRs, got blocked on the API rate limiting issue."
+
+### Output
+
+```markdown
+### Standup — [Date]
+
+#### Yesterday
+- [Completed item with ticket reference if available]
+- [Completed item]
+
+#### Today
+- [Planned item with ticket reference]
+- [Planned item]
+
+#### Blockers
+- [Blocker with context and who can help]
+```
+
+### If Connectors Available
+
+If **~~source control** is connected:
+- Pull recent commits and PRs (opened, reviewed, merged)
+- Summarize code changes at a high level
+
+If **~~project tracker** is connected:
+- Pull tickets moved to "in progress" or "done"
+- Show upcoming sprint items
+
+If **~~chat** is connected:
+- Scan for relevant discussions and decisions
+- Flag threads needing your response
+
+### Tips
+
+1. **Run it every morning** — Build a habit and never scramble for standup notes.
+2. **Add context** — After I generate, add any nuance about blockers or priorities.
+3. **Share format** — Ask me to format for Slack, email, or your team's standup tool.
 
 ## Implement — build the described work, drive tdd, close with review
 

@@ -1,9 +1,10 @@
 # Session handoff
 
-Written 2026-10-10, updated the same day for the second round of sources. Branch
-`arena/b5b2025d-skills-repo`. State: the repository publishes **one** skill, built
-from **69 skills across eight sources**, plus three generated fragment fallbacks; the
-six-skill era is frozen under `legacy/`.
+Written 2026-10-10, updated the same day for the second round of sources and again on
+2026-10-11 after a review pass. Branch `arena/b5b2025d-skills-repo`. State: the
+repository publishes **one** skill, built from **78 skills across ten sources** (two of
+them archives committed here, not remotes), plus three generated fragment fallbacks; the
+six-skill era, be-brief, and the old `unified` self-description are frozen under `legacy/`.
 
 ## What exists now
 
@@ -12,6 +13,7 @@ six-skill era is frozen under `legacy/`.
 | `one-skill/sources.json` | ★ the manifest: sources → skills → buckets, plus `families` and each source's `not_merged` / `not_vendored` / `not_routed` records. The only file to edit to add a source. |
 | `one-skill/build.py` | `sync` · `build` · `install` · `all` · `check` |
 | `one-skill/core/` | six hand-written files: the merge's judgement (layers, precedence, always-on, router, commands, provenance) |
+| `one-skill/written/` | prose this bundle writes itself, for a job no upstream covers (`document-summary.md`). Outside `upstream/` so `sync` never treats it as someone else's; labelled by `authored: true` |
 | `one-skill/upstream/` | vendored inputs, revision-pinned in `PROVENANCE.json`. `local/` reads this repo's working tree (`legacy/`), not a clone. |
 | `one-skill/dist/skill/`, `dist/families/*/` | scratch build output — gitignored, so it does not exist in CI. The published skill is the mirrors below. |
 | `.claude/skills/one-skill/`, `claude-skills/app/one-skill/`, `claude-skills/app/zips/one-skill.zip`, `pseudo-skills/one-skill.md` | mirrors written by `install`. Never hand-edit. |
@@ -105,10 +107,10 @@ From the user, explicitly. Do not reverse them without asking.
 3. **`scripts/` name collisions.** `build.py` keeps the first script it sees per
    basename and skips later duplicates silently. Namespaced paths or a hard fail is
    needed before another source ships a `contrast-check.py` of its own.
-4. **Compare `BUILD.json` checksums on build.** It stores a checksum per input, but
-   nothing compares it against the vendored file's current bytes after a `sync`, so a
-   hand-edit inside `upstream/` survives one build unnoticed. The manifest hash is
-   checked; the files are not.
+4. ~~Compare `BUILD.json` checksums on build.~~ **Closed 2026-10-11:** the lock now
+   records every entry, sibling doc and `core/` file, and `check` reads it back before
+   rebuilding. Proven by appending a line to a vendored file and to `core/00-open.md` —
+   both are named in the failure, with `sync` offered as the other remedy.
 5. **The fragments are new; watch how they are used.** Three families
    (`prose`, `code`, `design`) built from the same manifest. Open questions: whether
    `origins` belongs in `prose` only (it is the "why" layer, and `code` may want it);
@@ -123,11 +125,14 @@ From the user, explicitly. Do not reverse them without asking.
 8. **Determine Qwen Chat Agent's real conventions** — whether it parses `SKILL.md`
    frontmatter is unknown; if tested, upgrade `profiles/qwen-agent.json` and drop
    `skills: null`.
-9. **Re-check upstreams periodically, then `sync` + rebuild.** caveman v3.2.0,
-   grugbrain.dev `b1b1ca8`, strix `62b4964`, mem0 `b7ad69a`, archify `54edef4`,
-   anti-slop `388cbe3`, mattpocock `49dd158` are the pins as of 2026-10-10. If a
-   release renames a section, the strips/keeps/replaces go stale — and the build now
-   fails loudly instead of shipping a dead rule.
+9. **Re-check upstreams periodically, then `sync` + rebuild.** The pins are each
+   source's `origin.ref`: a full 40-character revision (caveman `2e08b9177c07…`,
+   grug `b1b1ca855ca1…`, strix `f7a32ae62d94…`, mem0 `b7ad69afda6b…`, archify
+   `58ab0b98d2d0…`, anti-slop `388cbe3b6c37…`, mattpocock `49dd158d1076…`) or, for the
+   two archives, the `sha256:` of the file. `local` floats on `HEAD` and says so. If a
+   release renames a section, the strips/keeps/replaces go stale — and the build fails
+   loudly instead of shipping a dead rule. `git checkout -- <path>` on an uncommitted
+   `core/` file will not restore it, so do not probe the gates that way.
 10. **ZIP ceiling.** 229 KiB for the main skill (fragments: 48–115 KiB). If the app
     upload limit becomes a problem, trim `references/`, never the router.
 
@@ -195,6 +200,15 @@ From the user, explicitly. Do not reverse them without asking.
   same as the legacy `compile.py` before it.
 - **PEP 668.** System-wide `pip install` fails with `externally-managed-environment`.
   Use a venv.
+- **A pin is a revision, not a decoration.** `origin.ref` must be a full SHA or a
+  tag: a short SHA looks pinned, fetches nothing, and leaves `upstream/` on the default
+  branch while the manifest claims a reviewed revision. `validate_pins` rejects it offline.
+- **A cast-aside record must name a vendored path.** `validate_records` dies otherwise; an
+  excuse for a file that was never here reads as a decision that was made.
+- **A source may be an archive.** `origin.kind: "zip"` + `origin.file` vendors from a zip
+  committed to this repository and pins its digest; `sync` extracts it into `.cache/`. This
+  is how Anthropic's two packs arrived, and why there is no `engineering-plugin` remote.
+
 - **No pyyaml in this environment.** That is why the manifest is JSON and the parser in
   `build.py` is a hand-rolled frontmatter subset (scalars, block scalars, inline lists)
   rather than `yaml.safe_load`.

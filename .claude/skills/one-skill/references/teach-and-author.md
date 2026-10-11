@@ -11,7 +11,9 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 | section | from | load |
 |---|---|---|
 | [Writing for agents — how a skill or steering file should read](#writing-for-agents-how-a-skill-or-steering-file-should-read) | `mattpocock-skills` | always |
+| [Technical documentation — README, runbook, onboarding](#technical-documentation-readme-runbook-onboarding) | `engineering-plugin` | always |
 | [Teach — learn a concept inside the workspace](#teach-learn-a-concept-inside-the-workspace) | `mattpocock-skills` | command |
+| [Authoring a skill — intent, progressive disclosure, writing style](#authoring-a-skill-intent-progressive-disclosure-writing-style) | `skill-creator` | always |
 
 ---
 
@@ -120,6 +122,55 @@ The invocation cut of splitting (the sequence cut lives in `SKILL.md`): split of
 ### Router skills
 
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each, so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no description, so nothing but the human can reach them.
+
+## Technical documentation — README, runbook, onboarding
+
+> `engineering-plugin` / `eng-documentation` / writing or maintaining docs for a project, or asked for a runbook
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+Write clear, maintainable technical documentation for different audiences and purposes.
+
+### Document Types
+
+#### README
+- What this is and why it exists
+- Quick start (< 5 minutes to first success)
+- Configuration and usage
+- Contributing guide
+
+#### API Documentation
+- Endpoint reference with request/response examples
+- Authentication and error codes
+- Rate limits and pagination
+- SDK examples
+
+#### Runbook
+- When to use this runbook
+- Prerequisites and access needed
+- Step-by-step procedure
+- Rollback steps
+- Escalation path
+
+#### Architecture Doc
+- Context and goals
+- High-level design with diagrams
+- Key decisions and trade-offs
+- Data flow and integration points
+
+#### Onboarding Guide
+- Environment setup
+- Key systems and how they connect
+- Common tasks with walkthroughs
+- Who to ask for what
+
+### Principles
+
+1. **Write for the reader** — Who is reading this and what do they need?
+2. **Start with the most useful information** — Don't bury the lede
+3. **Show, don't tell** — Code examples, commands, screenshots
+4. **Keep it current** — Outdated docs are worse than no docs
+5. **Link, don't duplicate** — Reference other docs instead of copying
 
 ## Teach — learn a concept inside the workspace
 
@@ -414,3 +465,112 @@ When a later record contradicts an earlier one (the user's understanding deepene
 - **Surface gaps explicitly.** If no good resource exists for an area the mission needs, write a `## Gaps` section listing what is missing. This drives future search.
 - **Prune ruthlessly.** A resource that turned out to be wrong, shallow, or off-mission should be removed, not buried. Better five sharp sources than thirty mediocre ones.
 - **Record community preferences.** If the user has opted out of joining communities, note it here so future sessions don't keep proposing them.
+
+## Authoring a skill — intent, progressive disclosure, writing style
+
+> `skill-creator` / `skill-authoring` / the user asks to write, restructure, review or generalise a skill, or asks why a skill is shaped the way it is
+
+> **Merge note.** The craft half of skill-creator, kept while its measurement half is dropped. It says what this repository's build says from the other direction: always-on judgement in `SKILL.md`, depth in reference files that say when to read them, explain why instead of stacking MUSTs, and generalise rather than overfit to the examples in front of you.
+
+> *(not carried here: Test Cases, Report structure, Executive summary, Key findings, Recommendations, Commit message format, Writing Style, Running and evaluating test cases, Step 1: Spawn all runs (with-skill AND baseline) in the same turn, Step 2: While runs are in progress, draft assertions, Step 3: As runs complete, capture timing data, Step 4: Grade, aggregate, and launch the viewer, What the user sees in the viewer, Step 5: Read the feedback, Improving the skill, The iteration loop, Advanced: Blind comparison, Description Optimization, Step 1: Generate trigger eval queries, Step 2: Review with user, Step 3: Run the optimization loop, How skill triggering works, Step 4: Apply the result, Package and Present (only if a file-delivery tool is available), Claude.ai-specific instructions, Cowork-Specific Instructions, Reference files. Drafting test prompts is worth reading; running them is the eval harness (subagents, the `claude` CLI, a browser viewer) this bundle does not carry.)*
+
+### Communicating with the user
+
+The skill creator is liable to be used by people across a wide range of familiarity with coding jargon. If you haven't heard (and how could you, it's only very recently that it started), there's a trend now where the power of Claude is inspiring plumbers to open up their terminals, parents and grandparents to google "how to install npm". On the other hand, the bulk of users are probably fairly computer-literate.
+
+So please pay attention to context cues to understand how to phrase your communication! In the default case, just to give you some idea:
+
+- "evaluation" and "benchmark" are borderline, but OK
+- for "JSON" and "assertion" you want to see serious cues from the user that they know what those things are before using them without explaining them
+
+It's OK to briefly explain terms if you're in doubt, and feel free to clarify terms with a short definition if you're unsure if the user will get it.
+
+---
+
+### Creating a skill
+
+#### Capture Intent
+
+Start by understanding the user's intent. The current conversation might already contain a workflow the user wants to capture (e.g., they say "turn this into a skill"). If so, extract answers from the conversation history first — the tools used, the sequence of steps, corrections the user made, input/output formats observed. The user may need to fill the gaps, and should confirm before proceeding to the next step.
+
+1. What should this skill enable Claude to do?
+2. When should this skill trigger? (what user phrases/contexts)
+3. What's the expected output format?
+4. Should we set up test cases to verify the skill works? Skills with objectively verifiable outputs (file transforms, data extraction, code generation, fixed workflow steps) benefit from test cases. Skills with subjective outputs (writing style, art) often don't need them. Suggest the appropriate default based on the skill type, but let the user decide.
+
+#### Interview and Research
+
+Proactively ask questions about edge cases, input/output formats, example files, success criteria, and dependencies. Wait to write test prompts until you've got this part ironed out.
+
+Check available MCPs - if useful for research (searching docs, finding similar skills, looking up best practices), research in parallel via subagents if available, otherwise inline. Come prepared with context to reduce burden on the user.
+
+#### Write the SKILL.md
+
+Based on the user interview, fill in these components:
+
+- **name**: Skill identifier
+- **description**: When to trigger, what it does. This is the primary triggering mechanism - include both what the skill does AND specific contexts for when to use it. All "when to use" info goes here, not in the body. Note: currently Claude has a tendency to "undertrigger" skills -- to not use them when they'd be useful. To combat this, please make the skill descriptions a little bit "pushy". So for instance, instead of "How to build a simple fast dashboard to display internal Anthropic data.", you might write "How to build a simple fast dashboard to display internal Anthropic data. Make sure to use this skill whenever the user mentions dashboards, data visualization, internal metrics, or wants to display any kind of company data, even if they don't explicitly ask for a 'dashboard.'"
+- **compatibility**: Required tools, dependencies (optional, rarely needed)
+- **the rest of the skill :)**
+
+#### Skill Writing Guide
+
+##### Anatomy of a Skill
+
+```
+skill-name/
+├── SKILL.md (required)
+│   ├── YAML frontmatter (name, description required)
+│   └── Markdown instructions
+└── Bundled Resources (optional)
+    ├── scripts/    - Executable code for deterministic/repetitive tasks
+    ├── references/ - Docs loaded into context as needed
+    └── assets/     - Files used in output (templates, icons, fonts)
+```
+
+##### Progressive Disclosure
+
+Skills use a three-level loading system:
+1. **Metadata** (name + description) - Always in context (~100 words)
+2. **SKILL.md body** - In context whenever skill triggers (<500 lines ideal)
+3. **Bundled resources** - As needed (unlimited, scripts can execute without loading)
+
+These word counts are approximate and you can feel free to go longer if needed.
+
+**Key patterns:**
+- Keep SKILL.md under 500 lines; if you're approaching this limit, add an additional layer of hierarchy along with clear pointers about where the model using the skill should go next to follow up.
+- Reference files clearly from SKILL.md with guidance on when to read them
+- For large reference files (>300 lines), include a table of contents
+
+**Domain organization**: When a skill supports multiple domains/frameworks, organize by variant:
+```
+cloud-deploy/
+├── SKILL.md (workflow + selection)
+└── references/
+    ├── aws.md
+    ├── gcp.md
+    └── azure.md
+```
+Claude reads only the relevant reference file.
+
+##### Principle of Lack of Surprise
+
+This goes without saying, but skills must not contain malware, exploit code, or any content that could compromise system security. A skill's contents should not surprise the user in their intent if described. Don't go along with requests to create misleading skills or skills designed to facilitate unauthorized access, data exfiltration, or other malicious activities. Things like a "roleplay as an XYZ" are OK though.
+
+##### Writing Patterns
+
+Prefer using the imperative form in instructions.
+
+**Defining output formats** - You can do it like this:
+```markdown
+#### How to think about improvements
+
+1. **Generalize from the feedback.** The big picture thing that's happening here is that we're trying to create skills that can be used a million times (maybe literally, maybe even more who knows) across many different prompts. Here you and the user are iterating on only a few examples over and over again because it helps move faster. The user knows these examples in and out and it's quick for them to assess new outputs. But if the skill you and the user are codeveloping works only for those examples, it's useless. Rather than put in fiddly overfitty changes, or oppressively constrictive MUSTs, if there's some stubborn issue, you might try branching out and using different metaphors, or recommending different patterns of working. It's relatively cheap to try and maybe you'll land on something great.
+
+2. **Keep the prompt lean.** Remove things that aren't pulling their weight. Make sure to read the transcripts, not just the final outputs — if it looks like the skill is making the model waste a bunch of time doing things that are unproductive, you can try getting rid of the parts of the skill that are making it do that and seeing what happens.
+
+3. **Explain the why.** Try hard to explain the **why** behind everything you're asking the model to do. Today's LLMs are *smart*. They have good theory of mind and when given a good harness can go beyond rote instructions and really make things happen. Even if the feedback from the user is terse or frustrated, try to actually understand the task and why the user is writing what they wrote, and what they actually wrote, and then transmit this understanding into the instructions. If you find yourself writing ALWAYS or NEVER in all caps, or using super rigid structures, that's a yellow flag — if possible, reframe and explain the reasoning so that the model understands why the thing you're asking for is important. That's a more humane, powerful, and effective approach.
+
+4. **Look for repeated work across test cases.** Read the transcripts from the test runs and notice if the subagents all independently wrote similar helper scripts or took the same multi-step approach to something. If all 3 test cases resulted in the subagent writing a `create_docx.py` or a `build_chart.py`, that's a strong signal the skill should bundle that script. Write it once, put it in `scripts/`, and tell the skill to use it. This saves every future invocation from reinventing the wheel.
+
+This task is pretty important (we are trying to create billions a year in economic value here!) and your thinking time is not the blocker; take your time and really mull things over. I'd suggest writing a draft revision and then looking at it anew and making improvements. Really do your best to get into the head of the user and understand what they want and need.

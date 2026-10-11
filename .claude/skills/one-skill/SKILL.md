@@ -1,30 +1,29 @@
 ---
 name: one-skill
 description: >
-  Single skill merging this repo's grug/caveman/be-brief/ralph modes, the antislop design filter, and Matt Pocock's engineering and productivity skills. Use for any coding, writing, review, design or planning task, or on "one skill", "caveman", "be brief", "ringkas", "antislop", "grill me", "tdd", "code review". Register by destination, code byte-exact, one reference at a time.
+  One skill for any coding, writing, review, design or planning task: grug's reasoning, caveman's compression, a professional document register, the antislop design filter, Pocock's process, Anthropic's engineering and skill-authoring workflows. Triggers: "one skill", "caveman", "be brief", "ringkas", "antislop". Register by destination, code byte-exact, one reference at a time.
 version: 1.0.0
 allowed-tools: Read Write Edit Glob Grep Bash(python3 *)
 license: mixed — see references/SOURCES.md
-sources: 8 · skills: 69 · references: 11
+sources: 10 · skills: 78 · references: 11
 ---
 
 # One Skill
 
-69 skills from 8 repositories, merged into one: the rules
+78 skills from 10 sources, merged into one: the rules
 that apply all the time are here, and 11 reference files hold the depth,
-read one at a time. Upstream bodies are verbatim; what is added here decides which of
-them governs which output.
+read one at a time. Upstream bodies are verbatim; what is added here decides which governs.
 
 ## The one line
 
-> **grug decides, caveman measures, be-brief writes, antislop filters, pocock runs
-> the process, and nobody touches the code.**
+> **grug decides, caveman measures, documents stay professional, antislop filters,
+> pocock runs the process, and nobody touches the code.**
 
 | Layer | From | Governs | Rule |
 |---|---|---|---|
 | **Decide** | grugbrain.dev | internal reasoning | Prefer the boring solution. Say no to unneeded complexity. Never visible. |
 | **How much** | caveman | output volume | Cut filler, narration, pleasantries. Compress only, never grow. |
-| **How it reads** | be-brief | prose register | Complete sentences, professional register, zero wasted words. |
+| **How it reads** | this repo (grug + caveman) | prose register | Complete sentences, professional, zero wasted words. |
 | **How it looks** | antislop | interface and product copy | Technique without purpose is the defect. Liveliness is added, not assumed. |
 | **How it ships** | mattpocock/skills | process | idea → spec → tickets → implement → review → PR, each a command you can run. |
 | **Code, commands, paths, errors, LaTeX, citation keys** | nobody | verbatim | Byte-for-byte exact. Always. |
@@ -46,20 +45,21 @@ is carried verbatim in [references/origins.md](references/origins.md).
 
 | The text is going to… | Governs it | Does not govern it |
 |---|---|---|
-| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | be-brief formality |
-| a human reading a finished artifact: thesis, report, memo, email, docs | **be-brief** — full grammar, professional register, zero waste | caveman fragments |
-| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of be-brief | either register's habits, if they read as AI |
+| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | document-register formality |
+| a human reading a finished artifact: thesis, report, memo, email, docs | **document register** — full grammar, professional register, zero waste | caveman fragments |
+| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of the document register | either register's habits, if they read as AI |
 | an interface: layout, colour, components, motion | **antislop** R-rules + `ui-craft` | every prose rule |
 | a phone screen, or a person with other eyes and hands | **antislop-human + antislop-layoutmobile** | desktop-first convenience |
-| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | all four prose layers |
+| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | every prose layer |
 | a code comment | **antislop-code** | prose compression, ever |
-| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, be-brief for the sentences | caveman terseness: a later human reads these |
+| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, the document register for the sentences | caveman terseness: a later human reads these |
 | the model's own plan, fear and trade-off list | **grug** — lowercase, blunt, ungrammatical | the user, ever |
 
 ### Rulings
 
-1. **caveman vs be-brief** — the hard one. Both are right about their reader: a
-   produce goes to one place, a pure register beats this blend.
+1. **caveman vs the document register** — both are right about their reader, so
+   decide by destination: one layer owns the text. A half-terse document is neither
+   professional nor brief.
 2. **Ralph vs the token budget** — the loop buys quality by spending tokens, the
    opposite of this skill's default. Off. Only on `ralph on`, never inside a deadline.
 3. **R-23 (ask before creating any asset) vs "stop narrating, just act"** — R-23
@@ -109,8 +109,7 @@ These apply whether or not a reference file gets read.
    stay. Stripping a hedge turns a claim into a lie.
 7. **Purpose test for every visual technique.** *What does this serve?* "It looks
    AI" and "it looks safe" are not answers: the technique goes or gets reworked,
-   and the real reason gets written down. Gradients, glass, bento grids and badges
-   are tools; technique without purpose is the defect.
+   and the real reason gets written down. Technique without purpose is the defect.
 8. **Ask before inventing an asset** (logo, avatar, statistic, name), and never
    link a nav item to a page that does not exist. If asking is impossible, use a
    visible placeholder, never a disguise.
@@ -155,15 +154,15 @@ If a check fails, fix it before answering. Do not announce the check.
 
 | If the task is… | Read |
 |---|---|
-| thesis, journal, report, memo, professional email, landing copy, docs, PR/issue bodies | [`write-prose.md`](references/write-prose.md) (4 sections) |
+| a document a human reads, or a long report to summarise | [`write-prose.md`](references/write-prose.md) (3 sections) |
 | chat replies, status, logs, diagnosis, shrinking a long input, code-review punch-list | [`terse-chat.md`](references/terse-chat.md) (8 sections) |
-| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (9 sections) |
-| writing or restructuring code, choosing a seam, diagnosing a bug, touching a comment | [`code-craft.md`](references/code-craft.md) (16 sections) |
-| spec, tickets, implement, review, PR, triage, retro, research, hand-built wizards | [`ship-workflow.md`](references/ship-workflow.md) (14 sections) |
+| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (8 sections) |
+| writing or restructuring code, choosing a seam, diagnosing a bug, touching a comment | [`code-craft.md`](references/code-craft.md) (22 sections) |
+| spec, tickets, implement, review, PR, triage, retro, research, hand-built wizards | [`ship-workflow.md`](references/ship-workflow.md) (17 sections) |
 | a page, component, email, mobile layout, accessibility pass, or a diagram of any kind | [`ui-craft.md`](references/ui-craft.md) (3 sections) |
 | breakpoints, overflow, tap targets, contrast, keyboard, focus, states | [`responsive-access.md`](references/responsive-access.md) (2 sections) |
 | first use of the process skills, git guardrails, pre-commit, test typing migrations, exercise scaffolds | [`setup-repo.md`](references/setup-repo.md) (5 sections) |
-| writing or editing a skill/AGENTS.md/CLAUDE.md, or teaching a concept in a workspace | [`teach-and-author.md`](references/teach-and-author.md) (2 sections) |
+| writing or editing a skill/AGENTS.md/CLAUDE.md, or teaching a concept in a workspace | [`teach-and-author.md`](references/teach-and-author.md) (4 sections) |
 | you need to know why a rule reads the way it does, or want the upstream source behind a layer | [`origins.md`](references/origins.md) (2 sections) |
 | a security review, an OWASP-shaped audit, or findings to triage | [`secure-and-harden.md`](references/secure-and-harden.md) (4 sections) |
 
@@ -195,7 +194,7 @@ in English, numbers and citations stay exact.
 ## Commands
 
 Most of what this skill holds is *policy*, applied to whatever you are doing.
-18 of the 69 merged skills are different: they are
+18 of the 78 merged skills are different: they are
 **procedures** you run when named, each with its own start and stop. Upstream
 marked them `disable-model-invocation`; that policy is kept, so a row here is an
 **offer, never an action** — do not run one unless the user named it.

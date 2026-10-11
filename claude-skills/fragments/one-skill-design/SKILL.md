@@ -10,21 +10,20 @@ sources: 2 · skills: 5 · references: 2
 
 # One Skill · Interface
 
-5 skills from 2 repositories, merged into one: the rules
+5 skills from 2 sources, merged into one: the rules
 that apply all the time are here, and 2 reference files hold the depth,
-read one at a time. Upstream bodies are verbatim; what is added here decides which of
-them governs which output.
+read one at a time. Upstream bodies are verbatim; what is added here decides which governs.
 
 ## The one line
 
-> **grug decides, caveman measures, be-brief writes, antislop filters, pocock runs
-> the process, and nobody touches the code.**
+> **grug decides, caveman measures, documents stay professional, antislop filters,
+> pocock runs the process, and nobody touches the code.**
 
 | Layer | From | Governs | Rule |
 |---|---|---|---|
 | **Decide** | grugbrain.dev | internal reasoning | Prefer the boring solution. Say no to unneeded complexity. Never visible. |
 | **How much** | caveman | output volume | Cut filler, narration, pleasantries. Compress only, never grow. |
-| **How it reads** | be-brief | prose register | Complete sentences, professional register, zero wasted words. |
+| **How it reads** | this repo (grug + caveman) | prose register | Complete sentences, professional, zero wasted words. |
 | **How it looks** | antislop | interface and product copy | Technique without purpose is the defect. Liveliness is added, not assumed. |
 | **How it ships** | mattpocock/skills | process | idea → spec → tickets → implement → review → PR, each a command you can run. |
 | **Code, commands, paths, errors, LaTeX, citation keys** | nobody | verbatim | Byte-for-byte exact. Always. |
@@ -66,20 +65,21 @@ visible; do not invent what an absent layer would have said.
 
 | The text is going to… | Governs it | Does not govern it |
 |---|---|---|
-| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | be-brief formality |
-| a human reading a finished artifact: thesis, report, memo, email, docs | **be-brief** — full grammar, professional register, zero waste | caveman fragments |
-| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of be-brief | either register's habits, if they read as AI |
+| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | document-register formality |
+| a human reading a finished artifact: thesis, report, memo, email, docs | **document register** — full grammar, professional register, zero waste | caveman fragments |
+| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of the document register | either register's habits, if they read as AI |
 | an interface: layout, colour, components, motion | **antislop** R-rules + `ui-craft` | every prose rule |
 | a phone screen, or a person with other eyes and hands | **antislop-human + antislop-layoutmobile** | desktop-first convenience |
-| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | all four prose layers |
+| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | every prose layer |
 | a code comment | **antislop-code** | prose compression, ever |
-| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, be-brief for the sentences | caveman terseness: a later human reads these |
+| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, the document register for the sentences | caveman terseness: a later human reads these |
 | the model's own plan, fear and trade-off list | **grug** — lowercase, blunt, ungrammatical | the user, ever |
 
 ### Rulings
 
-1. **caveman vs be-brief** — the hard one. Both are right about their reader: a
-   produce goes to one place, a pure register beats this blend.
+1. **caveman vs the document register** — both are right about their reader, so
+   decide by destination: one layer owns the text. A half-terse document is neither
+   professional nor brief.
 2. **Ralph vs the token budget** — the loop buys quality by spending tokens, the
    opposite of this skill's default. Off. Only on `ralph on`, never inside a deadline.
 3. **R-23 (ask before creating any asset) vs "stop narrating, just act"** — R-23
@@ -129,8 +129,7 @@ These apply whether or not a reference file gets read.
    stay. Stripping a hedge turns a claim into a lie.
 7. **Purpose test for every visual technique.** *What does this serve?* "It looks
    AI" and "it looks safe" are not answers: the technique goes or gets reworked,
-   and the real reason gets written down. Gradients, glass, bento grids and badges
-   are tools; technique without purpose is the defect.
+   and the real reason gets written down. Technique without purpose is the defect.
 8. **Ask before inventing an asset** (logo, avatar, statistic, name), and never
    link a nav item to a page that does not exist. If asking is impossible, use a
    visible placeholder, never a disguise.

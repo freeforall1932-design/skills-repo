@@ -13,10 +13,10 @@
   ],
   "skill": {
     "name": "one-skill",
-    "title": "One Skill — grug · caveman · be-brief · antislop · matt-pocock",
+    "title": "One Skill — grug · caveman · documents · antislop · pocock · anthropic",
     "tagline": "Everything in this repository, in one skill: how to think, how much to write, how it reads, how the interface looks, and how the work moves from idea to merged.",
     "version": "1.0.0",
-    "description": "Single skill merging this repo's grug/caveman/be-brief/ralph modes, the antislop design filter, and Matt Pocock's engineering and productivity skills. Use for any coding, writing, review, design or planning task, or on \"one skill\", \"caveman\", \"be brief\", \"ringkas\", \"antislop\", \"grill me\", \"tdd\", \"code review\". Register by destination, code byte-exact, one reference at a time.",
+    "description": "One skill for any coding, writing, review, design or planning task: grug's reasoning, caveman's compression, a professional document register, the antislop design filter, Pocock's process, Anthropic's engineering and skill-authoring workflows. Triggers: \"one skill\", \"caveman\", \"be brief\", \"ringkas\", \"antislop\". Register by destination, code byte-exact, one reference at a time.",
     "allowed_tools": "Read Write Edit Glob Grep Bash(python3 *)",
     "languages": [
       "en",
@@ -28,8 +28,8 @@
       "id": "write-prose",
       "file": "references/write-prose.md",
       "heading": "Write prose — text a human reads",
-      "when": "thesis, journal, report, memo, professional email, landing copy, docs, PR/issue bodies",
-      "layer": "be-brief writes; antislop-copywriting de-sloppens"
+      "when": "a document a human reads, or a long report to summarise",
+      "layer": "the document register writes; antislop-copywriting de-sloppens"
     },
     {
       "id": "terse-chat",
@@ -62,7 +62,7 @@
     {
       "id": "ui-craft",
       "file": "references/ui-craft.md",
-      "heading": "UI craft — the anti-slop visual filter",
+      "heading": "UI and diagrams — the anti-slop visual filter, applied to screens and to pictures",
       "when": "a page, component, email, mobile layout, accessibility pass, or a diagram of any kind",
       "layer": "Visual layer for interfaces and diagrams, both. Anti-slop's rule and Archify's type router are two applications of one question — what does this element serve? — so they sit in one file; the diagram half carries authoring judgement only, since the upstream Node renderer is not part of this bundle."
     },
@@ -105,7 +105,7 @@
   "sources": [
     {
       "slug": "local",
-      "title": "caveman-or-be-brief (this repository)",
+      "title": "this repository — grug, caveman, and the register rules",
       "license": "Unlicense (root) / MIT (caveman-universal)",
       "attribution": "freeforall1932-design/skills-repo",
       "origin": {
@@ -173,45 +173,6 @@
         ]
       },
       "skills": [
-        {
-          "id": "be-brief-output",
-          "bucket": "write-prose",
-          "order": 10,
-          "title": "Be brief — professional prose with zero wasted words",
-          "when": "anything a human reads as a finished artifact",
-          "entry": "upstream/local/variants/be-brief-output/SKILL.md",
-          "docs": [
-            {
-              "path": "upstream/local/variants/be-brief-output/references/cut-lists.md",
-              "label": "Cut lists"
-            },
-            {
-              "path": "upstream/local/variants/be-brief-output/examples.md",
-              "label": "Before / after"
-            }
-          ],
-          "strip_sections": [
-            "Reference material",
-            "Language"
-          ],
-          "strip_reason": "Stated once for the whole skill, in SKILL.md, instead of repeated per section. The links those sections carried now resolve inside this file."
-        },
-        {
-          "id": "caveman-be-brief-app",
-          "bucket": "write-prose",
-          "order": 20,
-          "title": "Caveman be brief — document modes, intensity, Indonesian",
-          "when": "thesis / journal / report drafting and review in the app",
-          "entry": "upstream/local/app/caveman-be-brief.md",
-          "strip_sections": [
-            "THE CORE RULE: Deletion Test",
-            "LANGUAGE",
-            "INTENSITY LEVELS",
-            "AUTO-CLARITY",
-            "RALPH WIGGUM LOOP (separate skill — optional)"
-          ],
-          "strip_reason": "Stated once for the whole skill, in SKILL.md, instead of repeated per section. The ralph loop is carried once, in think-first."
-        },
         {
           "id": "caveman-output",
           "bucket": "terse-chat",
@@ -296,30 +257,14 @@
             "Reference material",
             "Language"
           ],
-          "strip_reason": "Stated once for the whole skill, in SKILL.md, instead of repeated per section. The links those sections carried now resolve inside this file."
-        },
-        {
-          "id": "unified-workflow",
-          "bucket": "think-first",
-          "order": 20,
-          "title": "The unified workflow — sniff, fear, plan, act, speak",
-          "when": "one agent doing both chat and documents",
-          "entry": "upstream/local/variants/unified/SKILL.md",
-          "docs": [
+          "strip_reason": "Stated once for the whole skill, in SKILL.md, instead of repeated per section. The links those sections carried now resolve inside this file.",
+          "replace": [
             {
-              "path": "upstream/local/variants/unified/references/work-patterns.md",
-              "label": "Work patterns"
-            },
-            {
-              "path": "upstream/local/variants/unified/examples.md",
-              "label": "Before / after"
+              "from": "Pair with `be-brief-output` for documents or `caveman-output` for chat.",
+              "to": "Pair with the document register (`write-prose`) for anything a human reads, or with `caveman`\nfor developer chat.",
+              "reason": "named a register skill this bundle no longer routes; the pairing rule is unchanged and lives in the precedence table"
             }
-          ],
-          "strip_sections": [
-            "Reference material",
-            "Language"
-          ],
-          "strip_reason": "The merged skill states these once, in SKILL.md, instead of repeating them per section."
+          ]
         },
         {
           "id": "ralph-wiggum",
@@ -328,7 +273,24 @@
           "title": "Ralph Wiggum loop — iterative polish",
           "when": "\"ralph on\" only; off by default",
           "command": true,
-          "entry": "upstream/local/app/ralph-wiggum.md"
+          "entry": "upstream/local/app/ralph-wiggum.md",
+          "replace": [
+            {
+              "from": "Ralph complements the caveman-be-brief skill:",
+              "to": "Ralph sits on top of whichever register the output already follows:",
+              "reason": "named a skill this bundle no longer routes"
+            },
+            {
+              "from": "1. **caveman-be-brief** produces tight professional output (pass 1)",
+              "to": "1. The register rules produce tight professional output (pass 1)",
+              "reason": "same; the pass-1 behaviour is the always-on layer, not a separate skill"
+            },
+            {
+              "from": "caveman-be-brief still runs",
+              "to": "the register rules still apply",
+              "reason": "same"
+            }
+          ]
         },
         {
           "id": "philosophies",
@@ -355,7 +317,7 @@
               "label": "Sources and attribution"
             }
           ],
-          "note": "Verbatim, with the paths updated for where those files now live: the merge moved the per-variant skills under `legacy/`, and a skill that tells an agent to run a script at a path that no longer exists is a defect. Each substitution is a declared literal, checked at build time. A pointer that left the skill folder for its own build tooling cannot resolve once installed, so it became plain text.",
+          "note": "The argument behind the tables in `SKILL.md`, kept because a rule nobody can argue with gets renegotiated every session. Where a table here disagrees with the precedence file, `SKILL.md` is current: these rows were written while be-brief was still a routed skill, and its half of the split is now this repo's own document rule.",
           "replace": [
             {
               "from": "`python coding-agents/compile.py`",
@@ -411,6 +373,16 @@
           ],
           "strip_reason": "Stated once for the whole skill, in SKILL.md, instead of repeated per section. The two-modes rule is carried once, in the caveman-be-brief section of write-prose.",
           "note": "Kept alongside the short `grug-reasoning` section because it holds what that one omits: hard length budgets, the sentence and paragraph rules for the internal trace, the word-swap table, the abbreviation trap and the continuation protocol for a truncated context."
+        },
+        {
+          "id": "document-summary",
+          "bucket": "write-prose",
+          "order": 1,
+          "authored": true,
+          "title": "Summarising a long report or document",
+          "when": "the user hands over a long report, thesis, dataset or paper and wants the part that matters, or asks what a document says",
+          "entry": "written/document-summary.md",
+          "note": "Written for this bundle, not carried from upstream: this is the one procedure worth keeping from the retired be-brief skill, re-grounded in grug's complexity budget and caveman's compress-only rule. The register rules it used to argue for are already always-on (rule 1, rule 5, the self-check), so carrying the skill again would say them twice in two voices."
         }
       ],
       "not_routed": [
@@ -429,6 +401,38 @@
         {
           "path": "upstream/local/universal/skills/caveman.md",
           "reason": "This repo's v2.x-era copy of the caveman voice skill. Superseded: the same skill is now carried from JuliusBrussee/caveman at the v3.2.0 tag, which is the version the user asked to sync against. Keeping both would ship two rulesets for one voice."
+        },
+        {
+          "path": "upstream/local/variants/be-brief-output/SKILL.md",
+          "reason": "The be-brief register layer, retired 2026-10-10 at the owner's request: its deletion test, output contract, self-check and intensity levels are already the always-on rules and the register table, so it restated them in a second voice. What was still carrying weight — summarising a long document — was rewritten as `document-summary` in write-prose. The file stays in `legacy/`."
+        },
+        {
+          "path": "upstream/local/variants/be-brief-output/references/cut-lists.md",
+          "reason": "The banned-phrase lists be-brief pointed at. The self-check in the always-on layer carries the AI-tell list it actually uses; the rest was a style index no rule depended on. Stays in `legacy/`."
+        },
+        {
+          "path": "upstream/local/app/caveman-be-brief.md",
+          "reason": "The app-facing pairing of the same retired register skill (caveman for chat, be-brief for documents). The pairing rule survives as the precedence table; the document half is now `document-summary`. Stays in `legacy/`."
+        },
+        {
+          "path": "upstream/local/variants/be-brief-output/examples.md",
+          "reason": "be-brief's before/after examples. They showed the register rules that are now always-on; the one procedure that survived, `document-summary`, carries its own checks instead of a second voice with sample rewrites. Stays in `legacy/`."
+        },
+        {
+          "path": "upstream/local/variants/unified/SKILL.md",
+          "reason": "The previous single-file edition of this same bundle: sniff-fear-plan-act-speak (now in `grug-reasoning`), the output contract, deletion test, self-check, never-compress list, auto-clarity and intensity levels (all now generated into `SKILL.md` itself). Retiring it is also what makes the be-brief retirement safe — its title and tables named that register as a layer, which is the one phrasing a reader must not meet twice."
+        },
+        {
+          "path": "upstream/local/variants/unified/examples.md",
+          "reason": "Worked examples of the retired unified skill, routing decisions shown against the old three-register naming. The register example the bundle needs is the one in `written/document-summary.md`."
+        },
+        {
+          "path": "upstream/local/variants/unified/references/work-patterns.md",
+          "reason": "Byte-identical to `caveman-output/references/work-patterns.md`, which is routed in its place."
+        },
+        {
+          "path": "upstream/local/variants/unified/references/cut-lists.md",
+          "reason": "Byte-identical to the be-brief cut list, retired with it; the phrase catalog in `write-prose` is the carried copy."
         }
       ],
       "discover": [
@@ -453,7 +457,7 @@
       "attribution": "freeforall1932-design/anti-slop-fork",
       "origin": {
         "repo": "miqdadbadjuber/anti-slop",
-        "ref": "388cbe3b6c32e2817eba8e2199107a1f8a2f1e1e",
+        "ref": "388cbe3b6c37d5175b9f460015bb092ef9e34894",
         "license": "see upstream",
         "note": "Vendored from the origin, not from freeforall1932-design/anti-slop-fork. Verified 2026-10-10: `diff -rq` of the two `skills/` trees is empty and both carry antislop VERSION 3.2.20, so the fork had no local edits to keep."
       },
@@ -572,7 +576,7 @@
       "origin": {
         "kind": "github",
         "repo": "mattpocock/skills",
-        "ref": "HEAD"
+        "ref": "49dd158d1076134a641b33efb035946536778336"
       },
       "sync": {
         "include": [
@@ -1021,7 +1025,7 @@
       "attribution": "JuliusBrussee/caveman",
       "origin": {
         "repo": "JuliusBrussee/caveman",
-        "ref": "2e08b91e0a7d5c8b3ea1b1e0eb1d933f2d0da4c1",
+        "ref": "2e08b9177c07bb7249a8a2d1a6758e5db281d002",
         "note": "Synced at the v3.2.0 tag, 2026-10-08. Replaces the repo's own v2.x-era copies. The 'be brief' instruction is this skill's own trigger wording; there is no separate upstream repository for it."
       },
       "sync": {
@@ -1211,7 +1215,7 @@
       "attribution": "bigskysoftware/grugbrain.dev",
       "origin": {
         "repo": "bigskysoftware/grugbrain.dev",
-        "ref": "b1b1ca8",
+        "ref": "b1b1ca855ca1242b61bd15109fab10312f5bb9b8",
         "note": "The canonical grug text, `index.md`, at the site's latest commit (2025-05-05)."
       },
       "sync": {
@@ -1248,7 +1252,7 @@
       "attribution": "usestrix/strix",
       "origin": {
         "repo": "usestrix/strix",
-        "ref": "62b4964",
+        "ref": "f7a32ae62d94872631bc8415073868d02a6ffdaf",
         "note": "Latest commit of the origin at sync time (2026-10-08), not the user's fork."
       },
       "sync": {
@@ -1358,7 +1362,7 @@
       "attribution": "mem0ai/mem0",
       "origin": {
         "repo": "mem0ai/mem0",
-        "ref": "b7ad69a",
+        "ref": "b7ad69afda6b6ed030347c66d48a13e4de9dec08",
         "note": "Latest commit of the origin at sync time (2026-10-07), not the user's fork."
       },
       "sync": {
@@ -1433,7 +1437,7 @@
       "attribution": "tt-a1i/archify (based on Cocoon-AI/architecture-diagram-generator)",
       "origin": {
         "repo": "tt-a1i/archify",
-        "ref": "54edef4",
+        "ref": "58ab0b98d2d0def8e49dced705c7b566936723ec",
         "note": "Latest commit of the origin at sync time (2026-10-10), not the user's fork."
       },
       "sync": {
@@ -1502,18 +1506,239 @@
         "archify",
         ".agents/skills"
       ]
+    },
+    {
+      "slug": "engineering-plugin",
+      "title": "Anthropic engineering plugin 1.2.0 — ten workflow skills",
+      "license": "see the pack (plugin.json names Anthropic as author)",
+      "attribution": "Anthropic — engineering plugin v1.2.0",
+      "origin": {
+        "kind": "zip",
+        "file": "Engineering-1.2.0-v1.zip",
+        "repo": null,
+        "note": "No git remote was given: the pack was committed to this repository as `Engineering-1.2.0-v1.zip` on 2026-10-10 and vendored from the archive, so the pin is the file's sha256, recorded by `sync`. Re-uploading a new version changes the pin; that is the point. plugin.json identifies it as Anthropic's `engineering` plugin, 1.2.0.",
+        "ref": "sha256:07e0c8272f9ed2b04ab4a513920e66a8e99a7ad5"
+      },
+      "discover": [
+        "skills"
+      ],
+      "sync": {
+        "include": [
+          {
+            "from": "skills",
+            "to": "upstream/engineering-plugin/skills",
+            "only": [
+              "SKILL.md"
+            ]
+          }
+        ]
+      },
+      "not_vendored": [
+        {
+          "what": ".mcp.json, CONNECTORS.md, .claude-plugin/plugin.json, README.md",
+          "reason": "The plugin's connector wiring: OAuth client ids for Slack, Linear, Asana and Atlassian, plus the install manifest. A merged skill registers no servers and installs nothing, so those files would describe plumbing that is not here. The skills themselves stayed tool-agnostic by design, which is why they could be carried at all."
+        }
+      ],
+      "skills": [
+        {
+          "id": "eng-architecture",
+          "bucket": "code-craft",
+          "order": 30,
+          "title": "Architecture decision record — write one or evaluate one",
+          "when": "choosing between technologies, or documenting a decision and its consequences",
+          "entry": "upstream/engineering-plugin/skills/architecture/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-system-design",
+          "bucket": "code-craft",
+          "order": 31,
+          "title": "System design — options, trade-offs, a recommendation",
+          "when": "designing a service or subsystem, or being asked how to architect something",
+          "entry": "upstream/engineering-plugin/skills/system-design/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record."
+        },
+        {
+          "id": "eng-debug",
+          "bucket": "code-craft",
+          "order": 55,
+          "title": "Debug — reproduce, isolate, diagnose, fix",
+          "when": "an error, a stack trace, or something that works in one environment and not another",
+          "entry": "upstream/engineering-plugin/skills/debug/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-testing-strategy",
+          "bucket": "code-craft",
+          "order": 60,
+          "title": "Testing strategy — the pyramid for this codebase",
+          "when": "deciding how a feature or system should be tested, or what to test at which level",
+          "entry": "upstream/engineering-plugin/skills/testing-strategy/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record."
+        },
+        {
+          "id": "eng-tech-debt",
+          "bucket": "code-craft",
+          "order": 65,
+          "title": "Technical debt — inventory it, prioritise it",
+          "when": "asked what to refactor, or when the codebase's health is the question",
+          "entry": "upstream/engineering-plugin/skills/tech-debt/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record."
+        },
+        {
+          "id": "eng-code-review",
+          "bucket": "code-craft",
+          "order": 70,
+          "title": "Code review — security, performance, correctness",
+          "when": "a PR or diff is up and the question is whether it is safe to merge",
+          "entry": "upstream/engineering-plugin/skills/code-review/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-deploy-checklist",
+          "bucket": "ship-workflow",
+          "order": 20,
+          "title": "Deploy checklist — verify before shipping",
+          "when": "about to release, especially with migrations or feature flags in the change",
+          "entry": "upstream/engineering-plugin/skills/deploy-checklist/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-incident-response",
+          "bucket": "ship-workflow",
+          "order": 25,
+          "title": "Incident response — triage, communicate, write the postmortem",
+          "when": "production is down, or an alert is being escalated into a real incident",
+          "entry": "upstream/engineering-plugin/skills/incident-response/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-standup",
+          "bucket": "ship-workflow",
+          "order": 30,
+          "title": "Standup — summarise recent work into yesterday, today, blockers",
+          "when": "a daily update is due from commits, PRs and ticket moves",
+          "entry": "upstream/engineering-plugin/skills/standup/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.",
+          "replace": [
+            {
+              "from": "> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).",
+              "to": "> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.",
+              "reason": "pointed at CONNECTORS.md, which is the plugin's MCP wiring and is not vendored"
+            }
+          ]
+        },
+        {
+          "id": "eng-documentation",
+          "bucket": "teach-and-author",
+          "order": 20,
+          "title": "Technical documentation — README, runbook, onboarding",
+          "when": "writing or maintaining docs for a project, or asked for a runbook",
+          "entry": "upstream/engineering-plugin/skills/documentation/SKILL.md",
+          "note": "Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record."
+        }
+      ]
+    },
+    {
+      "slug": "skill-creator",
+      "title": "Anthropic skill-creator — authoring discipline for skills",
+      "license": "see the pack (LICENSE.txt inside the skill directory)",
+      "attribution": "Anthropic — skill-creator (uploaded as `Skill creator copy-v1.zip`)",
+      "origin": {
+        "kind": "zip",
+        "file": "Skill creator copy-v1.zip",
+        "repo": null,
+        "note": "Vendored from the archive committed to this repository on 2026-10-10, pinned by sha256. The pack's own skill name is `skill-creator-copy` — that is the directory the text came from, which is why the inventory matches that name. This closes the gap the handoff used to list as open: the repository had no meta-skill for writing skills.",
+        "ref": "sha256:64e07a41da76bba6ee789ac9e28528e2cefa91fd"
+      },
+      "discover": [
+        "skills"
+      ],
+      "sync": {
+        "include": [
+          {
+            "from": "skills",
+            "to": "upstream/skill-creator/skills",
+            "only": [
+              "SKILL.md"
+            ]
+          }
+        ]
+      },
+      "not_vendored": [
+        {
+          "what": "scripts/ (run_eval.py, aggregate_benchmark.py, improve_description.py, package_skill.py, quick_validate.py, run_loop.py), agents/ (grader, comparator, analyzer), eval-viewer/, assets/eval_review.html, references/schemas.md",
+          "reason": "The evaluation half of the pack. It spawns `claude` subprocesses with and without the skill, grades assertions, serves an HTML viewer, and optimises the frontmatter description by variance — all of which need the CLI, an API key, subagents and a browser. The two validators additionally import PyYAML, which this repository deliberately does not depend on: `build.py check` is the local equivalent of `quick_validate.py`. The authoring judgement survives; the harness that measures it does not. Instructions to run a harness this bundle cannot invoke are exactly what the implementability filter exists to stop."
+        }
+      ],
+      "skills": [
+        {
+          "id": "skill-authoring",
+          "bucket": "teach-and-author",
+          "order": 40,
+          "title": "Authoring a skill — intent, progressive disclosure, writing style",
+          "when": "the user asks to write, restructure, review or generalise a skill, or asks why a skill is shaped the way it is",
+          "entry": "upstream/skill-creator/skills/skill-creator-copy/SKILL.md",
+          "keep_sections": [
+            "Communicating with the user",
+            "Creating a skill",
+            "How to think about improvements"
+          ],
+          "strip_sections": [
+            "Test Cases"
+          ],
+          "strip_reason": "Drafting test prompts is worth reading; running them is the eval harness (subagents, the `claude` CLI, a browser viewer) this bundle does not carry.",
+          "note": "The craft half of skill-creator, kept while its measurement half is dropped. It says what this repository's build says from the other direction: always-on judgement in `SKILL.md`, depth in reference files that say when to read them, explain why instead of stacking MUSTs, and generalise rather than overfit to the examples in front of you."
+        }
+      ]
     }
   ],
   "families": [
     {
       "id": "prose",
       "title": "Words",
-      "summary": "for anything a human reads: documents, email, theses, chat replies, and the reasoning behind them.",
+      "summary": "for anything a human reads or learns from: documents, email, theses, chat replies, summaries of long reports, and writing or reviewing skills.",
       "buckets": [
         "write-prose",
         "terse-chat",
         "think-first",
-        "origins"
+        "origins",
+        "teach-and-author"
       ]
     },
     {

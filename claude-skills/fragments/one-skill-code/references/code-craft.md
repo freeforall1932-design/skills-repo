@@ -16,6 +16,8 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 | [Codebase design — deep modules, seams, leverage](#codebase-design-deep-modules-seams-leverage) | `mattpocock-skills` | always |
 | [Caveman review — one line per finding, in code order](#caveman-review-one-line-per-finding-in-code-order) | `caveman` | always |
 | [Domain modelling — glossary and ADRs](#domain-modelling-glossary-and-adrs) | `mattpocock-skills` | always |
+| [Architecture decision record — write one or evaluate one](#architecture-decision-record-write-one-or-evaluate-one) | `engineering-plugin` | always |
+| [System design — options, trade-offs, a recommendation](#system-design-options-trade-offs-a-recommendation) | `engineering-plugin` | always |
 | [Diagnosing bugs — red loop first, then hypothesis](#diagnosing-bugs-red-loop-first-then-hypothesis) | `mattpocock-skills` | always |
 | [Work pattern · investigate first](#work-pattern-investigate-first) | `caveman` | always |
 | [Work pattern · lean build](#work-pattern-lean-build) | `caveman` | always |
@@ -24,7 +26,11 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 | [Work pattern · migration](#work-pattern-migration) | `caveman` | always |
 | [Work pattern · verify and stop](#work-pattern-verify-and-stop) | `caveman` | always |
 | [Improve codebase architecture — scan, report, grill](#improve-codebase-architecture-scan-report-grill) | `mattpocock-skills` | command |
+| [Debug — reproduce, isolate, diagnose, fix](#debug-reproduce-isolate-diagnose-fix) | `engineering-plugin` | always |
+| [Testing strategy — the pyramid for this codebase](#testing-strategy-the-pyramid-for-this-codebase) | `engineering-plugin` | always |
 | [Prototype — throwaway, to answer one question](#prototype-throwaway-to-answer-one-question) | `mattpocock-skills` | always |
+| [Technical debt — inventory it, prioritise it](#technical-debt-inventory-it-prioritise-it) | `engineering-plugin` | always |
+| [Code review — security, performance, correctness](#code-review-security-performance-correctness) | `engineering-plugin` | always |
 | [antislop-code — comment hygiene, code untouched](#antislop-code-comment-hygiene-code-untouched) | `anti-slop` | always |
 
 ---
@@ -758,6 +764,132 @@ The skill infers which structure applies:
 
 When multiple contexts exist, infer which one the current topic relates to. If unclear, ask.
 
+## Architecture decision record — write one or evaluate one
+
+> `engineering-plugin` / `eng-architecture` / choosing between technologies, or documenting a decision and its consequences
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Create an Architecture Decision Record (ADR) or evaluate a system design.
+
+### Usage
+
+```
+/architecture $ARGUMENTS
+```
+
+### Modes
+
+**Create an ADR**: "Should we use Kafka or SQS for our event bus?"
+**Evaluate a design**: "Review this microservices proposal"
+**System design**: "Design the notification system for our app"
+
+See the **system-design** skill for detailed frameworks on requirements gathering, scalability analysis, and trade-off evaluation.
+
+### Output — ADR Format
+
+```markdown
+## ADR-[number]: [Title]
+
+**Status:** Proposed | Accepted | Deprecated | Superseded
+**Date:** [Date]
+**Deciders:** [Who needs to sign off]
+
+### Context
+[What is the situation? What forces are at play?]
+
+### Decision
+[What is the change we're proposing?]
+
+### Options Considered
+
+#### Option A: [Name]
+| Dimension | Assessment |
+|-----------|------------|
+| Complexity | [Low/Med/High] |
+| Cost | [Assessment] |
+| Scalability | [Assessment] |
+| Team familiarity | [Assessment] |
+
+**Pros:** [List]
+**Cons:** [List]
+
+#### Option B: [Name]
+[Same format]
+
+### Trade-off Analysis
+[Key trade-offs between options with clear reasoning]
+
+### Consequences
+- [What becomes easier]
+- [What becomes harder]
+- [What we'll need to revisit]
+
+### Action Items
+1. [ ] [Implementation step]
+2. [ ] [Follow-up]
+```
+
+### If Connectors Available
+
+If **~~knowledge base** is connected:
+- Search for prior ADRs and design docs
+- Find relevant technical context
+
+If **~~project tracker** is connected:
+- Link to related epics and tickets
+- Create implementation tasks
+
+### Tips
+
+1. **State constraints upfront** — "We need to ship in 2 weeks" or "Must handle 10K rps" shapes the answer.
+2. **Name your options** — Even if you're leaning one way, I'll give a more balanced analysis with explicit alternatives.
+3. **Include non-functional requirements** — Latency, cost, team expertise, and maintenance burden matter as much as features.
+
+## System design — options, trade-offs, a recommendation
+
+> `engineering-plugin` / `eng-system-design` / designing a service or subsystem, or being asked how to architect something
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+Help design systems and evaluate architectural decisions.
+
+### Framework
+
+#### 1. Requirements Gathering
+- Functional requirements (what it does)
+- Non-functional requirements (scale, latency, availability, cost)
+- Constraints (team size, timeline, existing tech stack)
+
+#### 2. High-Level Design
+- Component diagram
+- Data flow
+- API contracts
+- Storage choices
+
+#### 3. Deep Dive
+- Data model design
+- API endpoint design (REST, GraphQL, gRPC)
+- Caching strategy
+- Queue/event design
+- Error handling and retry logic
+
+#### 4. Scale and Reliability
+- Load estimation
+- Horizontal vs. vertical scaling
+- Failover and redundancy
+- Monitoring and alerting
+
+#### 5. Trade-off Analysis
+- Every decision has trade-offs. Make them explicit.
+- Consider: complexity, cost, team familiarity, time to market, maintainability
+
+### Output
+
+Produce clear, structured design documents with diagrams (ASCII or described), explicit assumptions, and trade-off analysis. Always identify what you'd revisit as the system grows.
+
 ## Diagnosing bugs — red loop first, then hypothesis
 
 > `mattpocock-skills` / `diagnosing-bugs` / broken, throwing, failing, slow
@@ -1187,6 +1319,133 @@ Plain English, concise, but the architectural nouns and verbs come straight from
 
 No hedging, no throat-clearing, no "it's worth noting that…". If a sentence could be a bullet, make it a bullet. If a bullet could be cut, cut it. If a term isn't in the `/codebase-design` glossary, reach for one that is before inventing a new one.
 
+## Debug — reproduce, isolate, diagnose, fix
+
+> `engineering-plugin` / `eng-debug` / an error, a stack trace, or something that works in one environment and not another
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Run a structured debugging session to find and fix issues systematically.
+
+### Usage
+
+```
+/debug $ARGUMENTS
+```
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                       DEBUG                                        │
+├─────────────────────────────────────────────────────────────────┤
+│  Step 1: REPRODUCE                                                │
+│  ✓ Understand the expected vs. actual behavior                   │
+│  ✓ Identify exact reproduction steps                             │
+│  ✓ Determine scope (when did it start? who is affected?)        │
+│                                                                    │
+│  Step 2: ISOLATE                                                   │
+│  ✓ Narrow down the component, service, or code path             │
+│  ✓ Check recent changes (deploys, config changes, dependencies) │
+│  ✓ Review logs and error messages                                │
+│                                                                    │
+│  Step 3: DIAGNOSE                                                  │
+│  ✓ Form hypotheses and test them                                 │
+│  ✓ Trace the code path                                           │
+│  ✓ Identify root cause (not just symptoms)                      │
+│                                                                    │
+│  Step 4: FIX                                                       │
+│  ✓ Propose a fix with explanation                                │
+│  ✓ Consider side effects and edge cases                          │
+│  ✓ Suggest tests to prevent regression                           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### What I Need From You
+
+Tell me about the problem. Any of these help:
+- Error message or stack trace
+- Steps to reproduce
+- What changed recently
+- Logs or screenshots
+- Expected vs. actual behavior
+
+### Output
+
+```markdown
+### Debug Report: [Issue Summary]
+
+#### Reproduction
+- **Expected**: [What should happen]
+- **Actual**: [What happens instead]
+- **Steps**: [How to reproduce]
+
+#### Root Cause
+[Explanation of why the bug occurs]
+
+#### Fix
+[Code changes or configuration fixes needed]
+
+#### Prevention
+- [Test to add]
+- [Guard to put in place]
+```
+
+### If Connectors Available
+
+If **~~monitoring** is connected:
+- Pull logs, error rates, and metrics around the time of the issue
+- Show recent deploys and config changes that may correlate
+
+If **~~source control** is connected:
+- Identify recent commits and PRs that touched affected code paths
+- Check if the issue correlates with a specific change
+
+If **~~project tracker** is connected:
+- Search for related bug reports or known issues
+- Create a ticket for the fix once identified
+
+### Tips
+
+1. **Share error messages exactly** — Don't paraphrase. The exact text matters.
+2. **Mention what changed** — Recent deploys, dependency updates, and config changes are top suspects.
+3. **Include context** — "This works in staging but not prod" or "Only affects large payloads" narrows things fast.
+
+## Testing strategy — the pyramid for this codebase
+
+> `engineering-plugin` / `eng-testing-strategy` / deciding how a feature or system should be tested, or what to test at which level
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+Design effective testing strategies balancing coverage, speed, and maintenance.
+
+### Testing Pyramid
+
+```
+        /  E2E  \         Few, slow, high confidence
+       / Integration \     Some, medium speed
+      /    Unit Tests  \   Many, fast, focused
+```
+
+### Strategy by Component Type
+
+- **API endpoints**: Unit tests for business logic, integration tests for HTTP layer, contract tests for consumers
+- **Data pipelines**: Input validation, transformation correctness, idempotency tests
+- **Frontend**: Component tests, interaction tests, visual regression, accessibility
+- **Infrastructure**: Smoke tests, chaos engineering, load tests
+
+### What to Cover
+
+Focus on: business-critical paths, error handling, edge cases, security boundaries, data integrity.
+
+Skip: trivial getters/setters, framework code, one-off scripts.
+
+### Output
+
+Produce a test plan with: what to test, test type for each area, coverage targets, and example test cases. Identify gaps in existing coverage.
+
 ## Prototype — throwaway, to answer one question
 
 > `mattpocock-skills` / `prototype` / sanity-checking a state model or a UI direction
@@ -1395,6 +1654,155 @@ The full set of variants is the primary source, so it lands on the throwaway bra
 - **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
 - **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub: the question is "what should this look like", not "does the backend work".
 - **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Rewrite it properly when you fold it in.
+
+## Technical debt — inventory it, prioritise it
+
+> `engineering-plugin` / `eng-tech-debt` / asked what to refactor, or when the codebase's health is the question
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+Systematically identify, categorize, and prioritize technical debt.
+
+### Categories
+
+| Type | Examples | Risk |
+|------|----------|------|
+| **Code debt** | Duplicated logic, poor abstractions, magic numbers | Bugs, slow development |
+| **Architecture debt** | Monolith that should be split, wrong data store | Scaling limits |
+| **Test debt** | Low coverage, flaky tests, missing integration tests | Regressions ship |
+| **Dependency debt** | Outdated libraries, unmaintained dependencies | Security vulns |
+| **Documentation debt** | Missing runbooks, outdated READMEs, tribal knowledge | Onboarding pain |
+| **Infrastructure debt** | Manual deploys, no monitoring, no IaC | Incidents, slow recovery |
+
+### Prioritization Framework
+
+Score each item on:
+- **Impact**: How much does it slow the team down? (1-5)
+- **Risk**: What happens if we don't fix it? (1-5)
+- **Effort**: How hard is the fix? (1-5, inverted — lower effort = higher priority)
+
+Priority = (Impact + Risk) x (6 - Effort)
+
+### Output
+
+Produce a prioritized list with estimated effort, business justification for each item, and a phased remediation plan that can be done alongside feature work.
+
+## Code review — security, performance, correctness
+
+> `engineering-plugin` / `eng-code-review` / a PR or diff is up and the question is whether it is safe to merge
+
+> **Merge note.** Carried as written: its tool steps are conditional (`If **~~source control** is connected`), and `~~category` means whatever tool the user has for that category. With no connector, produce the text the user would have posted and let them post it. The pack's MCP wiring is not vendored, on the record.
+
+> Placeholders like `~~source control` name a *category* of tool, not a product: use whatever the user has connected for that category, and if they have none, produce the output they would have posted and name the tool it was meant for. The pack is written to work standalone; only its connector wiring is absent here.
+
+Review code changes with a structured lens on security, performance, correctness, and maintainability.
+
+### Usage
+
+```
+/code-review <PR URL or file path>
+```
+
+Review the provided code changes: @$1
+
+If no specific file or URL is provided, ask what to review.
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      CODE REVIEW                                   │
+├─────────────────────────────────────────────────────────────────┤
+│  STANDALONE (always works)                                       │
+│  ✓ Paste a diff, PR URL, or point to files                      │
+│  ✓ Security audit (OWASP top 10, injection, auth)               │
+│  ✓ Performance review (N+1, memory leaks, complexity)           │
+│  ✓ Correctness (edge cases, error handling, race conditions)    │
+│  ✓ Style (naming, structure, readability)                        │
+│  ✓ Actionable suggestions with code examples                    │
+├─────────────────────────────────────────────────────────────────┤
+│  SUPERCHARGED (when you connect your tools)                      │
+│  + Source control: Pull PR diff automatically                    │
+│  + Project tracker: Link findings to tickets                     │
+│  + Knowledge base: Check against team coding standards           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Review Dimensions
+
+#### Security
+- SQL injection, XSS, CSRF
+- Authentication and authorization flaws
+- Secrets or credentials in code
+- Insecure deserialization
+- Path traversal
+- SSRF
+
+#### Performance
+- N+1 queries
+- Unnecessary memory allocations
+- Algorithmic complexity (O(n²) in hot paths)
+- Missing database indexes
+- Unbounded queries or loops
+- Resource leaks
+
+#### Correctness
+- Edge cases (empty input, null, overflow)
+- Race conditions and concurrency issues
+- Error handling and propagation
+- Off-by-one errors
+- Type safety
+
+#### Maintainability
+- Naming clarity
+- Single responsibility
+- Duplication
+- Test coverage
+- Documentation for non-obvious logic
+
+### Output
+
+```markdown
+### Code Review: [PR title or file]
+
+#### Summary
+[1-2 sentence overview of the changes and overall quality]
+
+#### Critical Issues
+| # | File | Line | Issue | Severity |
+|---|------|------|-------|----------|
+| 1 | [file] | [line] | [description] | 🔴 Critical |
+
+#### Suggestions
+| # | File | Line | Suggestion | Category |
+|---|------|------|------------|----------|
+| 1 | [file] | [line] | [description] | Performance |
+
+#### What Looks Good
+- [Positive observations]
+
+#### Verdict
+[Approve / Request Changes / Needs Discussion]
+```
+
+### If Connectors Available
+
+If **~~source control** is connected:
+- Pull the PR diff automatically from the URL
+- Check CI status and test results
+
+If **~~project tracker** is connected:
+- Link findings to related tickets
+- Verify the PR addresses the stated requirements
+
+If **~~knowledge base** is connected:
+- Check changes against team coding standards and style guides
+
+### Tips
+
+1. **Provide context** — "This is a hot path" or "This handles PII" helps me focus.
+2. **Specify concerns** — "Focus on security" narrows the review.
+3. **Include tests** — I'll check test coverage and quality too.
 
 ## antislop-code — comment hygiene, code untouched
 

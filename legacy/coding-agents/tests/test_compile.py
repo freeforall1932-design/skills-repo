@@ -8,13 +8,20 @@ for the agent it targets.
 from __future__ import annotations
 
 import json
-import yaml
 import re
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
+
+try:                      # a soft dependency, declared the same way the two frontmatter
+    import yaml           # checks below already declare theirs: without PyYAML this file
+except ModuleNotFoundError:  # must not break *collection*, which hides every other test run
+    yaml = None           # from the root — `pytest` at the top level collects legacy/ too
+    _HAS_YAML = False
+else:
+    _HAS_YAML = True
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -218,6 +225,7 @@ def test_no_profile_claims_a_path_it_cannot_name():
 _NAME_RE = compile_mod.re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
 
+@pytest.mark.skipif(not _HAS_YAML, reason="PyYAML is not installed")
 @pytest.mark.parametrize("skill_dir", sorted(ROOT.joinpath("variants").glob("*")))
 def test_skill_meets_the_agent_skills_spec(skill_dir):
     """The checklist that separates a real skill from instructional prose."""

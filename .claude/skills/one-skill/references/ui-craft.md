@@ -1,4 +1,4 @@
-# UI craft — the anti-slop visual filter
+# UI and diagrams — the anti-slop visual filter, applied to screens and to pictures
 
 **Read this when:** a page, component, email, mobile layout, accessibility pass, or a diagram of any kind
 

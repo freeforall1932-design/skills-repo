@@ -1,6 +1,14 @@
 {
   "generated_by": "one-skill/build.py",
-  "manifest_sha": "c9b0925b043c",
+  "inputs": {
+    "core/00-open.md": "7b1d2c93fde0",
+    "core/10-precedence.md": "437d7b3853ee",
+    "core/20-always-on.md": "c6b57ce4c5e5",
+    "core/30-router.md": "4dacffcdfaa1",
+    "core/40-commands.md": "dbc02fa2fc79",
+    "core/50-sources.md": "17a20c306953"
+  },
+  "manifest_sha": "d68a414b23e6",
   "skills": {
     "anti-slop/antislop-core": {
       "bucket": "ui-craft",

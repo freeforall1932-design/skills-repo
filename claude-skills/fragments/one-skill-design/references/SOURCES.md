@@ -6,14 +6,16 @@ by hand is a mistake — the next build overwrites it.
 
 | source | upstream | revision | files vendored | license |
 |---|---|---|---|---|
-| caveman-or-be-brief (this repository) | `freeforall1932-design/skills-repo` | `00a733ea4a` | 29 | Unlicense (root) / MIT (caveman-universal) |
+| this repository — grug, caveman, and the register rules | `freeforall1932-design/skills-repo` | `e7a24a98e3` | 29 | Unlicense (root) / MIT (caveman-universal) |
 | anti-slop — the design filter (miqdadbadjuber/anti-slop) | `miqdadbadjuber/anti-slop` | `388cbe3b6c` | 7 | MIT |
 | mattpocock/skills — engineering, productivity, misc | `mattpocock/skills` | `49dd158d10` | 57 | MIT |
 | Caveman — the token-efficiency voice (upstream v3.2.0) | `JuliusBrussee/caveman` | `2e08b9177c` | 22 | MIT |
 | The Grug Brained Developer (grugbrain.dev) | `bigskysoftware/grugbrain.dev` | `b1b1ca855c` | 1 | CC BY-SA 4.0 (site) |
-| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `62b496430d` | 9 | Apache-2.0 |
+| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `f7a32ae62d` | 9 | Apache-2.0 |
 | mem0 — integration discipline (mem0ai/mem0) | `mem0ai/mem0` | `b7ad69afda` | 6 | Apache-2.0 |
-| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `54edef453c` | 2 | MIT |
+| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `58ab0b98d2` | 2 | MIT |
+| Anthropic engineering plugin 1.2.0 — ten workflow skills | ``Engineering-1.2.0-v1.zip` (committed archive)` | `sha256:07e` | 10 | see the pack (plugin.json names Anthropic as author) |
+| Anthropic skill-creator — authoring discipline for skills | ``Skill creator copy-v1.zip` (committed archive)` | `sha256:64e` | 1 | see the pack (LICENSE.txt inside the skill directory) |
 
 ## What the merge changed
 
@@ -39,5 +41,5 @@ packaging convenient.
 | section | carried from | notes |
 |---|---|---|
 | antislop core — craftsmanship standard, R-rules, liveliness | `anti-slop/antislop-core` | The upstream install wizard and its pointer-block step are dropped: in this merged skill every sibling is already inside the same skill, so there is nothing for the agent to fetch and no entry file to edit. Not carried: First-Run Install Wizard, Already installed, and the user asks how to update. |
-| antislop-human — contrast, keyboard, focus, states | `anti-slop/antislop-human` | The contrast checker no longer sits next to a standalone SKILL.md: it is carried at `scripts/contrast-check.py` inside this skill, which is what the command below resolves to. Literal edits recorded in `replace`: `(`contrast-check.py`, next to this `SKILL.md`)`; `point the script path at this skill's folder directly`. |
-| Pick the diagram type, then be honest about the artifact | `archify/archify-method` | Three sections of a 1 456-word skill: the five-type router, the Mermaid mapping, and the reporting rule. The renderer sections (fast authoring path, delivery gates, setup and fallback, update awareness) are dropped by name because every one of them runs the Node toolchain. The three declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step. Not carried: Existing candidate handoff, Fast authoring path, Update awareness, Delivery, Optional viewer capabilities, Setup and fallback. Literal edits recorded in `replace`: `run `node bin/archify.mjs guide "<scenario>" --json``; `then name them for the reader: use everyday `icon` values and `meta.legend` labels as in **Node icons** (`authoring-contract.md`, in the full skill).`; `Return the checked HTML as an absolute path, diagram type, validation summary, specification/artifact receipt, browser-evidence status, and truthful visual-review status. Do not claim success for a non-zero command or claim visual inspection you did not perform.`. |
+| antislop-human — contrast, keyboard, focus, states | `anti-slop/antislop-human` | The contrast checker no longer sits next to a standalone SKILL.md: it is carried at `scripts/contrast-check.py` inside this skill, which is what the command below resolves to. Literal edits recorded in `replace`: `` (`contrast-check.py`, next to this `SKILL.md`) ``; `point the script path at this skill's folder directly`. |
+| Pick the diagram type, then be honest about the artifact | `archify/archify-method` | Three sections of a 1 456-word skill: the five-type router, the Mermaid mapping, and the reporting rule. The renderer sections (fast authoring path, delivery gates, setup and fallback, update awareness) are dropped by name because every one of them runs the Node toolchain. The three declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step. Not carried: Existing candidate handoff, Fast authoring path, Update awareness, Delivery, Optional viewer capabilities, Setup and fallback. Literal edits recorded in `replace`: `` run `node bin/archify.mjs guide "<scenario>" --json` ``; `` then name them for the reader: use everyday `icon` values and `meta.legend` labels as in **Node icons** (`authoring-contract.md`, in the full skill). ``; `Return the checked HTML as an absolute path, diagram type, validation summary, specification/artifact receipt, browser-evidence status, and truthful visual-review status. Do not claim success for a non-zero command or claim visual inspection you did not perform.`. |

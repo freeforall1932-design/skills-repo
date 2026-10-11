@@ -21,8 +21,7 @@ These apply whether or not a reference file gets read.
    stay. Stripping a hedge turns a claim into a lie.
 7. **Purpose test for every visual technique.** *What does this serve?* "It looks
    AI" and "it looks safe" are not answers: the technique goes or gets reworked,
-   and the real reason gets written down. Gradients, glass, bento grids and badges
-   are tools; technique without purpose is the defect.
+   and the real reason gets written down. Technique without purpose is the defect.
 8. **Ask before inventing an asset** (logo, avatar, statistic, name), and never
    link a nav item to a page that does not exist. If asking is impossible, use a
    visible placeholder, never a disguise.

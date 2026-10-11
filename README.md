@@ -1,4 +1,4 @@
-# one skill — grug · caveman · be-brief · antislop · Pocock
+# one skill — grug · caveman · documents · antislop · Pocock · Anthropic
 
 **Everything in this repository, in one skill.** Sixty-nine skills from eight
 sources, merged into a single loadable skill: the always-on rules in `SKILL.md`, the
@@ -45,8 +45,8 @@ Then write as usual, or say `caveman`, `be brief`, or `ringkas`. Stop with
 
 ## The one line
 
-> **grug decides, caveman measures, be-brief writes, antislop filters, pocock runs
-> the process, and nobody touches the code.**
+> **grug decides, caveman measures, documents stay professional, antislop filters,
+> pocock runs the process, and nobody touches the code.**
 
 Those sources were not written for each other, and they contradict each other in
 places. A merge that hides that produces a skill that fails in both directions at
@@ -57,7 +57,7 @@ version:
 | The output is… | It reads like | Never like |
 |---|---|---|
 | a chat reply to a developer | caveman: terse, fragments allowed | formal |
-| a document a person reads | be-brief: full grammar, zero waste | cartoon caveman |
+| a document a person reads | the document register: full grammar, zero waste | cartoon caveman |
 | product UI copy | antislop-copywriting | AI tells, unsourced claims |
 | code, paths, errors, LaTeX, citations | untouched | compressed |
 | a persisted artifact (comment, commit, PR body) | normal prose, full length | shorthand a future human decodes |
@@ -70,14 +70,12 @@ publish, taken from [grugbrain.dev](https://grugbrain.dev/) and
 [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) and not
 paraphrased. What the merge adds is the routing layer.
 
-| Source | Skills | License |
-|---|---|---|
 Every source is vendored from its **origin at the latest commit**, never from a fork —
 including the anti-slop fork's own upstream, which was byte-identical to it.
 
 | Source | Skills merged | License |
 |---|---|---|
-| this repository (`legacy/`: unified, be-brief, caveman, grug, ralph, compress, review, phrase catalog, philosophy) | 12 | Unlicense / MIT |
+| this repository (`legacy/`: caveman, grug, ralph, compress, review, phrase catalog, philosophy) | 10 | Unlicense / MIT |
 | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) | 6 | MIT |
 | [mattpocock/skills](https://github.com/mattpocock/skills) — engineering, productivity, misc | 31 | MIT |
 | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) at v3.2.0 — the voice, the six work patterns | 13 | MIT |
@@ -85,6 +83,14 @@ including the anti-slop fork's own upstream, which was byte-identical to it.
 | [usestrix/strix](https://github.com/usestrix/strix) — coverage honesty and triage method | 4 of 9 | Apache-2.0 |
 | [mem0ai/mem0](https://github.com/mem0ai/mem0) — additive-integration discipline | 1 of 6 | Apache-2.0 |
 | [tt-a1i/archify](https://github.com/tt-a1i/archify) — diagram authoring judgement | 1 of 2 | MIT |
+| `Engineering-1.2.0-v1.zip` — Anthropic's engineering plugin, ten workflow skills | 10 | see the pack |
+| `Skill creator copy-v1.zip` — Anthropic's skill-creator, the authoring half | 1 of 1 | see the pack |
+
+The last two arrived as archives committed to this repository rather than as a remote, so
+they are pinned by the file's **sha256**: `sync` extracts the archive, records the digest in
+`upstream/PROVENANCE.json`, and the manifest pins that digest. Re-upload a version, get a new
+pin, and every declared edit is re-checked against the new bytes. Replacing an archive without
+re-running `sync` fails the build, because the digest no longer matches.
 
 "Of N" is a count of what was deliberately **not** merged, and every one of those
 skills is listed with its reason inside the skill, in `references/SOURCES.md`: Strix's
@@ -97,9 +103,13 @@ can vanish without warning) and `skills/deprecated/` (empty by policy). Neither 
 merged; `sources.json` says so on the record. `caveman` v3.2.0's nine
 Caveman-Cloud/plugin skills are not merged either, for the same reason: they install
 or talk to a service. There is no upstream repository for *be-brief* — searched
-2026-10-10, only unrelated `antislop-*` sampler repos exist — so its canonical text is
-this repository's own, and the brevity contract that would live in such a repo is
-carried from caveman v3.2.0.
+2026-10-10, only unrelated `antislop-*` sampler repos exist — its text was this
+repository's own, which is also why retiring it cost no provenance: on 2026-10-11 the
+register layer it argued for was retired to `legacy/`, because its deletion test, output
+contract and self-check had become the always-on rules, and its `lite/full/ultra` levels
+survive in `caveman-output` and the registers table. The one job still worth a procedure —
+summarising a long report or document — is `one-skill/written/document-summary.md`, written
+for this bundle in a professional register instead of a slang one.
 
 Four escapes let a merged skill stay honest, and all four fail the build when they go
 stale:
@@ -164,18 +174,22 @@ not what the rules cost when a task runs.
 | Output token savings | ~8–21% | structured coding/document tasks |
 | Input token savings | ~46% | after `caveman-compress` on a document |
 | Data loss | 0% | verified across all test runs |
-| Always loaded, per request | 2.4k words | `SKILL.md`, budgeted and enforced by `build.py`; the budget is what forced the prose out of it, not a rounding |
-| On demand | 87k words | eleven reference files, loaded one at a time |
-| Vendored skills | 69 routed, 21 excused | across eight sources, each recorded with a reason |
-| Tests | 48 | fidelity, links, budgets, determinism, published copies, the excuses themselves |
+| Always loaded, per request | 2394 / 2400 words | `SKILL.md`, budgeted and enforced by `build.py` (the builder's `split()` count, stricter than `wc -w`); the budget is what forced the prose out of it, not a rounding |
+| On demand | 90k words | eleven reference files, loaded one at a time |
+| Vendored skills | 78 routed, 34 recorded as dropped | across ten sources: 22 whole skills, 12 files, 8 vendoring records, each with a reason |
+| Tests | 54 | fidelity, links, budgets, determinism, published copies, the excuses themselves |
 
 Source: original caveman benchmarks plus independent replication (JetBrains,
-community tests). Notes: [`legacy/caveman-universal/docs/relationship-with-caveman.md`](legacy/caveman-universal/docs/relationship-with-caveman.md).
+community tests). These were measured on the standalone registers, not on this merged
+bundle, and they have not been re-run here — treat them as the claim the register rules
+were built to serve, not as a measurement of `one-skill`. Notes:
+[`legacy/caveman-universal/docs/relationship-with-caveman.md`](legacy/caveman-universal/docs/relationship-with-caveman.md).
 
 ## Relationship to upstream caveman
 
 Still a companion, not a replacement.
-[JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (v2.1) is a
+[JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (v3.2.0, the revision
+this bundle vendors) is a
 compression engine for tool output, logs and JSON, plus MCP via `npx caveman-shrink`.
 Use that for everyday coding; use this for writing, design judgment and process.
 

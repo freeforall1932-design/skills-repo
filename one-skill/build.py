@@ -253,10 +253,26 @@ class Manifest:
 # sync — vendor upstream sources into upstream/
 # --------------------------------------------------------------------------- #
 def resolve_checkout(src: dict) -> tuple[Path, str]:
-    """Local path for a source's files, cloning GitHub sources into .cache/."""
+    """Local path for a source's files, cloning GitHub sources into .cache/.
+
+    `kind: "zip"` is for a source with no git history at all: a pack uploaded into the
+    repository itself. Its revision is the archive's sha256, so re-uploading a new
+    version is a detectable change rather than a silent one."""
     origin = src.get("origin", {})
     if origin.get("kind") == "local":
         return REPO, git_rev(REPO)
+    if origin.get("kind") == "zip":
+        arc = REPO / origin["file"]
+        if not arc.exists():
+            die(f"{src['slug']}: committed archive {origin['file']} is missing")
+        rev = "sha256:" + hashlib.sha256(arc.read_bytes()).hexdigest()[:40]
+        dest = CACHE_DIR / src["slug"]
+        if dest.exists():
+            shutil.rmtree(dest)
+        dest.mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(arc) as z:
+            z.extractall(dest)
+        return dest, rev
     repo = origin["repo"]
     dest = CACHE_DIR / src["slug"]
     ref = origin.get("ref", "HEAD")
@@ -267,9 +283,27 @@ def resolve_checkout(src: dict) -> tuple[Path, str]:
         print(f"  cloning {repo} …")
         subprocess.run(["git", "clone", "--quiet", "--depth", "1",
                         f"https://github.com/{repo}.git", str(dest)], check=True)
-    if ref and ref != "HEAD":
-        subprocess.run(["git", "-C", str(dest), "fetch", "--quiet", "--depth", "1", "origin", ref], check=False)
-        subprocess.run(["git", "-C", str(dest), "checkout", "--quiet", ref], check=False)
+    if ref and ref not in ("HEAD", "vendor-with-sync"):
+        # A pinned revision has to be *the* revision. Fetching a short SHA fails
+        # against GitHub's default fetch, and the old code ignored that failure: the
+        # clone stayed on the default branch while the manifest claimed a pin, so
+        # `upstream/` quietly drifted from what the merge had been reviewed against.
+        if re.fullmatch(r"[0-9a-f]{7,39}", ref or ""):
+            die(f"{src['slug']}: origin.ref {ref!r} is a short SHA; pins must be the full "
+                "40-character revision (or a tag) so a failed fetch cannot pass as success")
+        got = subprocess.run(["git", "-C", str(dest), "fetch", "--quiet", "--depth", "1",
+                              "origin", ref], capture_output=True, text=True)
+        if got.returncode != 0:
+            die(f"{src['slug']}: cannot fetch pinned revision {ref} from {repo} — it was "
+                f"garbage-collected, mistyped, or never existed. `git -C {dest} log -1` "
+                "shows what is there now; re-check the value against the repository.")
+        subprocess.run(["git", "-C", str(dest), "checkout", "--quiet", "FETCH_HEAD"], check=True)
+        if re.fullmatch(r"[0-9a-f]{40}", ref):
+            head = git_rev(dest)
+            if head != ref:
+                die(f"{src['slug']}: checked out {head} but the manifest pins {ref}")
+    elif not ref or ref == "HEAD":
+        print(f"  note: {src['slug']} floats on the default branch (origin.ref: HEAD)")
     return dest, git_rev(dest)
 
 
@@ -312,6 +346,8 @@ def copy_entry(base: Path, rel: str, dest: Path, skip: set[str],
 
 def repo_hint(src: dict) -> str:
     origin = src.get("origin", {})
+    if origin.get("kind") == "zip":
+        return f"committed archive {origin['file']}"
     return origin.get("repo") or "this repository"
 
 
@@ -367,6 +403,10 @@ def cmd_sync(man: Manifest, only: str | None = None) -> dict:
     existing = {}
     if PROVENANCE.exists():
         existing = json.loads(read(PROVENANCE))
+    # a renamed slug used to leave its record behind, and the sources table would
+    # keep citing a revision for a source that no longer exists
+    slugs = {s["slug"] for s in man.sources} if hasattr(man, "sources") else set(prov)
+    existing = {k: v for k, v in existing.items() if k in slugs}
     existing.update(prov)
     write(PROVENANCE, json.dumps(existing, indent=2, sort_keys=True) + "\n")
     return existing
@@ -425,6 +465,32 @@ def validate_records(man: Manifest) -> None:
                     "who would need it")
             if isinstance(key, dict):
                 die(f"{src['slug']}: a cast-aside record needs 'skill', 'path' or 'what'")
+            # An excuse naming a file that is not vendored reads as a decision nobody
+            # made. This happened once: a retired skill's record cited a references/
+            # file the legacy tree never had, and only a human reading SOURCES.md
+            # noticed.
+            if x.get("path") and not (ROOT / x["path"]).exists():
+                die(f"{src['slug']}: {x['path']} is excused but not vendored — the file "
+                    "moved or was never included; fix the path or drop the record")
+
+
+def validate_pins(sources: list[dict]) -> None:
+    """A pinned revision has to be a revision. `sync` now fails closed when a fetch
+    misses, but a seven-character SHA looks like a pin while fetching nothing: the
+    clone stays on the default branch and `upstream/` drifts from what was reviewed.
+    Checked here, offline, so CI sees it without reaching the network."""
+    for src in sources:
+        origin = src.get("origin", {}) or {}
+        if origin.get("kind") == "zip":
+            digest = origin.get("ref") or ""
+            if not re.fullmatch(r"sha256:[0-9a-f]{40,64}", digest):
+                die(f"{src['slug']}: a zip source pins its archive by digest, not {digest!r} — "
+                    "run `build.py sync` and commit what it records")
+            continue
+        ref = origin.get("ref") or "HEAD"
+        if re.fullmatch(r"[0-9a-f]{7,39}", ref):
+            die(f"{src['slug']}: origin.ref {ref!r} is a short SHA; pin the full 40-character "
+                "revision or a tag, so a failed fetch cannot pass as success")
 
 
 def skill_name(src: dict, vendored: str) -> str | None:
@@ -558,6 +624,23 @@ def rewrite_links(text: str, base_dir: Path, mapping, mine: str = "") -> str:
         return f"[{label}](#{frag or anchor})"
 
     return LINK_RE.sub(repl, text)
+
+
+def mask_code_spans(text: str) -> str:
+    """Blank out fenced blocks and inline code. A link written inside a code span is an
+    *example* of a link, not a navigable one, and the provenance table quotes upstream
+    lines that contain plenty of them."""
+    out = re.sub(r"```.*?```", "", text, flags=re.S)
+    out = re.sub(r"``.+?``", "", out, flags=re.S)   # a span that quotes text containing backticks
+    return re.sub(r"`[^`\n]*`", "", out)
+
+
+def inline_code(text: str) -> str:
+    """A markdown code span that survives pipes and newlines, for table cells. A quoted
+    upstream line can contain both, and an unescaped `|` silently reflows the row of the
+    provenance table it was meant to keep honest."""
+    s = " ".join(text.split()).replace("|", "\\|")
+    return f"`` {s} ``" if "`" in s else f"`{s}`"
 
 
 def apply_replaces(text: str, sk: Skill) -> tuple[str, list[str]]:
@@ -749,7 +832,7 @@ def audit(registry: dict, out: Path) -> list[str]:
         # A link inside a code span is an *example* of a link, not one: SOURCES.md
         # quotes the exact text it replaced, so without this the audit blames the
         # record for the crime.
-        text = re.sub(r"`[^`\n]*`", "", re.sub(r"```.*?```", "", raw, flags=re.S))
+        text = mask_code_spans(raw)
         well_formed = {m.span() for m in re.finditer(r"\[[^\[\]]*\]\(", text)}
         covered = set()
         for start, _end in well_formed:
@@ -789,7 +872,8 @@ def assemble(man: Manifest, out: Path, family: dict | None = None) -> dict:
     """Build one skill tree. `family` is None for the unified bundle, or an entry
     from the manifest's `families` list, in which case exactly those buckets are
     assembled and the scope note says what was left behind."""
-    validate_records(man)          # before writing: a broken record must not be
+    validate_records(man)
+    validate_pins(man.sources)          # before writing: a broken record must not be
     if not family:                  # discoverable only in the output it produced
         problems = inventory(man)
         for msg in problems:
@@ -950,7 +1034,10 @@ def assemble(man: Manifest, out: Path, family: dict | None = None) -> dict:
     for src in man.sources:
         p = prov.get(src["slug"], {})
         origin = src.get("origin", {})
-        up = origin.get("repo") or "this repository"
+        if origin.get("kind") == "zip":
+            up = f"`{origin['file']}` (committed archive)"
+        else:
+            up = origin.get("repo") or "this repository"
         rows.append(f"| {src['title']} | `{up}` | `{(p.get('revision') or '')[:10]}` | {p.get('files', '—')} | {src.get('license', '')} |")
     rows += ["", "## What the merge changed", "",
              "Upstream text is carried verbatim except for:",
@@ -978,8 +1065,11 @@ def assemble(man: Manifest, out: Path, family: dict | None = None) -> dict:
             if s.dropped:
                 note = (note + " " if note else "") + f"Not carried: {', '.join(s.dropped)}."
             if s.edited:
-                note += " Literal edits recorded in `replace`: " + "; ".join(f"`{e}`" for e in s.edited) + "."
-            rows.append(f"| {s.title} | `{s.source_slug}/{s.id}` | {note} |")
+                note += (" Literal edits recorded in `replace`: "
+                         + "; ".join(inline_code(e) for e in s.edited) + ".")
+            label = (f"`{s.cfg['entry']}` — written for this bundle" if s.cfg.get("authored")
+                                else f"`{s.source_slug}/{s.id}`")
+            rows.append(f"| {s.title} | {label} | {note} |")
         rows.append("")
     cast = [s for s in man.sources if s.get("not_merged") or s.get("not_vendored") or s.get("not_routed")]
     if cast and not family:
@@ -998,15 +1088,22 @@ def assemble(man: Manifest, out: Path, family: dict | None = None) -> dict:
         rows.append("")
     write(out / "references" / "SOURCES.md", "\n".join(rows).rstrip() + "\n")
 
-    # upstream checksums, so a stale vendored file is detectable
+    # every byte the emitted text was made from, so a stale or hand-edited input is
+    # detectable later. `check` rebuilds from what is on disk, which means it cannot see
+    # a hand-edit inside `upstream/` by comparing mirrors alone: the edit would be baked
+    # into both sides of the diff. The recorded checksums are what catch it.
     lock = {"generated_by": "one-skill/build.py", "manifest_sha": sha256(read(MANIFEST_PATH)),
-            "skills": {}}
+            "skills": {}, "inputs": {}}
     for s in skills:
         lock["skills"][f"{s.source_slug}/{s.id}"] = {
             "entry": s.cfg["entry"],
             "sha": sha256(read(ROOT / s.cfg["entry"])),
             "bucket": s.cfg["bucket"],
         }
+        for doc in s.cfg.get("docs", []):
+            lock["inputs"][doc["path"]] = sha256(read(ROOT / doc["path"]))
+    for p in sorted((ROOT / "core").glob("*.md")):
+        lock["inputs"][f"core/{p.name}"] = sha256(read(p))
     write(out / "BUILD.json", json.dumps(lock, indent=2, sort_keys=True) + "\n")
 
     if family:
@@ -1159,6 +1256,19 @@ def cmd_check(man: Manifest) -> None:
     which may simply be absent reports success on an empty tree. That is exactly
     how this build once shipped a stale bundle, so the mirrors are the contract.
     The fragments are mirrors too: a stale fragment is as broken as a stale skill."""
+    lock_path = INSTALL_DIRS[0] / "BUILD.json"
+    if not lock_path.exists():
+        die(f"{lock_path.relative_to(REPO)} is missing — run `python one-skill/build.py install`")
+    lock = json.loads(read(lock_path))
+    drifted = [name for name, rec in sorted(lock["skills"].items())
+               if sha256(read(ROOT / rec["entry"])) != rec["sha"]]
+    drifted += [rel for rel, digest in sorted(lock.get("inputs", {}).items())
+                if sha256(read(ROOT / rel)) != digest]
+    if drifted:
+        die(f"the published mirrors were built from different bytes than the inputs on disk: "
+            f"{', '.join(drifted[:4])} — run `sync` to restore what upstream has, or `install` "
+            "if the change was deliberate")
+
     with tempfile.TemporaryDirectory() as td:
         base = Path(td)
         stats = build_all(man, base)

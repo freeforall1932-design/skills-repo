@@ -1,12 +1,13 @@
 # one-skill — the merge, and how to grow it
 
-One skill, built from sixty-nine others across eight sources. Nothing in
+One skill, built from seventy-eight others across ten sources. Nothing in
 `dist/skill/` is hand-written, so nothing in it has to be kept in sync by hand —
 including the three fragment fallbacks under `dist/families/`.
 
 ```
 one-skill/
 ├── sources.json      ★ the manifest: sources → skills → buckets. The only file to edit.
+├── written/            this bundle's own prose, for a job no upstream skill covers
 ├── build.py            sync · build · install · all · check
 ├── core/               the hand-written integration layer (the merge's judgement)
 │   ├── 00-open.md          what the layers are, the one line
@@ -59,12 +60,15 @@ Two halves, deliberately separated:
   hatches below. The `references/SOURCES.md` inside the skill lists exactly which
   sections lost what, and why.
 * **`core/` — judgement.** Six short files that decide *which* of those rule sets
-  governs *which* output. This is where grug, caveman, be-brief, antislop and
-  Pocock's skills are reconciled, because they genuinely contradict each other:
-  caveman says "drop articles, fragments OK", be-brief says "never broken grammar",
-  antislop says "liveliness is added", and Pocock says "ask before you build".
+  governs *which* output. This is where grug, caveman, the document register, antislop
+  and Pocock's skills are reconciled, because they genuinely contradict each other:
+  caveman says "drop articles, fragments OK", the document register says "never broken
+  grammar", antislop says "liveliness is added", and Pocock says "ask before you build".
   The resolution is **by destination**, never by averaging. See
-  `core/10-precedence.md`.
+  `core/10-precedence.md`. The document register is the one layer with no upstream: it
+  is this repository's own rule, written where be-brief's retired skill used to argue for
+  it, and `written/` is where such text belongs — labelled *written for this bundle* in
+  `SOURCES.md` rather than given a fake `slug/id`.
 
 Two escape hatches, both recorded in provenance, both fail-closed:
 
@@ -192,10 +196,23 @@ repository moves.
   worse than no `replace` at all: `SOURCES.md` would advertise an edit that never
   happened while the misleading sentence stayed in the skill.
 * **Add a bucket only for a new destination, and only for a big one.** Eleven buckets
-  for eight sources is already the point where a router has to be a table rather than a
+  for ten sources is already the point where a router has to be a table rather than a
   list. Archify's diagram method first got its own bucket and the cut removed it: 410
   words of reference material did not pay for a router row and a file, so it sits in
   `ui-craft` beside the filter that asks it the same question.
+* **A source does not need a remote.** `origin.kind: "zip"` with `origin.file:
+  Archive.zip` vendors from an archive committed to this repository, and pins it by
+  `sha256:` of the file (see the two Anthropic packs). Anything a merged skill cannot do —
+  register an MCP server, spawn a CLI, open a viewer — goes in `not_vendored` with a reason,
+  and the skill text keeps its conditional steps instead of gaining fake ones.
+* **Text this bundle writes goes in `written/`, not `upstream/`.** An entry with
+  `authored: true` is labelled *written for this bundle* in `SOURCES.md`, because a hand-written
+  file listed as `slug/id` would send a reader hunting for an upstream that never had it. It
+  lives outside the vendored tree so `sync` cannot mistake it for someone else's text.
+* **Pins must be full revisions.** `origin.ref` is a 40-character SHA or a tag; a short SHA is
+  rejected at build time, because fetching one fails silently and the clone floats to the default
+  branch while the manifest claims a reviewed revision. `origin.ref: "HEAD"` is the honest way to
+  float, and says so on every sync.
 * **Fragments are a projection, not a copy.** A family is a list of buckets in the
   manifest; `build.py` assembles each one with the same functions and the same verbatim
   rules. Never hand-edit `dist/families/` or `claude-skills/fragments/`: `check`
@@ -222,6 +239,9 @@ carried forward, and the pack generator is frozen there.
 `legacy/` holds the standalone skills this one replaces: the `caveman`,
 `be-brief`, `grug-reasoning`, `ralph-wiggum`, `caveman-compress` and
 `caveman-review` skill sets, their per-agent packs, the `caveman-universal`
-library and the `.skill` single-file engine. They are kept for reference and for
-`skillopt-integration/`, which still trains against those documents; they are no
+library and the `.skill` single-file engine. `be-brief` and the old `unified`
+self-description joined them on 2026-10-11: what they argued for is now the always-on
+layer, so keeping them routed meant saying it twice in two voices. They are kept for
+reference and for `skillopt-integration/`, which still trains against those documents
+(`configs/be-brief.yaml` trains the frozen file, not the published skill); they are no
 longer published install paths, and nothing new should be written into them.

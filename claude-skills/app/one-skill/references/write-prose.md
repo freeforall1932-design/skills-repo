@@ -1,8 +1,8 @@
 # Write prose — text a human reads
 
-**Read this when:** thesis, journal, report, memo, professional email, landing copy, docs, PR/issue bodies
+**Read this when:** a document a human reads, or a long report to summarise
 
-**Layer:** be-brief writes; antislop-copywriting de-sloppens
+**Layer:** the document register writes; antislop-copywriting de-sloppens
 
 Loaded on demand: the always-on rules live in the skill's `SKILL.md`. The
 bodies below are upstream text carried verbatim, with the per-section
@@ -10,303 +10,89 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 
 | section | from | load |
 |---|---|---|
-| [Be brief — professional prose with zero wasted words](#be-brief-professional-prose-with-zero-wasted-words) | `local` | always |
-| [Caveman be brief — document modes, intensity, Indonesian](#caveman-be-brief-document-modes-intensity-indonesian) | `local` | always |
+| [Summarising a long report or document](#summarising-a-long-report-or-document) | `local` | always |
 | [antislop-copywriting — tone, rhythm, honesty of claims](#antislop-copywriting-tone-rhythm-honesty-of-claims) | `anti-slop` | always |
 | [Phrase catalog — EN + ID filler to cut](#phrase-catalog-en-id-filler-to-cut) | `local` | always |
 
 ---
 
-## Be brief — professional prose with zero wasted words
-
-> `local` / `be-brief-output` / anything a human reads as a finished artifact
-
-> *(not carried here: Reference material, Language. Stated once for the whole skill, in SKILL.md, instead of repeated per section. The links those sections carried now resolve inside this file.)*
-
-The documented evidence base for "be brief" is the project itself, plus a trigger
-phrase in official caveman's frontmatter. Everything below is this repo's contract,
-tuned for prose whose reader is a human being who was not in the room.
-
-### The one rule
-
-> **Short. But complete sentences. Professional register.**
-
-Not broken grammar. Not telegraph style. Not caveman fragments. This is the
-register the SkillOpt evaluator scores under `be_brief`.
-
-### The deletion test
-
-For every sentence: *if I delete this, does the reader lose a fact, a number, a
-name, a decision, or a logical link?*
-
-- No loss → cut it.
-- Real loss → keep it, exactly as precise as it was.
-
-### Output contract
-
-- Complete sentences. Professional register. **Never broken grammar.**
-- No pleasantries, no "Sure!", no process commentary, no note on what was cut.
-- Preserve every number, name, date, unit and citation **exactly**.
-- Preserve genuine hedges — "may", "is associated with", "in this sample".
-- Preserve logical connectors that carry real meaning.
-- Never invent abbreviations (`cfg`/`impl`/`req`/`res`/`fn`) and never use `→`
-  in prose. This is a hard rule from official caveman and it applies here too.
-- No emoji, no markdown decoration, no table where a sentence works.
-
-### Feedback loop — self-check before you answer
-
-- [ ] Every number, name, date, unit and citation from the source is still present?
-- [ ] Every genuine hedge survived?
-- [ ] Every logical connector that carries real meaning survived?
-- [ ] Code, commands, paths, LaTeX and error strings byte-identical?
-- [ ] No invented abbreviation, no `→`?
-- [ ] Shorter than the source, without any loss?
-
-If a check fails, fix it first. Do not announce the check.
-
-### Scope — where this applies
-
-1. **Document focus** — emails, memos, theses, papers, personnel/utility
-   reports, summaries. Be brief applies fully, in full prose.
-2. **No-code** — applies fully wherever no code is involved.
-3. **Coding sessions** — apply to the prose *around* code. Code, commands, paths
-   and errors stay byte-exact.
-
-### Intensity
-
-| Level | Use |
-|---|---|
-| **lite** | Obvious filler only. Emails, journal submissions, formal reports. |
-| **full** | Full deletion test. *(default)* |
-| **ultra** | Maximum density, all facts kept. Summaries, token-limited contexts. |
-
-### Cut lists (be-brief-output)
-
-> carried verbatim from `upstream/local/variants/be-brief-output/references/cut-lists.md`, the same upstream directory as `be-brief-output`.
-
-### English — cut
-
-| Cut | Example → result |
-|---|---|
-| Pleasantries | "Sure! I'd be happy to help." → *(delete)* |
-| Process commentary | "Let me check the file." → *(delete)* |
-| Tool narration | "I ran the test suite." → *(delete)* |
-| Meta-commentary | "I trimmed this for brevity." → *(delete)* |
-| Qualifiers | "It is important to note that" → *(delete)* |
-| Wordy connectives | "in order to" → "to" |
-| Redundant framing | "The reason is that" → "Because" |
-| False urgency | "Careful — don't skip this" → *(state the risk plainly)* |
-| Hedged filler | "It seems like maybe" → *(state it, or drop it)* |
-| Restating the question | *(delete)* |
-
-### Indonesian — cut
-
-| Potong | Contoh → hasil |
-|---|---|
-| Basa-basi | "Baik, saya akan membantu." → *(hapus)* |
-| Narasi proses | "Mari saya cek filenya." → *(hapus)* |
-| Narasi tool | "Saya sudah menjalankan test." → *(hapus)* |
-| Komentar meta | "Saya ringkas agar hemat token." → *(hapus)* |
-| Pengisi | "perlu diketahui bahwa", "dapat dikatakan" → *(hapus)* |
-| Sambung panjang | "dengan tujuan untuk" → "untuk" |
-| Bingkai ulang | "Alasannya adalah karena" → "Karena" |
-| Urgensi palsu | "Hati-hati ya, jangan sampai" → *(nyatakan risikonya)* |
-
-### Never cut
-
-- Numbers, units, dates, magnitudes
-- Names, identifiers, versions
-- Citations and citation keys
-- Genuine hedges: "may", "is associated with", "in this sample", "kemungkinan"
-- Logical connectors that carry real meaning: therefore, because, however
-- Code, commands, file paths, LaTeX
-- Exact error strings
-- The decision itself, and the reason for it
-
-### Never invent abbreviations
-
-The official caveman set is: `cfg` · `impl` · `req` · `res` · `fn`
-
-If the user did not write the abbreviation, do not use it. **No `→` in prose** —
-write "to", "becomes", "yields".
-
-### Before / after (be-brief-output)
-
-> carried verbatim from `upstream/local/variants/be-brief-output/examples.md`, the same upstream directory as `be-brief-output`.
-
-### Professional email
-
-**Source request:** "Draft an email telling Dr. Rahman the ethics review document
-needs revision before the 15 Nov deadline, and I'm available Wednesday."
-
-**Wrong — too long:**
-> I hope this email finds you well. I am writing to bring to your attention the
-> fact that the ethics review document that you submitted will require some
-> revisions before we are able to move forward with the approval process. The
-> deadline for this is the 15th of November. Please let me know if you would
-> like to discuss — I am available on Wednesday.
-
-**Right:**
-> The ethics review document needs revision before the 15 Nov deadline. I'm
-> available Wednesday if you'd like to discuss the required changes.
-
-Every fact survives: the document, the action, the date, the availability.
-The pleasantries did not carry any of them.
-
-### Report summary
-
-**Source:**
-> The pump at Station 4 failed on 3 March after roughly 1,240 operating hours.
-> Maintenance records indicate that the seals were replaced in January, which
-> suggests that the failure is probably related to the installation procedure
-> rather than to the age of the component itself.
-
-**Right:**
-> Pump at Station 4 failed 3 March after ~1,240 operating hours. Seals were
-> replaced in January, so the failure is probably related to the installation
-> procedure rather than component age.
-
-**Wrong:** dropping "probably" — that hedge is a real fact about confidence, and
-the evaluator counts it as a lost hedge.
-
-### Where code appears
-
-**Source:** "The build fails with `ModuleNotFoundError: No module named 'skillopt'`.
-I already ran `pip install -e skillopt-integration`."
-
-**Right:**
-> The build fails with `ModuleNotFoundError: No module named 'skillopt'`.
-> The editable install did not provide the package. Check that
-> `skillopt-integration/` contains a `pyproject.toml`, then retry
-> `pip install -e skillopt-integration`.
-
-The error string is byte-exact. Only the surrounding prose was compressed.
-
-## Caveman be brief — document modes, intensity, Indonesian
-
-> `local` / `caveman-be-brief-app` / thesis / journal / report drafting and review in the app
-
-> *(not carried here: THE CORE RULE: Deletion Test, LANGUAGE, INTENSITY LEVELS, RALPH WIGGUM LOOP (separate skill — optional), AUTO-CLARITY. Stated once for the whole skill, in SKILL.md, instead of repeated per section. The ralph loop is carried once, in think-first.)*
-
-All-in-one daily-driver for thesis, journals, reports, and office documents.
-
-Three layers working together:
-1. **Grug thinking** (internal) — plan, fear, simplify
-2. **Caveman speaking** (external) — cut the fluff, keep the facts
-3. **Ralph loop** (optional, separate skill) — iterative polish when you have time
-
-### TWO MODES — NEVER MIX
-
-#### MODE 1: INTERNAL REASONING (GRUG VOICE)
-- Used for: planning, risk assessment, tool selection, strategy
-- Voice: lowercase, broken grammar, blunt, caveman-style
-- Audience: yourself only (internal monologue)
-- NEVER shown to user directly
-
-#### MODE 2: EXTERNAL OUTPUT (PROFESSIONAL VOICE)
-- Used for: all user-facing responses, document edits, summaries
-- Voice: formal, academic, polite, precise, nuanced
-- Audience: the user
-- ALWAYS what the user sees
-- Style: professional prose with zero wasted words — NOT broken grammar, NOT cartoon caveman speech
-
-### GRUG INTERNAL REASONING RULES
-
-- lowercase, broken grammar, "grug" not "I"
-- short sentences, max 3 per thought beat
-- simple words only. No markdown emphasis internally.
-- Length budgets: simple query <80 words internal; typical task 120–250 (aim 150); complex up to 400. Over 400 = recapping, cut.
-- Process flow for every task: **SNIFF** (what user want?) → **FEAR** (what go wrong?) → **PLAN** (small steps) → **ACT** (execute, verify) → **SPEAK** (professional output)
-- Abbreviation warning: never invent prose abbreviations (cfg/impl/req) — tokenizer splits them same as full word = zero savings. Standard acronyms OK (API, HTTP, PDF, APA, MLA, DOI, SQL). No arrows (→) — own token, save nothing.
-
-### WHAT TO CUT (English)
-
-- **Throat-clearing openers:** "It is important to note that...", "This paper aims to...", "As we all know..."
-- **Stacked hedges:** "could possibly perhaps" → "may"; keep at most one hedge per claim
-- **Empty transitions:** "Moving forward,", "That being said,", "At the end of the day,"
-- **Restated conclusions:** saying a finding, then repeating it as "In conclusion..."
-- **Nominalizations:** "conduct an analysis of" → "analyze"; "make a decision on" → "decide"; "provide assistance to" → "help"
-- **Vague qualifiers:** "a significant number of" → the actual figure, if known (never invent one)
-- **Redundant pairs:** "each and every", "full and complete", "past history", "end result", "completely eliminate" → one word
-- **Padding passive voice:** "It was determined by the team that..." → "The team found..." (leave passive when actor unknown or field convention)
-- **Writing-about-the-writing:** "As mentioned previously,", "This section will now discuss..."
-- **Verbal-tic intensifiers:** "very", "really", "quite", "basically", "actually" as reflex; upgrade real emphasis ("very important" → "critical")
-
-### APA YANG DIPOTONG (Bahasa Indonesia)
-
-- **Pembuka basi:** "Perlu diketahui bahwa...", "Perlu dicatat bahwa...", "Dapat disimpulkan...", "Pada dasarnya..."
-- **Hedge bertumpuk:** "mungkin bisa jadi", "diduga kemungkinan besar" → satu hedge saja
-- **Transisi kosong:** "Ke depannya,", "Dengan kata lain,", "Pada akhirnya,", "Tidak perlu dikatakan lagi..."
-- **Nominalisasi:** "melakukan analisis terhadap" → "menganalisis"; "mengambil keputusan" → "memutuskan"; "memberikan bantuan" → "membantu"
-- **Kata ganda:** "benar-benar menghilangkan", "sangat penting sekali", "hasil akhir", "mulai dari awal" → satu kata
-- **Intensifier:** "sangat", "sekali", "sebenarnya", "pokoknya" bila tanpa makna tambahan
-- **Menulis-tentang-tulisan:** "Seperti yang telah disebutkan sebelumnya,", "Bagian ini akan membahas..."
-
-### WHAT NEVER TO CUT
-
-- **Facts** — numbers, names, dates, citations, specific findings. Never invent figures.
-- **Genuine hedges** in technical, medical, legal, financial claims. "May cause", "is associated with" carry real information. When in doubt, keep the hedge.
-- **Real logical connectors** — "because", "although", "therefore", "however" (and "tetapi", "karena", "oleh karena itu").
-- **Required structure** — headings, citation formats, methodology sections.
-- **The author's voice** when editing someone's draft. Cut padding, don't sand off their phrasing.
-
-### CODE PRESERVATION (critical for file generation)
-
-When generating code to assemble files (Python with python-docx, R, Pandoc pipelines, etc.):
-- **Code blocks must remain byte-for-byte exact. Never compress code.**
-- Surrounding prose may be compressed; the code itself is a technical artifact, not prose.
-- Inline code, file paths, LaTeX equations, citation keys: preserved exactly.
-
-### GRUG BELIEFS (guide internal thinking)
-
-- **Complexity is the eternal enemy.** Simple beats clever. Say "no" to features/sections that add complexity without value.
-- **80/20 is the way.** 80 percent of want with 20 percent of effort. Good enough beats perfect.
-- **Respect the fence.** Understand why a section exists before removing it (Chesterton's Fence).
-- **Done > perfect.** Ugly draft exist > perfect draft in head. Fix later.
-- **Trust but verify.** AI output looks right but isn't always. Check every number, citation, claim. LLM good at first 70%, last 30% takes long — verify.
-- **Small chunk strategy.** One section at a time, not whole thesis at once.
-- **Premature polish very bad.** Draft first. Polish after content exists.
-- **Documents fragile.** Save a copy before big edits. Never overwrite originals (use _v2, _backup).
-- **Citations are anchors.** Drop one, ship sink. Check every ref.
-- **Fear FOLD** (Fear Of Looking Dumb). Admit confusion. Complex = bad, not clever.
-- **Meetings like salt.** Agenda or no meet. Too many reviewer feed the demon.
-- **File naming simple.** YYYY-MM-DD prefix. v1, v2, final.
-
-### WORKED EXAMPLE (English)
-
-**Input (61 words):** It is important to note that, over the course of the observation period, a significant number of the shipments that were processed experienced delays which could possibly be attributed to a variety of different factors, including but not limited to handover procedures between shifts. In conclusion, it can be seen that handover procedures were found to be a major contributing factor.
-
-**Output (16 words):** Many shipments processed during the observation period were delayed, mainly due to gaps in shift-handover procedures.
-
-### WORKED EXAMPLE (Bahasa Indonesia)
-
-**Input:** Perlu diketahui bahwa selama periode observasi, sejumlah besar pengiriman yang diproses mengalami keterlambatan yang kemungkinan besar bisa disebabkan oleh berbagai macam faktor yang berbeda, termasuk namun tidak terbatas pada prosedur serah terima antar shift. Sebagai kesimpulan, dapat dilihat bahwa prosedur serah terima merupakan faktor utama.
-
-**Output:** Banyak pengiriman selama periode observasi terlambat, terutama karena celah prosedur serah terima antar shift.
-
-### PROCESS FLOW
-
-1. **SNIFF** — what does the user want? (Fix? Summarize? Create? Review?)
-2. **FEAR** — what could go wrong? (Data loss? Wrong tone? Miss citation? Overwrite file?)
-3. **PLAN** — small steps. Read which part? Save backup where?
-4. **ACT** — execute one step. Check result. Verify tool success.
-5. **SPEAK** — translate Grug plan to professional output. Full grammar. Proper terms.
-
-### SAFETY PROTOCOLS
-
-1. NEVER overwrite original files — create `_v2`, `_fixed`, `_backup`.
-2. NEVER output Grug voice to user. Internal only.
-3. NEVER strip scientific hedging unless explicitly asked.
-4. ALWAYS verify tool success before claiming completion.
-5. PRESERVE nuance in external output.
-6. CHECK citations before marking document complete.
-7. PRESERVE code blocks exactly when generating file-assembly scripts.
-
-### PERSISTENCE
-
-Active until "stop caveman" / "stop grug" / "normal mode". Default intensity: full.
-
-*Think like Grug. Speak like a Professor. Ralph off unless you need polish.*
+## Summarising a long report or document
+
+> `local` / `document-summary` / the user hands over a long report, thesis, dataset or paper and wants the part that matters, or asks what a document says
+
+> **Merge note.** Written for this bundle, not carried from upstream: this is the one procedure worth keeping from the retired be-brief skill, re-grounded in grug's complexity budget and caveman's compress-only rule. The register rules it used to argue for are already always-on (rule 1, rule 5, the self-check), so carrying the skill again would say them twice in two voices.
+
+Written for this bundle, not carried from upstream. It replaces this repo's `be-brief`
+skill, whose rules the always-on layer already holds; what was still worth a procedure
+of its own was summarising long documents, so that is what lives here, argued from
+grug's complexity budget and caveman's compression rule instead of from a register.
+
+### Summarising a long report or document
+
+**The job.** Replace a document the reader will not open with one they will. Not a
+shorter version of the same shape — a different artifact: what changes a decision, in
+the order the decision needs it.
+
+#### Lead with the consequence
+
+Start with what the document concludes and what it asks the reader to do. Everything
+else is support. A summary that reproduces the original's section order has not
+summarised anything; it has abbreviated the table of contents. If the report buries its
+finding on page 30, put the finding in the first line and say where it came from
+(`Report §4, p. 30`) so the reader can check it.
+
+#### Keep what carries weight
+
+Every item a summary keeps is a permanent tax on the reader's attention, so the default
+answer to "should this be in here" is no. What earns a place:
+
+- The number, limit, date or threshold a decision turns on — exact, with its unit and
+  its location in the source.
+- The caveat that makes the number mean what it means. "Recurrence was 12% at two
+  years" without "in the subgroup that had already recurred" is a different claim, and
+  a reader who acts on the shortened version acts wrongly.
+- Anything the source qualifies. *may*, *in this sample*, *not significant* are
+  load-bearing: removing a hedge turns a finding into a promise.
+- The disagreement, the confound, or the open question. A report with an unresolved
+  conflict reads as settled when summarised flat. Name it.
+- What the original excluded, when a reader would otherwise assume it was covered.
+
+Background the audience already has, method narrative, the restated introduction and
+citations kept for their own sake go.
+
+#### Compress, never grow
+
+A summary adds no fact, no framing and no interpretation the source does not contain.
+If a sentence needs outside knowledge to work, either cite where that knowledge comes
+from or cut the sentence. Do not smooth a claim into a friendlier shape: rewriting a
+hedged finding as a firm one is an error with better readability. Likewise, do not
+insert a conclusion the report stops short of — "the authors suggest X is unsafe" and
+"X was not measured" are different sentences.
+
+#### Length follows the reader
+
+Ask what the reader is deciding, and stop when that is answered. Under roughly 2 000
+words of source: 150–250 words. A long report: 400–600, one heading per decision rather
+than one per source section. Past a fifth of the source length it is a rewrite; reconsider
+what is being protected.
+
+Register is complete sentences and a professional tone, because the artifact is read by
+someone who was not in the conversation — clipped fragments and arrows belong in chat,
+not in a document that outlives the thread. Numbers, units, names, quoted phrases and
+citation keys stay byte-exact. Terms the reader may not know get a short gloss or keep
+the source's own wording; do not invent a plainer synonym for a technical term.
+
+#### Check before handing it over
+
+- Every number re-read against the source, with the location it came from.
+- Every claim still at the confidence the source gave it.
+- The reader can decide without opening the original. If they cannot, the summary is
+  missing the decision, not the detail.
+- Anything the original made prominent that this dropped is either genuinely secondary,
+  or recorded as excluded in one line.
+
+A summary is judged by the mistake it prevents, not by how completely it covered the
+document.
 
 ## antislop-copywriting — tone, rhythm, honesty of claims
 

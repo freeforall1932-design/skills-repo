@@ -515,9 +515,23 @@ def test_a_replace_that_matches_nothing_fails_the_build():
 def test_every_source_records_its_origin_not_the_fork():
     """The user's rule: vendor the origin at its latest commit, not the personal
     fork, so the bundle tracks upstream instead of a snapshot of someone's sync."""
+    import hashlib
+    prov = json.loads((ONE_SKILL / "upstream" / "PROVENANCE.json").read_text())
     for src in manifest_data()["sources"]:
         origin = src.get("origin", {})
         if origin.get("kind") == "local":
+            continue
+        if origin.get("kind") == "zip":
+            # Two packs arrived as archives committed to this repository instead of a
+            # remote. They cannot point at a fork, but they can go stale: the pin is the
+            # digest of the file, so re-check it against the artifact that is here.
+            archive = REPO / origin["file"]
+            assert archive.exists(), src["slug"] + ": " + origin["file"] + " is not in the repository"
+            digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+            assert prov[src["slug"]]["revision"] == "sha256:" + digest[:40], (
+                src["slug"] + ": the archive was rewritten and PROVENANCE.json pins the old digest "
+                "— run `build.py sync` and commit both")
+            assert origin["ref"] == prov[src["slug"]]["revision"], src["slug"] + ": manifest pin != synced pin"
             continue
         repo = origin["repo"]
         assert not repo.startswith("freeforall1932-design/"), f"{src['slug']} still points at a fork"
@@ -539,7 +553,7 @@ def test_a_fragment_leads_to_nothing_missing(fam):
     have = {p.name for p in root.rglob("*.md")}
     dangling = []
     for p in sorted(root.rglob("*.md")):
-        text = re.sub(r"`[^`\n]*`", "", re.sub(r"```.*?```", "", b.read(p), flags=re.S))
+        text = b.mask_code_spans(b.read(p))
         for tgt in LINK_TGT.findall(text):
             head = tgt.split("#")[0]
             if not head:
@@ -577,3 +591,116 @@ def test_every_source_declares_what_it_discover():
         assert "discover" in src, f"{src['slug']} declares no discover (empty is fine, absent is not)"
         for rel in src["discover"]:
             assert (REPO / rel).exists() or not rel.startswith("legacy/"), rel
+
+
+# ------------------------------------------------- what the merge dropped, and what proves it
+
+def test_a_retired_register_leaves_no_live_pointer():
+    """be-brief and the old `unified` self-description live in `legacy/` now. Prose that
+    *narrates* the retirement belongs in origins/SOURCES; a table or instruction that still
+    sends the reader to a skill this bundle does not ship is a broken pointer, so those
+    spellings may only appear in the two files that explain the decision. The fragments are
+    included on purpose: a family is read alone, so a stale pointer there has no neighbour
+    file to correct it."""
+    narrating = {"origins.md", "SOURCES.md"}
+    stale = ("be-brief-output", "caveman-be-brief", "be-brief writes", "be-brief formality")
+    roots = [REPO / "claude-skills" / "app" / "one-skill"]
+    roots += sorted((REPO / "claude-skills" / "fragments").glob("one-skill-*"))
+    roots = [r for r in roots if r.exists()]
+    assert len(roots) == 1 + len(manifest_data().get("families", [])), "a published tree is missing"
+    for root in roots:
+        assert "be-brief" not in (root / "SKILL.md").read_text(), root / "SKILL.md"
+        for path in sorted(root.rglob("*.md")):
+            if path.name in narrating:
+                continue
+            # A line the builder wrote *about* what it dropped is the ledger, not an
+            # instruction: "not carried here: THE CAVEMAN-BE-BRIEF SECTION" has to name the
+            # dead skill or the record would be useless. Live prose is what must stay clean.
+            text = "\n".join(l for l in path.read_text().splitlines()
+                             if not l.lstrip().startswith(">"))
+            for needle in stale:
+                assert needle not in text, f"{path.name} still points at the retired register: {needle!r}"
+
+
+def test_an_excuse_must_name_a_file_that_is_vendored():
+    """A `not_routed` record for a path that was never vendored reads as a decision that
+    was made. It happened: a retired skill's record cited a references/ file its legacy
+    tree never had, and only a human reading SOURCES.md noticed."""
+    def invent(data):
+        loc = next(s for s in data["sources"] if s["slug"] == "local")
+        loc["not_routed"].append({"path": "upstream/local/variants/be-brief-output/references/audit.md",
+                                  "reason": "does not exist, which is the point"})
+    man = _mutated(invent)
+    with pytest.raises(SystemExit, match="is excused but not vendored"):
+        _build(man)
+
+
+def test_a_pinned_revision_cannot_be_a_short_sha():
+    """`sync` fetches the pin, and a short SHA is fetched by nobody: the clone silently
+    keeps the default branch while the manifest claims a reviewed revision."""
+    def shorten(data):
+        cav = next(s for s in data["sources"] if s["slug"] == "caveman")
+        cav["origin"]["ref"] = "2e08b91"
+    man = _mutated(shorten)
+    with pytest.raises(SystemExit, match="short SHA"):
+        _build(man)
+
+
+def test_an_authored_section_is_not_labelled_as_upstream():
+    """The document-summary rule is this bundle's own writing. SOURCES.md has to say so,
+    or a reader audits a hand-written file looking for upstream text it never had."""
+    sources = (REPO / "claude-skills" / "app" / "one-skill" / "references" / "SOURCES.md").read_text()
+    assert "written/document-summary.md` — written for this bundle" in sources
+    assert "local/document-summary" not in sources, "authored content is labelled as a vendored slug"
+    loc = next(s for s in manifest_data()["sources"] if s["slug"] == "local")
+    entry = next(e for e in loc["skills"] if e["id"] == "document-summary")
+    assert entry["authored"] and not entry["entry"].startswith("upstream/"), (
+        "authored text has to live outside the vendored tree, or `sync` treats it as upstream's")
+
+
+def test_the_two_uploaded_packs_are_fully_accounted():
+    """Ten engineering skills and one authoring skill: both packs are small enough that
+    'we merged what mattered' has to mean all of it, or the leftovers are on the record."""
+    data = manifest_data()
+    eng = next(s for s in data["sources"] if s["slug"] == "engineering-plugin")
+    assert len(eng["skills"]) == 10
+    for name in ("architecture", "system-design", "debug", "testing-strategy", "tech-debt",
+                 "code-review", "deploy-checklist", "incident-response", "standup", "documentation"):
+        assert any(e["entry"].endswith("/" + name + "/SKILL.md") for e in eng["skills"]), name
+        assert (ONE_SKILL / "upstream" / "engineering-plugin" / "skills" / name / "SKILL.md").exists()
+    skill_md = (REPO / "claude-skills" / "app" / "one-skill" / "SKILL.md").read_text()
+    for e in eng["skills"]:
+        # none of them are disable-model-invocation procedures upstream, so none of
+        # them belong in the table of things a user types
+        assert e.get("command") is not True, e["id"] + " is offered as a named command"
+        assert "`/" + e["id"] + "`" not in skill_md, e["id"] + " appears in the command table"
+    creator = next(s for s in data["sources"] if s["slug"] == "skill-creator")
+    assert [e["id"] for e in creator["skills"]] == ["skill-authoring"]
+    assert creator["skills"][0]["keep_sections"], "the authoring skill ships its whole harness"
+    joined = json.dumps(creator["not_vendored"])
+    for part in ("run_eval.py", "package_skill.py", "eval-viewer", "quick_validate.py"):
+        assert part in joined, part + " is in the pack and unaccounted for"
+
+
+def test_the_published_lock_covers_every_input():
+    """`check` compares a rebuild against the mirrors, so a hand-edit inside `upstream/`
+    would land on both sides of the diff. `BUILD.json` records the checksum of every entry,
+    sibling doc and core file the published text was made from, which is what makes the
+    edit visible — and it has to cover all of them, or the gap is where rot lives."""
+    routed = sum(len(s.get("skills", [])) for s in manifest_data()["sources"])
+    for mirror in MIRRORS:
+        lock = json.loads((mirror / "BUILD.json").read_text())
+        assert len(lock["skills"]) == routed, "the lock is not per routed skill"
+        for name, rec in lock["skills"].items():
+            assert b.sha256(b.read(ONE_SKILL / rec["entry"])) == rec["sha"], name
+            assert name.split("/")[0] in {s["slug"] for s in manifest_data()["sources"]}, name
+        assert lock["manifest_sha"] == b.sha256(b.read(ONE_SKILL / "sources.json"))
+        # two skills may cite the same sibling doc, and the lock keys by path
+        want = {d["path"] for s in manifest_data()["sources"] for e in s.get("skills", [])
+                for d in e.get("docs", [])}
+        want |= {f"core/{p.name}" for p in (ONE_SKILL / "core").glob("*.md")}
+        assert set(lock["inputs"]) == want, (
+            "the lock's inputs and the manifest's inputs disagree: "
+            f"only in the lock {sorted(set(lock['inputs']) - want)[:3]}, "
+            f"only in the manifest {sorted(want - set(lock['inputs']))[:3]} — a new kind of "
+            "input has to be checksummed too")

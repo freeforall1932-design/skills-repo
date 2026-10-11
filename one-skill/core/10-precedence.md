@@ -10,20 +10,21 @@ is carried verbatim in [references/origins.md](references/origins.md).
 
 | The text is going to… | Governs it | Does not govern it |
 |---|---|---|
-| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | be-brief formality |
-| a human reading a finished artifact: thesis, report, memo, email, docs | **be-brief** — full grammar, professional register, zero waste | caveman fragments |
-| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of be-brief | either register's habits, if they read as AI |
+| a developer reading a chat reply | **caveman** — terse, fragments allowed, articles dropped when cheap | document-register formality |
+| a human reading a finished artifact: thesis, report, memo, email, docs | **document register** — full grammar, professional register, zero waste | caveman fragments |
+| product UI copy: headline, CTA, value proposition | **antislop-copywriting** on top of the document register | either register's habits, if they read as AI |
 | an interface: layout, colour, components, motion | **antislop** R-rules + `ui-craft` | every prose rule |
 | a phone screen, or a person with other eyes and hands | **antislop-human + antislop-layoutmobile** | desktop-first convenience |
-| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | all four prose layers |
+| code, commands, paths, error strings, LaTeX, citation keys | **nobody** — byte-for-byte exact | every prose layer |
 | a code comment | **antislop-code** | prose compression, ever |
-| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, be-brief for the sentences | caveman terseness: a later human reads these |
+| a spec, ticket, PR body, review, ADR, glossary | **pocock's process skill** for shape, the document register for the sentences | caveman terseness: a later human reads these |
 | the model's own plan, fear and trade-off list | **grug** — lowercase, blunt, ungrammatical | the user, ever |
 
 ## Rulings
 
-1. **caveman vs be-brief** — the hard one. Both are right about their reader: a
-   produce goes to one place, a pure register beats this blend.
+1. **caveman vs the document register** — both are right about their reader, so
+   decide by destination: one layer owns the text. A half-terse document is neither
+   professional nor brief.
 2. **Ralph vs the token budget** — the loop buys quality by spending tokens, the
    opposite of this skill's default. Off. Only on `ralph on`, never inside a deadline.
 3. **R-23 (ask before creating any asset) vs "stop narrating, just act"** — R-23
