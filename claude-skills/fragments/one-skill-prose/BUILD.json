@@ -1,0 +1,153 @@
+{
+  "generated_by": "one-skill/build.py",
+  "inputs": {
+    "core/00-open.md": "7b1d2c93fde0",
+    "core/10-precedence.md": "437d7b3853ee",
+    "core/20-always-on.md": "c6b57ce4c5e5",
+    "core/30-router.md": "4dacffcdfaa1",
+    "core/40-commands.md": "dbc02fa2fc79",
+    "core/50-sources.md": "17a20c306953",
+    "upstream/local/philosophy/be-brief.md": "8aeb885ccd64",
+    "upstream/local/philosophy/caveman.md": "703640ea2ff2",
+    "upstream/local/philosophy/grug.md": "fb285e757bd7",
+    "upstream/local/philosophy/sources.md": "60703feab5f2",
+    "upstream/local/variants/caveman-output/examples.md": "670b0419bfac",
+    "upstream/local/variants/caveman-output/references/cut-lists.md": "59afad1800ca",
+    "upstream/local/variants/caveman-output/references/work-patterns.md": "a36688158cf1",
+    "upstream/local/variants/grug-reasoning/examples.md": "611591c2ca30",
+    "upstream/local/variants/grug-reasoning/references/grug-canon.md": "db1d115a3495",
+    "upstream/mattpocock-skills/productivity/teach/GLOSSARY-FORMAT.md": "9b99859ec284",
+    "upstream/mattpocock-skills/productivity/teach/LEARNING-RECORD-FORMAT.md": "701fa34b6748",
+    "upstream/mattpocock-skills/productivity/teach/MISSION-FORMAT.md": "8cacbb3c0644",
+    "upstream/mattpocock-skills/productivity/teach/RESOURCES-FORMAT.md": "e9cacf34026e",
+    "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c"
+  },
+  "manifest_sha": "0b2637327630",
+  "skills": {
+    "anti-slop/antislop-copywriting": {
+      "bucket": "write-prose",
+      "entry": "upstream/anti-slop/antislop-copywriting.md",
+      "sha": "2434a6fb0603"
+    },
+    "caveman/caveman-compress-upstream": {
+      "bucket": "terse-chat",
+      "entry": "upstream/caveman/skills/caveman-compress/SKILL.md",
+      "sha": "377b0b8682d9"
+    },
+    "caveman/caveman-voice": {
+      "bucket": "terse-chat",
+      "entry": "upstream/caveman/skills/caveman/SKILL.md",
+      "sha": "415d43518f2b"
+    },
+    "caveman/ultracave": {
+      "bucket": "terse-chat",
+      "entry": "upstream/caveman/skills/ultracave/SKILL.md",
+      "sha": "a8da5b0b3501"
+    },
+    "engineering-plugin/eng-documentation": {
+      "bucket": "teach-and-author",
+      "entry": "upstream/engineering-plugin/skills/documentation/SKILL.md",
+      "sha": "1d469418f786"
+    },
+    "grug/grug-canonical": {
+      "bucket": "origins",
+      "entry": "upstream/grug/index.md",
+      "sha": "7c6e1ce4be4c"
+    },
+    "local/caveman-compress": {
+      "bucket": "terse-chat",
+      "entry": "upstream/local/app/caveman-compress.md",
+      "sha": "658c92bd24cb"
+    },
+    "local/caveman-output": {
+      "bucket": "terse-chat",
+      "entry": "upstream/local/variants/caveman-output/SKILL.md",
+      "sha": "0bbf33835c3c"
+    },
+    "local/caveman-review": {
+      "bucket": "terse-chat",
+      "entry": "upstream/local/app/caveman-review.md",
+      "sha": "d1976f2b4246"
+    },
+    "local/document-summary": {
+      "bucket": "write-prose",
+      "entry": "written/document-summary.md",
+      "sha": "eb206d2d81c4"
+    },
+    "local/grug-engine": {
+      "bucket": "think-first",
+      "entry": "upstream/local/app/grug-reasoning.md",
+      "sha": "c6df362e0ff9"
+    },
+    "local/grug-reasoning": {
+      "bucket": "think-first",
+      "entry": "upstream/local/variants/grug-reasoning/SKILL.md",
+      "sha": "7efcc1bbd5b8"
+    },
+    "local/micro-mode": {
+      "bucket": "terse-chat",
+      "entry": "upstream/local/universal/micro.md",
+      "sha": "81d615d09636"
+    },
+    "local/philosophies": {
+      "bucket": "origins",
+      "entry": "upstream/local/philosophy/conflicts.md",
+      "sha": "3e4773c2c895"
+    },
+    "local/phrase-catalog": {
+      "bucket": "write-prose",
+      "entry": "upstream/local/universal/references/patterns.md",
+      "sha": "4166c58272f7"
+    },
+    "local/ralph-wiggum": {
+      "bucket": "think-first",
+      "entry": "upstream/local/app/ralph-wiggum.md",
+      "sha": "4f084765852b"
+    },
+    "mattpocock-skills/grill-me": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/grill-me/SKILL.md",
+      "sha": "caaf8b8de168"
+    },
+    "mattpocock-skills/grill-with-docs": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/engineering/grill-with-docs/SKILL.md",
+      "sha": "7de372c13488"
+    },
+    "mattpocock-skills/grilling": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/grilling/SKILL.md",
+      "sha": "befdff1e27a1"
+    },
+    "mattpocock-skills/handoff": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/handoff/SKILL.md",
+      "sha": "4cbb043950da"
+    },
+    "mattpocock-skills/teach": {
+      "bucket": "teach-and-author",
+      "entry": "upstream/mattpocock-skills/productivity/teach/SKILL.md",
+      "sha": "550482c2d674"
+    },
+    "mattpocock-skills/to-questionnaire": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/to-questionnaire/SKILL.md",
+      "sha": "b5eb929842ee"
+    },
+    "mattpocock-skills/wait-what": {
+      "bucket": "terse-chat",
+      "entry": "upstream/mattpocock-skills/productivity/wait-what/SKILL.md",
+      "sha": "d961bb37defd"
+    },
+    "mattpocock-skills/writing-for-agents": {
+      "bucket": "teach-and-author",
+      "entry": "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL.md",
+      "sha": "551adca94222"
+    },
+    "skill-creator/skill-authoring": {
+      "bucket": "teach-and-author",
+      "entry": "upstream/skill-creator/skills/skill-creator-copy/SKILL.md",
+      "sha": "0e6203921155"
+    }
+  }
+}

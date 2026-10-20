@@ -1,0 +1,39 @@
+{
+  "generated_by": "one-skill/build.py",
+  "inputs": {
+    "core/00-open.md": "7b1d2c93fde0",
+    "core/10-precedence.md": "437d7b3853ee",
+    "core/20-always-on.md": "c6b57ce4c5e5",
+    "core/30-router.md": "4dacffcdfaa1",
+    "core/40-commands.md": "dbc02fa2fc79",
+    "core/50-sources.md": "17a20c306953"
+  },
+  "manifest_sha": "0b2637327630",
+  "skills": {
+    "anti-slop/antislop-core": {
+      "bucket": "ui-craft",
+      "entry": "upstream/anti-slop/antislop.md",
+      "sha": "64a1ff70bafb"
+    },
+    "anti-slop/antislop-human": {
+      "bucket": "responsive-access",
+      "entry": "upstream/anti-slop/antislop-human.md",
+      "sha": "5bc7c8e56cc7"
+    },
+    "anti-slop/antislop-layoutmobile": {
+      "bucket": "responsive-access",
+      "entry": "upstream/anti-slop/antislop-layoutmobile.md",
+      "sha": "8613395a5109"
+    },
+    "anti-slop/antislop-ui": {
+      "bucket": "ui-craft",
+      "entry": "upstream/anti-slop/antislop-ui.md",
+      "sha": "47d989277125"
+    },
+    "archify/archify-method": {
+      "bucket": "ui-craft",
+      "entry": "upstream/archify/archify/SKILL.md",
+      "sha": "cf348309c535"
+    }
+  }
+}

@@ -1,0 +1,314 @@
+{
+  "generated_by": "one-skill/build.py",
+  "inputs": {
+    "core/00-open.md": "7b1d2c93fde0",
+    "core/10-precedence.md": "437d7b3853ee",
+    "core/20-always-on.md": "c6b57ce4c5e5",
+    "core/30-router.md": "4dacffcdfaa1",
+    "core/40-commands.md": "dbc02fa2fc79",
+    "core/50-sources.md": "17a20c306953",
+    "upstream/local/variants/grug-reasoning/examples.md": "611591c2ca30",
+    "upstream/local/variants/grug-reasoning/references/grug-canon.md": "db1d115a3495",
+    "upstream/mattpocock-skills/engineering/ask-matt/PHASE-BOUNDARIES.md": "a8aa20158609",
+    "upstream/mattpocock-skills/engineering/codebase-design/DEEPENING.md": "f3dd099ce992",
+    "upstream/mattpocock-skills/engineering/codebase-design/DESIGN-IT-TWICE.md": "52b52e75655a",
+    "upstream/mattpocock-skills/engineering/domain-modeling/ADR-FORMAT.md": "944c92aa790e",
+    "upstream/mattpocock-skills/engineering/domain-modeling/GLOSSARY-FORMAT.md": "21dcc40cdec8",
+    "upstream/mattpocock-skills/engineering/improve-codebase-architecture/HTML-REPORT.md": "581e8bb5a521",
+    "upstream/mattpocock-skills/engineering/pr/CREDITS.md": "a7a087127665",
+    "upstream/mattpocock-skills/engineering/prototype/LOGIC.md": "f61c7d249e78",
+    "upstream/mattpocock-skills/engineering/prototype/UI.md": "723211e878ac",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/domain.md": "593a70422186",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-github.md": "f0653fe106dd",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-gitlab.md": "591a9e705738",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-local.md": "7dcda20a2eb4",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/triage-labels.md": "ae512af838c7",
+    "upstream/mattpocock-skills/engineering/tdd/mocking.md": "3ceb807fdf4a",
+    "upstream/mattpocock-skills/engineering/tdd/tests.md": "859f9e592c18",
+    "upstream/mattpocock-skills/engineering/triage/AGENT-BRIEF.md": "7f5f87fed303",
+    "upstream/mattpocock-skills/engineering/triage/OUT-OF-SCOPE.md": "1fbf9b432130"
+  },
+  "manifest_sha": "0b2637327630",
+  "skills": {
+    "anti-slop/antislop-code": {
+      "bucket": "code-craft",
+      "entry": "upstream/anti-slop/antislop-code.md",
+      "sha": "004933009d35"
+    },
+    "caveman/cavecrew": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/cavecrew/SKILL.md",
+      "sha": "534c0a70d4c7"
+    },
+    "caveman/caveman-commit": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/caveman/skills/caveman-commit/SKILL.md",
+      "sha": "c788a282fc75"
+    },
+    "caveman/caveman-explore": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/caveman-explore/SKILL.md",
+      "sha": "908f504ce45f"
+    },
+    "caveman/caveman-review-code": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/caveman-review/SKILL.md",
+      "sha": "599330563f19"
+    },
+    "caveman/investigate-first": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/investigate-first/SKILL.md",
+      "sha": "7cc19dd2fc45"
+    },
+    "caveman/lean-build": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/lean-build/SKILL.md",
+      "sha": "4d498073c631"
+    },
+    "caveman/migration": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/migration/SKILL.md",
+      "sha": "fe7cf96a58b0"
+    },
+    "caveman/safe-refactor": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/safe-refactor/SKILL.md",
+      "sha": "cd52867aba26"
+    },
+    "caveman/surgical-patch": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/surgical-patch/SKILL.md",
+      "sha": "81ea9f7b5140"
+    },
+    "caveman/verify-and-stop": {
+      "bucket": "code-craft",
+      "entry": "upstream/caveman/skills/verify-and-stop/SKILL.md",
+      "sha": "3d5599f49771"
+    },
+    "engineering-plugin/eng-architecture": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/architecture/SKILL.md",
+      "sha": "de7db3170a3a"
+    },
+    "engineering-plugin/eng-code-review": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/code-review/SKILL.md",
+      "sha": "6303932f1b30"
+    },
+    "engineering-plugin/eng-debug": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/debug/SKILL.md",
+      "sha": "e50bb92cbcb2"
+    },
+    "engineering-plugin/eng-deploy-checklist": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/engineering-plugin/skills/deploy-checklist/SKILL.md",
+      "sha": "85ca53dc4719"
+    },
+    "engineering-plugin/eng-incident-response": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/engineering-plugin/skills/incident-response/SKILL.md",
+      "sha": "9eaa7a974c90"
+    },
+    "engineering-plugin/eng-standup": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/engineering-plugin/skills/standup/SKILL.md",
+      "sha": "598d90826313"
+    },
+    "engineering-plugin/eng-system-design": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/system-design/SKILL.md",
+      "sha": "8f28eca99f22"
+    },
+    "engineering-plugin/eng-tech-debt": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/tech-debt/SKILL.md",
+      "sha": "ed3b4b1450c0"
+    },
+    "engineering-plugin/eng-testing-strategy": {
+      "bucket": "code-craft",
+      "entry": "upstream/engineering-plugin/skills/testing-strategy/SKILL.md",
+      "sha": "5c5e95830754"
+    },
+    "local/grug-engine": {
+      "bucket": "think-first",
+      "entry": "upstream/local/app/grug-reasoning.md",
+      "sha": "c6df362e0ff9"
+    },
+    "local/grug-reasoning": {
+      "bucket": "think-first",
+      "entry": "upstream/local/variants/grug-reasoning/SKILL.md",
+      "sha": "7efcc1bbd5b8"
+    },
+    "local/ralph-wiggum": {
+      "bucket": "think-first",
+      "entry": "upstream/local/app/ralph-wiggum.md",
+      "sha": "4f084765852b"
+    },
+    "mattpocock-skills/ask-matt": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/ask-matt/SKILL.md",
+      "sha": "1371f5ce005d"
+    },
+    "mattpocock-skills/code-review": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/code-review/SKILL.md",
+      "sha": "09eb147f793e"
+    },
+    "mattpocock-skills/codebase-design": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/codebase-design/SKILL.md",
+      "sha": "2c20617f87ec"
+    },
+    "mattpocock-skills/diagnosing-bugs": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/diagnosing-bugs/SKILL.md",
+      "sha": "849198df88cd"
+    },
+    "mattpocock-skills/domain-modeling": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/domain-modeling/SKILL.md",
+      "sha": "7b925d7b1e34"
+    },
+    "mattpocock-skills/git-guardrails-claude-code": {
+      "bucket": "setup-repo",
+      "entry": "upstream/mattpocock-skills/misc/git-guardrails-claude-code/SKILL.md",
+      "sha": "69b291d65562"
+    },
+    "mattpocock-skills/grill-me": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/grill-me/SKILL.md",
+      "sha": "caaf8b8de168"
+    },
+    "mattpocock-skills/grill-with-docs": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/engineering/grill-with-docs/SKILL.md",
+      "sha": "7de372c13488"
+    },
+    "mattpocock-skills/grilling": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/grilling/SKILL.md",
+      "sha": "befdff1e27a1"
+    },
+    "mattpocock-skills/handoff": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/handoff/SKILL.md",
+      "sha": "4cbb043950da"
+    },
+    "mattpocock-skills/implement": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/implement/SKILL.md",
+      "sha": "483bdc4ccf4a"
+    },
+    "mattpocock-skills/implement-spec": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/implement-spec/SKILL.md",
+      "sha": "7a22dd2e60b8"
+    },
+    "mattpocock-skills/improve-codebase-architecture": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/improve-codebase-architecture/SKILL.md",
+      "sha": "552240a5ab5c"
+    },
+    "mattpocock-skills/migrate-to-shoehorn": {
+      "bucket": "setup-repo",
+      "entry": "upstream/mattpocock-skills/misc/migrate-to-shoehorn/SKILL.md",
+      "sha": "de4da4c11d92"
+    },
+    "mattpocock-skills/pr": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/pr/SKILL.md",
+      "sha": "ab63f1cf7864"
+    },
+    "mattpocock-skills/prototype": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/prototype/SKILL.md",
+      "sha": "714de632d116"
+    },
+    "mattpocock-skills/research": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/research/SKILL.md",
+      "sha": "985569f15739"
+    },
+    "mattpocock-skills/retro": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/retro/SKILL.md",
+      "sha": "33fbc28568e3"
+    },
+    "mattpocock-skills/scaffold-exercises": {
+      "bucket": "setup-repo",
+      "entry": "upstream/mattpocock-skills/misc/scaffold-exercises/SKILL.md",
+      "sha": "75f5c9d77160"
+    },
+    "mattpocock-skills/setup-matt-pocock-skills": {
+      "bucket": "setup-repo",
+      "entry": "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/SKILL.md",
+      "sha": "f148858ffb7f"
+    },
+    "mattpocock-skills/setup-pre-commit": {
+      "bucket": "setup-repo",
+      "entry": "upstream/mattpocock-skills/misc/setup-pre-commit/SKILL.md",
+      "sha": "c9819d7f1e3b"
+    },
+    "mattpocock-skills/tdd": {
+      "bucket": "code-craft",
+      "entry": "upstream/mattpocock-skills/engineering/tdd/SKILL.md",
+      "sha": "5505d25bbaa8"
+    },
+    "mattpocock-skills/to-questionnaire": {
+      "bucket": "think-first",
+      "entry": "upstream/mattpocock-skills/productivity/to-questionnaire/SKILL.md",
+      "sha": "b5eb929842ee"
+    },
+    "mattpocock-skills/to-spec": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/to-spec/SKILL.md",
+      "sha": "43ad9cf318e5"
+    },
+    "mattpocock-skills/to-tickets": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/to-tickets/SKILL.md",
+      "sha": "56ec23c5b278"
+    },
+    "mattpocock-skills/triage": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/triage/SKILL.md",
+      "sha": "917b0baf74be"
+    },
+    "mattpocock-skills/wayfinder": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/wayfinder/SKILL.md",
+      "sha": "9be7b478c389"
+    },
+    "mattpocock-skills/wizard": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mattpocock-skills/engineering/wizard/SKILL.md",
+      "sha": "bdf31d48211e"
+    },
+    "mem0/mem0-integration-principles": {
+      "bucket": "ship-workflow",
+      "entry": "upstream/mem0/skills/mem0-integrate/SKILL.md",
+      "sha": "41a676307b7c"
+    },
+    "strix/strix-appsec-baseline": {
+      "bucket": "secure-and-harden",
+      "entry": "upstream/strix/skills/application-security-testing/SKILL.md",
+      "sha": "b3041c800a9a"
+    },
+    "strix/strix-owasp-coverage": {
+      "bucket": "secure-and-harden",
+      "entry": "upstream/strix/skills/owasp-top-10-testing/SKILL.md",
+      "sha": "02b1cbe60d40"
+    },
+    "strix/strix-pr-review": {
+      "bucket": "secure-and-harden",
+      "entry": "upstream/strix/skills/find-security-vulnerabilities-in-code/SKILL.md",
+      "sha": "e7c25f1a0aea"
+    },
+    "strix/strix-triage-fix": {
+      "bucket": "secure-and-harden",
+      "entry": "upstream/strix/skills/fix-security-vulnerabilities-with-strix/SKILL.md",
+      "sha": "bb1b351fd60c"
+    }
+  }
+}
