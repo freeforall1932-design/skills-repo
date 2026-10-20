@@ -47,11 +47,16 @@ manifest = b.Manifest(ONE_SKILL / "sources.json")
 
 @pytest.fixture(scope="session")
 def built():
-    """dist/skill/, regenerated into a temp dir so tests never read stale output."""
-    tmp = Path(tempfile.mkdtemp()) / "skill"
-    stats = b.assemble(manifest, tmp)
-    yield tmp, stats
-    shutil.rmtree(tmp.parent, ignore_errors=True)
+    """The whole bundle — unified skill and every fragment — assembled into a temp dir.
+
+    Built here rather than read from `one-skill/dist/`, because `dist/` is gitignored
+    scratch: a test pointed at it skips in CI (where only `check` runs, into its own temp
+    dir) and reports green while proving nothing. That is how the fragment assertion below
+    stayed vacuous for two rounds."""
+    root = Path(tempfile.mkdtemp())
+    stats = b.build_all(manifest, root)
+    yield root / "skill", stats
+    shutil.rmtree(root, ignore_errors=True)
 
 
 def manifest_data() -> dict:
@@ -421,9 +426,8 @@ def test_keep_sections_fails_closed_when_upstream_renames():
 
 def test_a_fragment_holds_exactly_its_own_buckets(built):
     for fam in manifest_data()["families"]:
-        src = ONE_SKILL / "dist" / "families" / fam["id"]
-        if not src.exists():
-            pytest.skip("run `python one-skill/build.py build` first")
+        src = built[0].parent / "families" / fam["id"]
+        assert src.exists(), f"build_all emitted no tree for the {fam['id']} family"
         refs = {p.name for p in (src / "references").glob("*.md")}
         expected = {Path(manifest.buckets[b]["file"]).name for b in fam["buckets"]}
         assert refs == expected | {"SOURCES.md"}, fam["id"]
