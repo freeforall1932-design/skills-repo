@@ -176,7 +176,7 @@ not what the rules cost when a task runs.
 | Data loss | 0% | verified across all test runs |
 | Always loaded, per request | 2394 / 2400 words | `SKILL.md`, budgeted and enforced by `build.py` (the builder's `split()` count, stricter than `wc -w`); the budget is what forced the prose out of it, not a rounding |
 | On demand | 90k words | eleven reference files, loaded one at a time |
-| Vendored skills | 78 routed, 34 recorded as dropped | across ten sources: 22 whole skills, 12 files, 8 vendoring records, each with a reason |
+| Vendored skills | 78 routed, 34 recorded as dropped | across ten sources: 22 whole skills, 11 files, 8 vendoring records, each with a reason |
 | Tests | 54 | fidelity, links, budgets, determinism, published copies, the excuses themselves |
 
 Source: original caveman benchmarks plus independent replication (JetBrains,

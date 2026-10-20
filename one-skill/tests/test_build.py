@@ -704,3 +704,22 @@ def test_the_published_lock_covers_every_input():
             f"only in the lock {sorted(set(lock['inputs']) - want)[:3]}, "
             f"only in the manifest {sorted(want - set(lock['inputs']))[:3]} — a new kind of "
             "input has to be checksummed too")
+
+
+def test_a_thing_cannot_be_excused_twice():
+    """A repeated `not_routed` record is how a re-run patch shows up: the same file reads as
+    two separate decisions and is printed twice in the provenance table."""
+    def twice(data):
+        loc = next(s for s in data["sources"] if s["slug"] == "local")
+        loc["not_routed"].append(dict(loc["not_routed"][0]))
+    man = _mutated(twice)
+    with pytest.raises(SystemExit, match="excused more than once"):
+        _build(man)
+
+
+def test_the_manifest_holds_no_duplicate_records():
+    for src in manifest_data()["sources"]:
+        keys = [r.get("path") or r.get("skill") or r.get("what")
+                for key in ("not_merged", "not_routed", "not_vendored") for r in src.get(key, [])]
+        assert len(keys) == len(set(keys)), f"{src['slug']}: duplicated cast-aside records"
+

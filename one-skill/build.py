@@ -469,6 +469,11 @@ def validate_records(man: Manifest) -> None:
             # made. This happened once: a retired skill's record cited a references/
             # file the legacy tree never had, and only a human reading SOURCES.md
             # noticed.
+            if sum(1 for y in (src.get("not_merged", []) + src.get("not_routed", [])
+                              + src.get("not_vendored", []))
+                   if (y.get("path") or y.get("skill") or y.get("what")) == key) > 1:
+                die(f"{src['slug']}: {key} is excused more than once — a repeated record reads "
+                    "as two decisions and prints twice in SOURCES.md")
             if x.get("path") and not (ROOT / x["path"]).exists():
                 die(f"{src['slug']}: {x['path']} is excused but not vendored — the file "
                     "moved or was never included; fix the path or drop the record")

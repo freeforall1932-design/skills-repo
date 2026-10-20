@@ -22,7 +22,7 @@
     "upstream/mattpocock-skills/productivity/teach/RESOURCES-FORMAT.md": "e9cacf34026e",
     "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c"
   },
-  "manifest_sha": "d68a414b23e6",
+  "manifest_sha": "0b2637327630",
   "skills": {
     "anti-slop/antislop-copywriting": {
       "bucket": "write-prose",

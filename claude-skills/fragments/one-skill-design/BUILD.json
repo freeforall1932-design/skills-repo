@@ -8,7 +8,7 @@
     "core/40-commands.md": "dbc02fa2fc79",
     "core/50-sources.md": "17a20c306953"
   },
-  "manifest_sha": "d68a414b23e6",
+  "manifest_sha": "0b2637327630",
   "skills": {
     "anti-slop/antislop-core": {
       "bucket": "ui-craft",

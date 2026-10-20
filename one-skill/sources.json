@@ -429,10 +429,6 @@
         {
           "path": "upstream/local/variants/unified/references/work-patterns.md",
           "reason": "Byte-identical to `caveman-output/references/work-patterns.md`, which is routed in its place."
-        },
-        {
-          "path": "upstream/local/variants/unified/references/cut-lists.md",
-          "reason": "Byte-identical to the be-brief cut list, retired with it; the phrase catalog in `write-prose` is the carried copy."
         }
       ],
       "discover": [
