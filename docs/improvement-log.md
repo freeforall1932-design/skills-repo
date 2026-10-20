@@ -9,7 +9,7 @@ dated; newest first.
 committed were integrated (`Engineering-1.2.0-v1.zip` → 10 skills, `Skill creator
 copy-v1.zip` → the authoring half), and be-brief was retired into `legacy/` with one
 carve-out rewritten for this bundle. Ten sources now route **78 skills into 11 reference
-files (90k words)** behind a **2395-word** `SKILL.md`; **54 tests**.
+files (90k words)** behind a **2394-word** `SKILL.md`; **56 tests**.
 
 **What the review found, because a review that finds nothing is a rubber stamp.**
 
@@ -58,6 +58,18 @@ skips now (102 passed, 10 skipped from the root). And the budget number needed e
 builder's `split()` count is 38 words higher than `wc -w` on the same bytes, because
 `str.split()` also breaks on no-break spaces. It is the stricter of the two, which is the right
 direction for a limit to be wrong in, and `README.md` now says which measure it quotes.
+
+**Two more, found by reading the round's own output rather than the code.** A `not_routed`
+record excused `unified/references/cut-lists.md` twice — once with the be-brief retirement,
+once with the `unified` retirement — so `SOURCES.md` printed one decision twice in two
+different words and the README counted a dropped file that was dropped once; each record was
+valid on its own, which is why no existing gate saw it. And
+`test_a_fragment_holds_exactly_its_own_buckets` read `one-skill/dist/families/`, gitignored
+scratch that CI never has, so it `pytest.skip`ped and the suite reported green while checking
+nothing about the fragments — for two rounds. The fixture builds the bundle now, and the
+missing-tree case is an assertion. A check that quietly stops checking is the one defect class
+this repository is specifically built to catch, so both are gates now: duplicate cast-aside
+records die, and no test in `one-skill/tests` skips.
 
 **Also:** `BUILD.json` records the checksum of every entry, sibling doc and `core/` file, and
 `check` reads it back *before* rebuilding — the work list's item 4, which the mirror diff only
