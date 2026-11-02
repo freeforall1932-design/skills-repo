@@ -40,7 +40,7 @@
     "upstream/mattpocock-skills/productivity/teach/RESOURCES-FORMAT.md": "e9cacf34026e",
     "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c"
   },
-  "manifest_sha": "8eb0e4a8658f",
+  "manifest_sha": "7f3180dc9df7",
   "skills": {
     "anti-slop/antislop-code": {
       "bucket": "code-craft",

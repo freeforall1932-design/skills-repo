@@ -28,7 +28,7 @@
     "upstream/mattpocock-skills/engineering/triage/AGENT-BRIEF.md": "7f5f87fed303",
     "upstream/mattpocock-skills/engineering/triage/OUT-OF-SCOPE.md": "1fbf9b432130"
   },
-  "manifest_sha": "8eb0e4a8658f",
+  "manifest_sha": "7f3180dc9df7",
   "skills": {
     "anti-slop/antislop-code": {
       "bucket": "code-craft",

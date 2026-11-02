@@ -1609,19 +1609,16 @@ def cmd_install(man: Manifest) -> None:
         shutil.copytree(src, dest)
         fz = REPO / "claude-skills" / "fragments" / "zips" / f"one-skill-{fam['id']}.zip"
         fz.parent.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(fz, "w", zipfile.ZIP_DEFLATED) as z:
-            for q in sorted(src.rglob("*")):
-                if q.is_file():
-                    z.write(q, Path(f"one-skill-{fam['id']}") / q.relative_to(src))
+        # deterministic_zip_bytes, not ZipFile.write: mtimes would make every
+        # install's zip differ from the last, and "two builds byte-identical"
+        # is a gate. Same for the app zip below.
+        fz.write_bytes(deterministic_zip_bytes(src, f"one-skill-{fam['id']}"))
         print(f"  fragment → {dest.relative_to(REPO)} "
               f"(+ {fz.relative_to(REPO)}, {fz.stat().st_size // 1024} KiB)")
 
     zip_path = REPO / "claude-skills" / "app" / "zips" / "one-skill.zip"
     zip_path.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-        for p in sorted(SKILL_DIR.rglob("*")):
-            if p.is_file():
-                z.write(p, Path("one-skill") / p.relative_to(SKILL_DIR))
+    zip_path.write_bytes(deterministic_zip_bytes(SKILL_DIR, "one-skill"))
     print(f"  zip → {zip_path.relative_to(REPO)} ({zip_path.stat().st_size // 1024} KiB)")
 
     # paste-only platforms: the router file alone, unchanged in substance

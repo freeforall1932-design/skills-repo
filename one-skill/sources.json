@@ -470,7 +470,7 @@
       "slug": "anti-slop",
       "title": "anti-slop — the design filter (miqdadbadjuber/anti-slop)",
       "license": "MIT",
-      "attribution": "freeforall1932-design/anti-slop-fork",
+      "attribution": "miqdadbadjuber/anti-slop (vendored from origin; the user's anti-slop-fork carried no local edits - see origin note)",
       "origin": {
         "repo": "miqdadbadjuber/anti-slop",
         "ref": "941b1532f9cc8ffde766bca5921d75257c9e5762",
