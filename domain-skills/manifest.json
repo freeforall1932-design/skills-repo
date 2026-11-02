@@ -1,4 +1,452 @@
 {
-  "_comment": "Authored domain skills that install beside one-skill. The source of truth is domain-skills/<name>/; `python one-skill/build.py pack` validates this manifest and writes skills/<name>/, claude-skills/domain/<name>/, one zip per skill, and the paste copies. keywords are [phrase, weight] pairs for the deterministic routing proxy in build.py (threshold 2); tools carry the exact check/install strings that must appear in the skill or its references, so a preflight cannot promise a probe the text never names.",
-  "skills": []
+  "_comment": [
+    "Authored domain skills. One entry per skill directory under domain-skills/.",
+    "Read by `python3 one-skill/build.py pack` (publish) and `check` (staleness).",
+    "tools: name is what the description must claim; check/install are exact",
+    "strings that must appear in the SKILL.md or its references.",
+    "keywords feed the deterministic routing proxy in tests/routing.json —",
+    "they are a lint, not a learned router (see docs/decisions.md)."
+  ],
+  "skills": [
+    {
+      "name": "evidence-notes",
+      "gated": false,
+      "provenance": "Authored for this repo. Facts drawn from morluto/rea (REA Evidence report shape, package rea-agents 6.8.0) and mem0ai/mem0 (scoped memory contract: user_id/agent_id/session_id, search-before-store), both inspected 2026-11-02 (commits in docs/capability-matrix.md), MIT and Apache-2.0 respectively. No upstream text copied; redaction pattern list is standard practice.",
+      "tools": [
+        {
+          "name": "REA",
+          "check": "rea-agents@latest doctor",
+          "install": "npx rea-agents setup"
+        },
+        {
+          "name": "mem0",
+          "check": "mem0 search",
+          "install": "docs.mem0.ai"
+        },
+        {
+          "name": "SHA-256",
+          "check": "sha256sum",
+          "install": "shasum -a 256"
+        }
+      ],
+      "pairs_with": [],
+      "keywords": [
+        [
+          "evidence",
+          2
+        ],
+        [
+          "ledger",
+          2
+        ],
+        [
+          "Investigation notes",
+          2
+        ],
+        [
+          "field notes",
+          2
+        ],
+        [
+          "notes from",
+          1
+        ],
+        [
+          "confidence",
+          1
+        ],
+        [
+          "redact",
+          2
+        ],
+        [
+          "secrets out of",
+          1
+        ],
+        [
+          "hash",
+          1
+        ],
+        [
+          "sha256",
+          2
+        ],
+        [
+          "record what",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "re-triage",
+      "gated": true,
+      "provenance": "Authored for this repo. Tool facts verified against morluto/rea (rea-agents 6.8.0: doctor proves only setup-owned registrations; 15 platform domains; npm engines ranges), bethington/ghidra-mcp (bridge-mcp-ghidra, 219 tools, Ghidra 12.x/Java 21), HexRaysSA/ida-mcp (IDA 9.4+, uvx ida-hcli mcp install), icsharpcode/ILSpy (dotnet tool ilspycmd), SamboyCoding/Cpp2IL (--list-output-formats). All inspected 2026-11-02, commits in docs/capability-matrix.md. REA's own skill is not vendored; the not-carried list lives in references/tool-matrix.md.",
+      "tools": [
+        {
+          "name": "REA",
+          "check": "rea-agents@latest doctor",
+          "install": "npx rea-agents setup"
+        },
+        {
+          "name": "Ghidra MCP",
+          "check": "bridge-mcp-ghidra",
+          "install": "python -m tools.setup preflight"
+        },
+        {
+          "name": "IDA MCP",
+          "check": "uvx ida-mcp",
+          "install": "uvx ida-hcli mcp install"
+        },
+        {
+          "name": "ILSpy",
+          "check": "ilspycmd --version",
+          "install": "dotnet tool install --global ilspycmd"
+        },
+        {
+          "name": "Cpp2IL",
+          "check": "--list-output-formats",
+          "install": "Cpp2IL release build"
+        }
+      ],
+      "pairs_with": [
+        "evidence-notes"
+      ],
+      "keywords": [
+        [
+          "this .exe",
+          2
+        ],
+        [
+          ".exe",
+          1
+        ],
+        [
+          "binary",
+          1
+        ],
+        [
+          "unknown file",
+          2
+        ],
+        [
+          "what does it do",
+          1
+        ],
+        [
+          "what is this",
+          1
+        ],
+        [
+          "apk",
+          2
+        ],
+        [
+          "firmware",
+          2
+        ],
+        [
+          "electron",
+          2
+        ],
+        [
+          "triage",
+          2
+        ],
+        [
+          "identify",
+          1
+        ],
+        [
+          "decompile",
+          1
+        ],
+        [
+          "sample",
+          1
+        ],
+        [
+          "analisis",
+          1
+        ],
+        [
+          "decompile-kan",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "re-native",
+      "gated": true,
+      "provenance": "Authored for this repo. Facts from bethington/ghidra-mcp (Apache-2.0; Python bridge bridge-mcp-ghidra, setup via python -m tools.setup preflight, Ghidra 12.x, Java 21, 219-tool catalogue) and HexRaysSA/ida-mcp (MIT; IDA Pro 9.4+ via IDALIB, Python 3.11+, install uvx ida-hcli mcp install), inspected 2026-11-02. Decompiler-output-is-hypothesis framing is field consensus, stated in own words.",
+      "tools": [
+        {
+          "name": "Ghidra MCP",
+          "check": "bridge-mcp-ghidra",
+          "install": "python -m tools.setup preflight"
+        },
+        {
+          "name": "IDA MCP",
+          "check": "uvx ida-mcp",
+          "install": "uvx ida-hcli mcp install"
+        },
+        {
+          "name": "REA",
+          "check": "rea-agents@latest doctor",
+          "install": "npx rea-agents setup"
+        }
+      ],
+      "pairs_with": [
+        "evidence-notes"
+      ],
+      "keywords": [
+        [
+          "ghidra",
+          3
+        ],
+        [
+          "ida",
+          3
+        ],
+        [
+          "native",
+          2
+        ],
+        [
+          "disassembl",
+          2
+        ],
+        [
+          "pseudocode",
+          2
+        ],
+        [
+          "windows .exe",
+          2
+        ],
+        [
+          ".exe",
+          1
+        ],
+        [
+          "elf",
+          2
+        ],
+        [
+          "mach-o",
+          2
+        ],
+        [
+          "gameassembly",
+          1
+        ],
+        [
+          "binary",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "re-managed",
+      "gated": true,
+      "provenance": "Authored for this repo. Facts from icsharpcode/ILSpy (MIT; ilspycmd flags -l/--list-resources/-t/-m/-il verified in ICSharpCode.ILSpyCmd source at the inspected commit) and SamboyCoding/Cpp2IL (MIT; output formats dll_il_recovery/dll_throw_null/diffable-cs verified in Cpp2IL.Core; recovered bodies can be stubs or exception bodies and recovered IL is known-messy — the brief's 'still stubs?' question answered: partial recovery, verify natively). Inspected 2026-11-02.",
+      "tools": [
+        {
+          "name": "ILSpy",
+          "check": "ilspycmd --version",
+          "install": "dotnet tool install --global ilspycmd"
+        },
+        {
+          "name": "Cpp2IL",
+          "check": "--list-output-formats",
+          "install": "Cpp2IL release build"
+        },
+        {
+          "name": "REA",
+          "check": "rea-agents@latest doctor",
+          "install": "npx rea-agents setup"
+        }
+      ],
+      "pairs_with": [
+        "evidence-notes"
+      ],
+      "keywords": [
+        [
+          ".net",
+          3
+        ],
+        [
+          "il2cpp",
+          3
+        ],
+        [
+          "cpp2il",
+          3
+        ],
+        [
+          "ilspy",
+          3
+        ],
+        [
+          "ilspycmd",
+          3
+        ],
+        [
+          "global-metadata",
+          3
+        ],
+        [
+          "gameassembly",
+          2
+        ],
+        [
+          "assembly-csharp",
+          3
+        ],
+        [
+          ".dll",
+          1
+        ],
+        [
+          "unity",
+          1
+        ],
+        [
+          "mono",
+          2
+        ],
+        [
+          "managed",
+          1
+        ],
+        [
+          "decompile",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "appsec-strix",
+      "gated": true,
+      "provenance": "Authored for this repo. Facts from usestrix/strix (Apache-2.0): same binary drives OSS (Docker + own LLM key via STRIX_LLM) and cloud (strix cloud, no Docker); check strix --version; install pipx/uv/pip strix-agent or upstream script; its own skills install via npx skills add usestrix/strix and own all flag detail. Also consistent with the four strix method skills already vendored into one-skill. Inspected 2026-11-02 at the refreshed pin.",
+      "tools": [
+        {
+          "name": "Strix",
+          "check": "strix --version",
+          "install": "pipx install strix-agent"
+        },
+        {
+          "name": "Docker",
+          "check": "docker info",
+          "install": "use Strix Cloud"
+        }
+      ],
+      "pairs_with": [
+        "evidence-notes",
+        "one-skill"
+      ],
+      "keywords": [
+        [
+          "pentest",
+          2
+        ],
+        [
+          "penetration test",
+          2
+        ],
+        [
+          "strix",
+          3
+        ],
+        [
+          "security test",
+          2
+        ],
+        [
+          "security scan",
+          2
+        ],
+        [
+          "scan my",
+          2
+        ],
+        [
+          "staging",
+          1
+        ],
+        [
+          "vulnerabilit",
+          1
+        ],
+        [
+          "appsec",
+          2
+        ],
+        [
+          "authorized test",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "modder-bridge",
+      "gated": true,
+      "provenance": "Authored for this repo. Facts from rehan-remade/universal-modder (MIT): CLI `um` (um --version, um kb search), workflow KB-first -> recon -> backed-up lab -> source -> vertical slice -> verify in the real game -> package; hard rules against anti-cheat/DRM/ownership bypass; skills install via npx skills add. Inspected 2026-11-02. Workflow restated in own words at bridge altitude; its skills are not vendored.",
+      "tools": [
+        {
+          "name": "universal-modder",
+          "check": "um --version",
+          "install": "npx skills add https://github.com/rehan-remade/universal-modder"
+        }
+      ],
+      "pairs_with": [
+        "one-skill"
+      ],
+      "keywords": [
+        [
+          "mod",
+          2
+        ],
+        [
+          "modding",
+          3
+        ],
+        [
+          "game i own",
+          2
+        ],
+        [
+          "my game",
+          1
+        ],
+        [
+          "post-boss",
+          2
+        ],
+        [
+          "after the final boss",
+          2
+        ],
+        [
+          "new area",
+          1
+        ],
+        [
+          "secret area",
+          2
+        ],
+        [
+          "ng+",
+          1
+        ],
+        [
+          "recipes",
+          1
+        ],
+        [
+          "universal-modder",
+          3
+        ]
+      ]
+    }
+  ]
 }

@@ -1343,7 +1343,9 @@ SAFETY_DENYLIST = [
     r"remove\w*\s+(the\s+)?(drm|licen[cs]e\s+check|copy\s+protection)",
     r"weaponiz\w*",
 ]
-_NEGATION_RE = re.compile(r"\b(never|no|not|none|refuse\w*|do\s+not|don't|must\s+not|prohibit\w*|without)\b", re.I)
+_NEGATION_RE = re.compile(
+    r"\b(never|no|not|none|nothing|refuse\w*|do\s+not|don't|must\s+not|prohibit\w*|without|forbidden|excluded)\b"
+    r"|out of scope|not in scope|outside (the )?scope", re.I)
 
 
 def safety_problems(text: str, label: str) -> list[str]:
@@ -1450,7 +1452,7 @@ def deterministic_zip_bytes(src_dir: Path, arc_root: str) -> bytes:
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(src_dir.rglob("*")):
-            if not p.is_file():
+            if not p.is_file() or "__pycache__" in p.parts or p.suffix == ".pyc":
                 continue
             info = zipfile.ZipInfo(str(Path(arc_root) / p.relative_to(src_dir)), date_time=ZIP_DATE)
             info.external_attr = 0o644 << 16
@@ -1488,7 +1490,7 @@ def cmd_pack() -> None:
             dest = root / name
             if dest.exists():
                 shutil.rmtree(dest)
-            shutil.copytree(src, dest)
+            shutil.copytree(src, dest, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
         zpath = DOMAIN_ZIP_DIR / f"{name}.zip"
         zpath.parent.mkdir(parents=True, exist_ok=True)
         zpath.write_bytes(deterministic_zip_bytes(src, name))
@@ -1514,11 +1516,12 @@ def check_domain() -> None:
             if not dest.exists():
                 die(f"{dest.relative_to(REPO)} is missing — run `python one-skill/build.py pack`")
             for p in sorted(src.rglob("*")):
-                if p.is_file():
+                if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc":
                     mirror = dest / p.relative_to(src)
                     if not mirror.exists() or mirror.read_bytes() != p.read_bytes():
                         die(f"{mirror.relative_to(REPO)} is stale — run `python one-skill/build.py pack`")
-            extra = [q for q in dest.rglob("*") if q.is_file() and not (src / q.relative_to(dest)).exists()]
+            extra = [q for q in dest.rglob("*") if q.is_file() and "__pycache__" not in q.parts
+                     and q.suffix != ".pyc" and not (src / q.relative_to(dest)).exists()]
             if extra:
                 die(f"{dest.relative_to(REPO)} holds files domain-skills/ no longer has: "
                     f"{', '.join(str(q.relative_to(dest)) for q in extra[:3])}")
@@ -1535,7 +1538,15 @@ _ROUTING_REFUSAL_RES = [re.compile(p, re.I) for p in (
     r"(crack|remove|disable)\w*\s+(the\s+)?(drm|licen[cs]e\s+check|anti[-\s]?cheat|copy\s+protection)",
     r"cheat\w*\s+(in|on)\s+(an?\s+)?(online|multiplayer)",
 )]
-_AUTHORIZED_RE = re.compile(r"\b(i\s+own|my\s+own|own\s+it|i\s+wrote|authori[sz]ed|permission|scope|staging)\b", re.I)
+_AUTHORIZED_RE = re.compile(r"\b(i\s+own|my\s+own|own\s+it|i\s+wrote|authori[sz]ed|permission|scope|staging|punya\s+saya|milik\s+saya|izin\s+tertulis)\b", re.I)
+_UNAUTHORIZED_RE = re.compile(r"\b(don'?t|doesn'?t|no|not|without|never|haven'?t)\b[^.]{0,24}\b(permission|authori[sz]ation|scope|consent)\b", re.I)
+
+
+def _looks_authorized(query: str) -> bool:
+    """Crude text proxy: presence of an ownership/scope word that a negation
+    does not reach. It flags cases for the gate; it is not evidence that a
+    real authorization exists — the gate still asks for the line in writing."""
+    return bool(_AUTHORIZED_RE.search(query)) and not _UNAUTHORIZED_RE.search(query)
 
 
 def score_routing(query: str, entries: list[dict] | None = None) -> dict:
@@ -1552,7 +1563,7 @@ def score_routing(query: str, entries: list[dict] | None = None) -> dict:
         entries = load_domain_manifest()
     text = query.lower()
     if any(r.search(query) for r in _ROUTING_REFUSAL_RES):
-        return {"refused": True, "load": {}, "authorized": bool(_AUTHORIZED_RE.search(query))}
+        return {"refused": True, "load": {}, "authorized": _looks_authorized(query)}
     load: dict[str, dict] = {}
     for entry in entries:
         hits, score = [], 0
@@ -1567,7 +1578,7 @@ def score_routing(query: str, entries: list[dict] | None = None) -> dict:
         if entry["name"] in load:
             for companion in entry.get("pairs_with", []):
                 load.setdefault(companion, {"score": 0, "hits": [], "via": f"companion of {entry['name']}"})
-    return {"refused": False, "load": load, "authorized": bool(_AUTHORIZED_RE.search(query))}
+    return {"refused": False, "load": load, "authorized": _looks_authorized(query)}
 
 
 # --------------------------------------------------------------------------- #
