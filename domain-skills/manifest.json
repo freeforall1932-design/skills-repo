@@ -1,0 +1,4 @@
+{
+  "_comment": "Authored domain skills that install beside one-skill. The source of truth is domain-skills/<name>/; `python one-skill/build.py pack` validates this manifest and writes skills/<name>/, claude-skills/domain/<name>/, one zip per skill, and the paste copies. keywords are [phrase, weight] pairs for the deterministic routing proxy in build.py (threshold 2); tools carry the exact check/install strings that must appear in the skill or its references, so a preflight cannot promise a probe the text never names.",
+  "skills": []
+}

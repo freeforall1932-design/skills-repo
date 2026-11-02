@@ -7,9 +7,11 @@ turns that declaration into files; nothing in ``dist/`` is hand-written.
 
     python one-skill/build.py sync            # vendor upstream sources into upstream/
     python one-skill/build.py build           # sources.json + core/ + upstream/ -> dist/skill/
-    python one-skill/build.py install         # mirror dist/skill/ into every install path
+    python one-skill/build.py install         # mirror dist/skill/ into every install path (+ pack)
     python one-skill/build.py all             # build + install
     python one-skill/build.py check           # rebuild in a temp dir, fail if dist/ is stale
+    python one-skill/build.py pack            # domain-skills/ -> skills/, claude-skills/domain/, zips
+    python one-skill/build.py stats           # the derived numbers the README is allowed to quote
 
 Adding a repository later
 -------------------------
@@ -35,7 +37,9 @@ Design
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
+import io
 import json
 import re
 import shutil
@@ -61,6 +65,19 @@ CACHE_DIR = ROOT / ".cache"
 PROVENANCE = UPSTREAM_DIR / "PROVENANCE.json"
 
 ALWAYS_ON_BUDGET = 2400   # words in SKILL.md: it rides in every request
+
+# Domain skills: small authored skills that install *beside* one-skill (never
+# inside it — SKILL.md is at budget). Their source of truth is
+# `domain-skills/<name>/` in the repo; `pack` validates them and writes the
+# published mirrors, the same way `install` publishes the merged skill.
+DOMAIN_SRC = REPO / "domain-skills"
+DOMAIN_MANIFEST = DOMAIN_SRC / "manifest.json"
+DOMAIN_PUBLISH_ROOTS = [REPO / "claude-skills" / "domain",   # upload layout
+                        REPO / "skills"]                    # `npx skills add` discovery
+DOMAIN_ZIP_DIR = REPO / "claude-skills" / "domain" / "zips"
+DOMAIN_SKILL_BUDGET = 500        # words in a domain SKILL.md
+DOMAIN_REFERENCE_BUDGET = 1500   # words in one domain reference file
+ZIP_DATE = (2020, 1, 1, 0, 0, 0)  # fixed, so a domain zip is byte-reproducible
 
 SKIP_NAMES = {"README.md", "LICENSE", "CONTRIBUTING.md", "CHANGELOG.md", "agents", "zips"}
 
@@ -1191,6 +1208,369 @@ def report(stats: dict) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# derived numbers — the README may quote only what the builder can recount
+# --------------------------------------------------------------------------- #
+def test_function_count(test_dir: Path) -> int:
+    """`def test_*` functions in a test tree, counted by parsing, not by grep.
+
+    This is the one test metric the README is allowed to print: pytest's
+    *collected* count depends on parametrisation and on which optional
+    packages are installed (SkillOpt present or not changes the total), so a
+    collected count hand-typed into prose goes stale by construction. The
+    function count is a property of the files on disk, here and in CI alike.
+    """
+    n = 0
+    for p in sorted(test_dir.glob("test_*.py")):
+        tree = ast.parse(read(p), filename=str(p))
+        n += sum(1 for node in ast.walk(tree)
+                 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                 and node.name.startswith("test_"))
+    return n
+
+
+def repo_stats(man: Manifest, built: dict | None = None) -> dict:
+    """Every number the prose around this build quotes, from the manifest.
+
+    `built` is the dict `build_all` returns; without it the word counts of
+    the generated files are absent rather than guessed from a mirror.
+    """
+    dropped = {key: sum(len(src.get(key, [])) for src in man.sources)
+               for key in ("not_merged", "not_routed", "not_vendored")}
+    stats = {
+        "routed_skills": sum(len(src.get("skills", [])) for src in man.sources),
+        "sources": len(man.sources),
+        "cast_aside": dropped,
+        "cast_aside_total": sum(dropped.values()),
+        "always_on_budget": ALWAYS_ON_BUDGET,
+        "one_skill_test_functions": test_function_count(ROOT / "tests"),
+        "skillopt_test_functions": test_function_count(REPO / "skillopt-integration" / "tests"),
+        "domain_skills": [e["name"] for e in load_domain_manifest()],
+    }
+    if built is not None:
+        stats["references"] = built["references"]
+        stats["reference_words"] = built["words"]
+        stats["always_on_words"] = built["always_words"]
+    return stats
+
+
+# Phrases the README must never say again. Each one was true once; every one
+# of them survived past the round that made it false, which is what a
+# hand-typed number does. The check below exists so the next stale claim is
+# caught by the gate instead of by a reader.
+STALE_README_PHRASES = [
+    "sixty-nine", "69 skills", "eight sources", "24 tests", "34 recorded",
+    "adding a fourth", "mit-encumbered",
+]
+
+
+def validate_readme_numbers(man: Manifest, built: dict) -> None:
+    """The root README's numbers must be the manifest's numbers.
+
+    Required phrases are exact so the prose cannot drift into a paraphrase
+    the gate cannot recount; stale phrases are banned outright. Test counts
+    are function counts (see `test_function_count`) labelled as such in the
+    README, so the gate and a reader mean the same thing by the number.
+    """
+    stats = repo_stats(man, built)
+    readme = read(REPO / "README.md")
+    required = [
+        f"{stats['routed_skills']} skills from {stats['sources']} sources",
+        f"{stats['routed_skills']} routed, {stats['cast_aside_total']} cast-aside records",
+        (f"{stats['cast_aside']['not_merged']} whole skills, "
+         f"{stats['cast_aside']['not_routed']} files, "
+         f"{stats['cast_aside']['not_vendored']} vendoring records"),
+        f"{stats['always_on_words']} / {ALWAYS_ON_BUDGET} words",
+        f"{stats['reference_words'] // 1000}k words",
+        f"{stats['references']} reference files",
+        f"one-skill: {stats['one_skill_test_functions']} test functions",
+        f"skillopt-integration: {stats['skillopt_test_functions']} test functions",
+        f"{len(stats['domain_skills'])} domain skills",
+    ]
+    missing = [phrase for phrase in required if phrase not in readme]
+    if missing:
+        die("README.md numbers do not match the manifest; expected phrases missing: "
+            + "; ".join(repr(p) for p in missing)
+            + ". Run `python one-skill/build.py stats` and fix the prose — "
+              "never the other way around.")
+    stale = [phrase for phrase in STALE_README_PHRASES if phrase in readme.lower()]
+    if stale:
+        die("README.md still carries stale claims from an earlier round: "
+            + ", ".join(repr(s) for s in stale))
+
+
+# --------------------------------------------------------------------------- #
+# domain skills — authored beside one-skill, packed by this same builder
+# --------------------------------------------------------------------------- #
+def load_domain_manifest(path: Path = DOMAIN_MANIFEST) -> list[dict]:
+    if not path.exists():
+        return []
+    data = json.loads(read(path))
+    return data.get("skills", [])
+
+
+def _section(text: str, heading_word: str) -> str:
+    """The text under the first heading containing `heading_word`, up to the
+    next heading of the same or higher rank. Empty string when absent."""
+    lines = text.splitlines()
+    start = rank = None
+    for i, line in enumerate(lines):
+        m = re.match(r"^(#{1,6})\s+(.*)$", line)
+        if m and heading_word.lower() in m.group(2).lower():
+            start, rank = i, len(m.group(1))
+            break
+    if start is None:
+        return ""
+    end = len(lines)
+    for j in range(start + 1, len(lines)):
+        m = re.match(r"^(#{1,6})\s+", lines[j])
+        if m and len(m.group(1)) <= rank:
+            end = j
+            break
+    return "\n".join(lines[start:end])
+
+
+def _word_shingles(text: str, n: int = 12) -> set[tuple]:
+    words = re.findall(r"[a-z0-9]+", text.lower())
+    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+
+
+# Instructions no shipped skill may give. A line that *refuses* one of these
+# (the gates must, to redirect the request) carries a negation and is fine.
+SAFETY_DENYLIST = [
+    r"bypass\w*\s+(the\s+)?(anti[-\s]?cheat|drm|licen[cs]e|ownership)",
+    r"disable\w*\s+(the\s+)?(anti[-\s]?cheat|drm|licen[cs]e\s+check)",
+    r"crack\w*\s+(the\s+)?(licen[cs]e|drm|activation)",
+    r"remove\w*\s+(the\s+)?(drm|licen[cs]e\s+check|copy\s+protection)",
+    r"weaponiz\w*",
+]
+_NEGATION_RE = re.compile(r"\b(never|no|not|none|refuse\w*|do\s+not|don't|must\s+not|prohibit\w*|without)\b", re.I)
+
+
+def safety_problems(text: str, label: str) -> list[str]:
+    problems = []
+    for lineno, line in enumerate(text.splitlines(), 1):
+        for pat in SAFETY_DENYLIST:
+            if re.search(pat, line, re.I) and not _NEGATION_RE.search(line):
+                problems.append(f"{label}:{lineno}: possible prohibited instruction: {line.strip()[:90]!r}")
+    return problems
+
+
+def validate_domain_tree(src_root: Path = DOMAIN_SRC) -> list[str]:
+    """Every rule a domain skill is published under, as a list of problems.
+
+    Returns problems instead of dying so the test suite can feed it broken
+    fixtures and watch it bite; the commands below die on a non-empty list.
+    """
+    problems: list[str] = []
+    entries = load_domain_manifest(src_root / "manifest.json")
+    core_texts = "\n".join(read(p) for p in sorted(CORE_DIR.glob("*.md")))
+    published = REPO / "claude-skills" / "app" / "one-skill" / "SKILL.md"
+    one_skill_shingles = _word_shingles(core_texts + "\n" + (read(published) if published.exists() else ""))
+    names = [e.get("name") for e in entries]
+    if len(names) != len(set(names)):
+        problems.append("domain manifest holds a duplicate skill name")
+    for entry in entries:
+        name = entry.get("name", "")
+        skill_dir = src_root / name
+        skill_md = skill_dir / "SKILL.md"
+        if not skill_md.exists():
+            problems.append(f"{name}: domain-skills/{name}/SKILL.md is missing")
+            continue
+        text = read(skill_md)
+        meta, _body = split_frontmatter(text)
+        label = f"domain-skills/{name}/SKILL.md"
+        # --- frontmatter lint (Agent Skills rules this repo adopted) ------ #
+        if meta.get("name") != name:
+            problems.append(f"{label}: frontmatter name {meta.get('name')!r} != manifest name {name!r}")
+        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name) or len(name) > 64:
+            problems.append(f"{label}: name is not kebab-case within 64 characters")
+        if "claude" in name or "anthropic" in name:
+            problems.append(f"{label}: name must not contain 'claude' or 'anthropic'")
+        desc = " ".join(meta.get("description", "").split())
+        if not desc or len(desc) > 1024 or "<" in desc or ">" in desc:
+            problems.append(f"{label}: description missing, over 1024 characters, or holds angle brackets")
+        if "Use when" not in desc or not any(w in desc for w in ("Do not use", "Not for")):
+            problems.append(f"{label}: description must say when to use it and when not to")
+        for tool in entry.get("tools", []):
+            if tool["name"].lower() not in desc.lower():
+                problems.append(f"{label}: description does not name covered tool {tool['name']!r}")
+        # --- budgets and required sections ------------------------------- #
+        words = len(text.split())
+        if words > DOMAIN_SKILL_BUDGET:
+            problems.append(f"{label}: {words} words over the {DOMAIN_SKILL_BUDGET}-word budget; move depth into references/")
+        headings = " | ".join(m.group(1).lower() for m in re.finditer(r"^#{1,6}\s+(.*)$", text, re.M))
+        for needed in ("when to use", "when not", "preflight", "method", "evidence",
+                       "cannot prove", "fallback", "pairs with"):
+            if needed not in headings:
+                problems.append(f"{label}: no heading containing {needed!r} — read alone, the skill must still work")
+        if entry.get("gated"):
+            if "authorization" not in headings:
+                problems.append(f"{label}: gated skill has no authorization gate heading")
+            gate = _section(text, "authorization")
+            if "stop" not in gate.lower():
+                problems.append(f"{label}: the authorization gate never says to stop when scope is missing")
+        steps = re.findall(r"^\d+\.\s+", _section(text, "method"), re.M)
+        if not 6 <= len(steps) <= 10:
+            problems.append(f"{label}: method has {len(steps)} numbered steps; 6 to 10 required")
+        if "```" not in _section(text, "evidence"):
+            problems.append(f"{label}: evidence section holds no inline template (fenced block)")
+        # --- every covered tool must be checkable without the skill lying - #
+        whole = text + "\n" + "\n".join(read(p) for p in sorted(skill_dir.rglob("*.md")) if p != skill_md)
+        for tool in entry.get("tools", []):
+            for key in ("check", "install"):
+                if tool.get(key) and tool[key] not in whole:
+                    problems.append(f"{label}: tool {tool['name']}: {key} string {tool[key]!r} appears nowhere in the skill or its references")
+        # --- references: budget, live links ------------------------------- #
+        for p in sorted(skill_dir.rglob("*.md")):
+            rel = p.relative_to(src_root)
+            ref_words = len(read(p).split())
+            if p != skill_md and ref_words > DOMAIN_REFERENCE_BUDGET:
+                problems.append(f"domain-skills/{rel}: {ref_words} words over the {DOMAIN_REFERENCE_BUDGET}-word reference budget")
+            masked = mask_code_spans(read(p))
+            for _link_label, target in LINK_RE.findall(masked):
+                head = target.partition("#")[0]
+                if not head or head.startswith(("http://", "https://", "mailto:")):
+                    continue
+                if not (p.parent / head).resolve().exists():
+                    problems.append(f"domain-skills/{rel}: dead link {target!r}")
+            problems += safety_problems(read(p), f"domain-skills/{rel}")
+            overlap = _word_shingles(read(p)) & one_skill_shingles
+            if overlap:
+                problems.append(f"domain-skills/{rel}: duplicates one-skill text "
+                                f"({' '.join(sorted(overlap)[0])[:80]}…) — domain skills must not copy the always-on rules")
+    return problems
+
+
+def deterministic_zip_bytes(src_dir: Path, arc_root: str) -> bytes:
+    """A zip whose bytes depend only on the files' contents and names.
+
+    `zipfile` otherwise records mtimes, so two packs of the same tree differ
+    and no check can compare a published zip against a fresh pack. The legacy
+    compiler solved this the same way (fixed `ZipInfo` timestamp)."""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for p in sorted(src_dir.rglob("*")):
+            if not p.is_file():
+                continue
+            info = zipfile.ZipInfo(str(Path(arc_root) / p.relative_to(src_dir)), date_time=ZIP_DATE)
+            info.external_attr = 0o644 << 16
+            info.compress_type = zipfile.ZIP_DEFLATED
+            z.writestr(info, p.read_bytes())
+    return buf.getvalue()
+
+
+def domain_paste_text(entry: dict) -> str:
+    """The paste-only copy of a domain skill: SKILL.md under a method-only
+    banner, mirroring `pseudo-skills/one-skill.md`. The banner travels with
+    the file because a pasted skill has no filesystem beside it."""
+    body = read(DOMAIN_SRC / entry["name"] / "SKILL.md")
+    head = (
+        f"> **Paste-only setup — method only.** This is the `{entry['name']}` domain skill\n"
+        "> without its reference files: the gate, method and fallback below stand alone,\n"
+        "> but per-tool preflight detail lives in `references/` beside the real skill in\n"
+        f"> `skills/{entry['name']}/`. Paste a reference next to this file when a task needs one.\n"
+        "> Nothing here installs any tool; preflight names what to check.\n\n"
+    )
+    return head + body
+
+
+def cmd_pack() -> None:
+    """Validate `domain-skills/` and write every mirror it publishes."""
+    problems = validate_domain_tree()
+    if problems:
+        for p in problems:
+            print(f"  domain: {p}", file=sys.stderr)
+        die(f"{len(problems)} domain-skill problem(s); fix domain-skills/, not the mirrors")
+    entries = load_domain_manifest()
+    for entry in entries:
+        name, src = entry["name"], DOMAIN_SRC / entry["name"]
+        for root in DOMAIN_PUBLISH_ROOTS:
+            dest = root / name
+            if dest.exists():
+                shutil.rmtree(dest)
+            shutil.copytree(src, dest)
+        zpath = DOMAIN_ZIP_DIR / f"{name}.zip"
+        zpath.parent.mkdir(parents=True, exist_ok=True)
+        zpath.write_bytes(deterministic_zip_bytes(src, name))
+        write(REPO / "pseudo-skills" / f"{name}.md", domain_paste_text(entry))
+        print(f"  domain skill → skills/{name} + claude-skills/domain/{name} "
+              f"(+ zips/{name}.zip, {zpath.stat().st_size // 1024} KiB, + pseudo-skills/{name}.md)")
+    if not entries:
+        print("  domain: manifest lists no skills; nothing packed")
+
+
+def check_domain() -> None:
+    """`check`'s half of the domain contract: sources valid, mirrors current,
+    zips the deterministic bytes a fresh pack would write."""
+    problems = validate_domain_tree()
+    if problems:
+        for p in problems:
+            print(f"  domain: {p}", file=sys.stderr)
+        die(f"{len(problems)} domain-skill problem(s); fix domain-skills/, not the mirrors")
+    for entry in load_domain_manifest():
+        name, src = entry["name"], DOMAIN_SRC / entry["name"]
+        for root in DOMAIN_PUBLISH_ROOTS:
+            dest = root / name
+            if not dest.exists():
+                die(f"{dest.relative_to(REPO)} is missing — run `python one-skill/build.py pack`")
+            for p in sorted(src.rglob("*")):
+                if p.is_file():
+                    mirror = dest / p.relative_to(src)
+                    if not mirror.exists() or mirror.read_bytes() != p.read_bytes():
+                        die(f"{mirror.relative_to(REPO)} is stale — run `python one-skill/build.py pack`")
+            extra = [q for q in dest.rglob("*") if q.is_file() and not (src / q.relative_to(dest)).exists()]
+            if extra:
+                die(f"{dest.relative_to(REPO)} holds files domain-skills/ no longer has: "
+                    f"{', '.join(str(q.relative_to(dest)) for q in extra[:3])}")
+        zpath = DOMAIN_ZIP_DIR / f"{name}.zip"
+        if not zpath.exists() or zpath.read_bytes() != deterministic_zip_bytes(src, name):
+            die(f"{zpath.relative_to(REPO)} is stale — run `python one-skill/build.py pack`")
+        paste = REPO / "pseudo-skills" / f"{name}.md"
+        if not paste.exists() or read(paste) != domain_paste_text(entry):
+            die(f"pseudo-skills/{name}.md is stale — run `python one-skill/build.py pack`")
+
+
+_ROUTING_REFUSAL_RES = [re.compile(p, re.I) for p in (
+    r"bypass\w*\s+(the\s+)?(anti[-\s]?cheat|drm|licen[cs]e|ownership)",
+    r"(crack|remove|disable)\w*\s+(the\s+)?(drm|licen[cs]e\s+check|anti[-\s]?cheat|copy\s+protection)",
+    r"cheat\w*\s+(in|on)\s+(an?\s+)?(online|multiplayer)",
+)]
+_AUTHORIZED_RE = re.compile(r"\b(i\s+own|my\s+own|own\s+it|i\s+wrote|authori[sz]ed|permission|scope|staging)\b", re.I)
+
+
+def score_routing(query: str, entries: list[dict] | None = None) -> dict:
+    """Deterministic keyword proxy for skill triggering. Not a live agent.
+
+    Scores a query against each domain manifest entry's declared keywords
+    (phrases, weighted), expands declared companions (`pairs_with`), and
+    refuses routing for prohibited-instruction requests. It measures whether
+    the *descriptions' vocabulary* separates the fixture cases; it cannot
+    measure how a host's real router weighs a frontmatter description, and no
+    result here is evidence about live triggering. Threshold: score >= 2.
+    """
+    if entries is None:
+        entries = load_domain_manifest()
+    text = query.lower()
+    if any(r.search(query) for r in _ROUTING_REFUSAL_RES):
+        return {"refused": True, "load": {}, "authorized": bool(_AUTHORIZED_RE.search(query))}
+    load: dict[str, dict] = {}
+    for entry in entries:
+        hits, score = [], 0
+        for kw in entry.get("keywords", []):
+            phrase, weight = (kw if isinstance(kw, list) else [kw, 1])
+            if phrase.lower() in text:
+                hits.append(phrase)
+                score += int(weight)
+        if score >= 2:
+            load[entry["name"]] = {"score": score, "hits": hits, "via": "keywords"}
+    for entry in entries:
+        if entry["name"] in load:
+            for companion in entry.get("pairs_with", []):
+                load.setdefault(companion, {"score": 0, "hits": [], "via": f"companion of {entry['name']}"})
+    return {"refused": False, "load": load, "authorized": bool(_AUTHORIZED_RE.search(query))}
+
+
+# --------------------------------------------------------------------------- #
 # install — mirror the single skill into every path this repo publishes
 # --------------------------------------------------------------------------- #
 INSTALL_DIRS = [
@@ -1249,6 +1629,8 @@ def cmd_install(man: Manifest) -> None:
     )
     write(pseudo, head + body)
     print(f"  paste file → {pseudo.relative_to(REPO)}")
+
+    cmd_pack()
 
 
 # --------------------------------------------------------------------------- #
@@ -1310,18 +1692,21 @@ def cmd_check(man: Manifest) -> None:
                 if q.exists() and read(q) != read(p):
                     die(f"one-skill/dist is out of step with a fresh build: {p.relative_to(base / 'skill')}")
     fam_note = ""
+    check_domain()
+    validate_readme_numbers(man, stats)
     if stats.get("families"):
         fam_note = "; fragments " + ", ".join(
             f"{k} ({v['skills']} skills, {v['words'] // 1000}k words of reference)"
             for k, v in stats["families"].items())
+    dom_note = f"; {len(load_domain_manifest())} domain skills current; README numbers derived and matching"
     print(f"published copies are current ({stats['skills']} skills, "
-          f"{stats['references']} references, {len(stats['dead_links'])} dead links{fam_note})")
+          f"{stats['references']} references, {len(stats['dead_links'])} dead links{fam_note}{dom_note})")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="build the one skill from sources.json")
     ap.add_argument("cmd", nargs="?", default="all",
-                    choices=["sync", "build", "install", "all", "check"])
+                    choices=["sync", "build", "install", "all", "check", "pack", "stats"])
     ap.add_argument("--only", help="with sync: vendor one source slug")
     args = ap.parse_args()
     man = Manifest(MANIFEST_PATH)
@@ -1333,6 +1718,11 @@ def main() -> int:
         cmd_install(man)
     elif args.cmd == "check":
         cmd_check(man)
+    elif args.cmd == "pack":
+        cmd_pack()
+    elif args.cmd == "stats":
+        with tempfile.TemporaryDirectory() as td:
+            print(json.dumps(repo_stats(man, build_all(man, Path(td))), indent=2, sort_keys=True))
     else:
         report(build_all(man, DIST_DIR))
         cmd_install(man)
