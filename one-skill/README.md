@@ -8,7 +8,7 @@ including the three fragment fallbacks under `dist/families/`.
 one-skill/
 ├── sources.json      ★ the manifest: sources → skills → buckets. The only file to edit.
 ├── written/            this bundle's own prose, for a job no upstream skill covers
-├── build.py            sync · build · install · all · check
+├── build.py            sync · build · install · all · check · pack · stats
 ├── core/               the hand-written integration layer (the merge's judgement)
 │   ├── 00-open.md          what the layers are, the one line
 │   ├── 10-precedence.md    who wins, by destination + the named conflicts
@@ -44,6 +44,8 @@ python one-skill/build.py install   # mirror dist into every install path + rebu
                                     # (the three fragments included)
 python one-skill/build.py all       # build + install
 python one-skill/build.py check     # rebuild in a temp dir and fail if dist/ is stale
+python one-skill/build.py pack      # validate + publish the domain skills (../domain-skills/)
+python one-skill/build.py stats     # the derived counts the root README is gated on
 python -m pytest one-skill/tests -q
 ```
 
