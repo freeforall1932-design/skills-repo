@@ -140,8 +140,9 @@ From the user, explicitly. Do not reverse them without asking.
    release renames a section, the strips/keeps/replaces go stale — and the build fails
    loudly instead of shipping a dead rule. `git checkout -- <path>` on an uncommitted
    `core/` file will not restore it, so do not probe the gates that way.
-10. **ZIP ceiling.** 229 KiB for the main skill (fragments: 48–115 KiB). If the app
-    upload limit becomes a problem, trim `references/`, never the router.
+10. **ZIP ceiling.** 248 KiB for the main skill (fragments: 53–124 KiB; domain
+    skills: 2–6 KiB each). If the app upload limit becomes a problem, trim
+    `references/`, never the router.
 
 ## Gotchas
 
