@@ -6,16 +6,16 @@ by hand is a mistake — the next build overwrites it.
 
 | source | upstream | revision | files vendored | license |
 |---|---|---|---|---|
-| this repository — grug, caveman, and the register rules | `freeforall1932-design/skills-repo` | `e7a24a98e3` | 29 | Unlicense (root) / MIT (caveman-universal) |
-| anti-slop — the design filter (miqdadbadjuber/anti-slop) | `miqdadbadjuber/anti-slop` | `388cbe3b6c` | 7 | MIT |
-| mattpocock/skills — engineering, productivity, misc | `mattpocock/skills` | `49dd158d10` | 57 | MIT |
-| Caveman — the token-efficiency voice (upstream v3.2.0) | `JuliusBrussee/caveman` | `2e08b9177c` | 22 | MIT |
-| The Grug Brained Developer (grugbrain.dev) | `bigskysoftware/grugbrain.dev` | `b1b1ca855c` | 1 | CC BY-SA 4.0 (site) |
-| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `f7a32ae62d` | 9 | Apache-2.0 |
-| mem0 — integration discipline (mem0ai/mem0) | `mem0ai/mem0` | `b7ad69afda` | 6 | Apache-2.0 |
-| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `58ab0b98d2` | 2 | MIT |
-| Anthropic engineering plugin 1.2.0 — ten workflow skills | ``Engineering-1.2.0-v1.zip` (committed archive)` | `sha256:07e` | 10 | see the pack (plugin.json names Anthropic as author) |
-| Anthropic skill-creator — authoring discipline for skills | ``Skill creator copy-v1.zip` (committed archive)` | `sha256:64e` | 1 | see the pack (LICENSE.txt inside the skill directory) |
+| this repository — grug, caveman, and the register rules | `freeforall1932-design/skills-repo` | `93d8fb6496` | 29 | Unlicense (root) / MIT (caveman-universal) |
+| anti-slop — the design filter (miqdadbadjuber/anti-slop) | `miqdadbadjuber/anti-slop` | `941b1532f9` | 7 | MIT |
+| mattpocock/skills — engineering, productivity, misc | `mattpocock/skills` | `4ae2317ddb` | 57 | MIT |
+| Caveman — the token-efficiency voice (upstream v3.2.0) | `JuliusBrussee/caveman` | `2e08b9177c` | 22 | Apache-2.0 |
+| The Grug Brained Developer (grugbrain.dev) | `bigskysoftware/grugbrain.dev` | `b1b1ca855c` | 1 | Grug 1-Clause (repo LICENSE at pin) |
+| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `6b7ae2ebe4` | 9 | Apache-2.0 |
+| mem0 — integration discipline (mem0ai/mem0) | `mem0ai/mem0` | `753496cf14` | 6 | Apache-2.0 |
+| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `a4065941f1` | 2 | Apache-2.0 |
+| Anthropic engineering plugin 1.2.0 — ten workflow skills | ``Engineering-1.2.0-v1.zip` (committed archive)` | `sha256:07e` | 10 | not stated in the pack (see THIRD_PARTY_NOTICES.md) |
+| Anthropic skill-creator — authoring discipline for skills | ``Skill creator copy-v1.zip` (committed archive)` | `sha256:64e` | 1 | Apache-2.0 (LICENSE.txt in the pack) |
 
 ## What the merge changed
 
@@ -43,6 +43,7 @@ packaging convenient.
 | Grug reasoning — internal, never shown | `local/grug-reasoning` | Not carried: Reference material, Language. Literal edits recorded in `replace`: `` Pair with `be-brief-output` for documents or `caveman-output` for chat. ``. |
 | Ralph Wiggum loop — iterative polish | `local/ralph-wiggum` |  Literal edits recorded in `replace`: `Ralph complements the caveman-be-brief skill:`; `1. **caveman-be-brief** produces tight professional output (pass 1)`; `caveman-be-brief still runs`. |
 | Grug engine — the full internal reasoning rule set | `local/grug-engine` | Kept alongside the short `grug-reasoning` section because it holds what that one omits: hard length budgets, the sentence and paragraph rules for the internal trace, the word-swap table, the abbreviation trap and the continuation protocol for a truncated context. Not carried: CRITICAL DISTINCTION: TWO MODES, LANGUAGE, RALPH WIGGUM LOOP (Optional Iteration), STICKY REASONING MODE, EXIT PHRASES (Return to normal reasoning). |
+| Field practices — notes first, a reversible lab, three strikes | `written/field-practices.md` — written for this bundle | Written for this bundle, not carried from upstream: the domain-neutral half of rehan-remade/universal-modder's workflow (MIT, inspected at 9811709d, 2026-11-02) that this bundle did not already say. Its vertical-slice and runtime-verification beats are already carried by tdd, to-tickets and diagnosing-bugs, and its lessons-learned beat by retro, so only the missing three are written out here. |
 | Grill me — the alias | `mattpocock-skills/grill-me` | Upstream this is a whole skill: one line that routes to `grilling`. Merged, there is no second skill to call, so the line is kept as the trigger and the work happens in the `grilling` section of this file. |
 | Caveman review — one line per finding, in code order | `caveman/caveman-review-code` | Carried next to mattpocock's `code-review`, which wants an explanation per finding. The two disagree on output length on purpose: read the user's own skill for shape, this one for the severity ladder and the 'no praise, no hedging' rule. |
 | Work pattern · investigate first | `caveman/investigate-first` | Upstream original of the six-work-pattern table in the always-on rules. The table stays in `SKILL.md` because it never turns off; this is the full text for when one pattern is chosen. |

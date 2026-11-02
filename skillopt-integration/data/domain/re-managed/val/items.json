@@ -1,0 +1,22 @@
+[
+  {
+    "id": "man-obfuscated",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "Every type in my DLL is named a.b.c. Analyse the payment flow anyway.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "obfuscat"
+      ]
+    ],
+    "must_any": [
+      [
+        "confidence",
+        "ceiling",
+        "downgrade"
+      ]
+    ],
+    "must_not": []
+  }
+]

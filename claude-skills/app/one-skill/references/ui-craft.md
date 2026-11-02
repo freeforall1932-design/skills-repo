@@ -20,9 +20,9 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 
 > `anti-slop` / `antislop-core` / always for interface work
 
-> **Merge note.** The upstream install wizard and its pointer-block step are dropped: in this merged skill every sibling is already inside the same skill, so there is nothing for the agent to fetch and no entry file to edit.
+> **Merge note.** Upstream removed its first-run install wizard in v3.2.25, so the strip that used to name it is gone with it; what remains stripped is the update pointer for standalone installs. In this merged skill every sibling is already inside the same skill, so there is nothing for the agent to fetch and no entry file to edit.
 
-> *(not carried here: First-Run Install Wizard, Already installed, and the user asks how to update. Install-time instructions: a merged skill has nothing to fetch and no entry file to edit.)*
+> *(not carried here: Already installed, and the user asks how to update. Install-time instructions: a merged skill has nothing to fetch and no entry file to edit.)*
 
 > Anti Slop: Rules for AI Coding Agents
 
@@ -124,7 +124,7 @@ Anything presented as fact (testimonials, statistics, security claims) is real a
 
 ### Part 1: AI Slop Patterns (Warning Signs)
 
-These are the most common patterns found in AI-generated designs. Use this table to **audit** your output: scan for clusters, then ask each one "what does this serve?" A single pattern from this list is fine if it serves a purpose, unless a **Hard Gate** rule in Part 2 forbids it (R-02, R-03, R-17, R-18, R-23 to R-28, R-32 to R-38). What makes a design slop is many of these appearing together with no reason. This is a **diagnostic scan, not a ban list**: Part 1 itself bans nothing, but the Hard Gate rules in Part 2 are absolute, and every other pattern must pass the purpose test (Part 2, Purpose-Gate group).
+These are the most common patterns found in AI-generated designs. Use this table to **audit** your output: scan for clusters, then ask each one "what does this serve?" A single pattern from this list is fine if it serves a purpose, unless a **Hard Gate** rule in Part 2 forbids it (R-02, R-03, R-17, R-18, R-23 to R-28, R-32 to R-40). What makes a design slop is many of these appearing together with no reason. This is a **diagnostic scan, not a ban list**: Part 1 itself bans nothing, but the Hard Gate rules in Part 2 are absolute, and every other pattern must pass the purpose test (Part 2, Purpose-Gate group).
 
 #### Visual & Color
 
@@ -216,9 +216,9 @@ These are the most common patterns found in AI-generated designs. Use this table
 
 ---
 
-### Part 2: Mandatory Rules (R-01 to R-38, grouped)
+### Part 2: Mandatory Rules (R-01 to R-40, grouped)
 
-All 38 rules still apply. They are grouped into three tiers so the mechanism is explicit: **Hard Gate** rules are absolute, **Purpose-Gate** rules allow the technique but require a written reason, **Quality Locks** are consistency requirements.
+All 40 rules still apply. They are grouped into three tiers so the mechanism is explicit: **Hard Gate** rules are absolute, **Purpose-Gate** rules allow the technique but require a written reason, **Quality Locks** are consistency requirements.
 
 #### Group 1: Hard Gate (absolute, no exceptions)
 
@@ -374,6 +374,30 @@ If an element genuinely cannot have a destination yet, remove it instead of ship
 - **FORBIDDEN**: fabricating content that looks realistic (fake testimonials, invented features, fake statistics, ghost links, fictional team or people)
 - Placeholders are written as what they are: `[REAL DATA]`, "Coming soon", never disguised as final (see R-23)
 - An empty section is better than a fabricated one
+
+##### R-39 — Accessible Semantics & Interaction Affordances
+
+Every control and image the task builds or edits must say what it is; every control must also show that it can be used. Keyboard operation and the focus indicator are R-32; touch target size is R-03.
+
+- **REQUIRED**: every enabled interactive element (`a[href]`, `button`, `summary`, `select`, `label[for]`, a label wrapping its checkbox or radio, checkbox, radio, custom `role="button"`/`tab`/`switch`) shows `cursor: pointer`, set once in the base CSS layer; disabled controls show `cursor: not-allowed`
+- **REQUIRED**: actions are `<button>`, navigation is `<a href>` to a real destination; no clickable `div`/`span`, and a custom control that cannot be native also meets R-32
+- **REQUIRED**: every control has an accessible name (icon-only buttons get `aria-label` or visually hidden text, the icon gets `aria-hidden="true"`); every image has `alt` (empty `alt=""` when decorative); every form field has a visible `<label>`
+- **REQUIRED**: distinct hover, active, and disabled states, never color alone
+- **REQUIRED**: non-essential motion stops under `prefers-reduced-motion: reduce`; anything moving longer than 5 seconds has a pause control
+- **FORBIDDEN**: ARIA that contradicts the native role
+- **Only when the task produces a whole HTML document** (a page or an app shell, not a component):
+  - **REQUIRED**: `<html lang>`, a unique `<title>`, landmarks (`header`, `nav`, `main`, `footer`), one `h1` and no skipped heading levels
+  - **FORBIDDEN**: `user-scalable=no` or `maximum-scale=1` in the viewport meta
+- A UI that looks finished but cannot be perceived or operated by everyone is unfinished
+
+##### R-40 — Performance Mechanisms
+
+The gate checks what the code shows. The Core Web Vitals thresholds (LCP, INP, CLS at p75) are field data from real users, which the agent writing the page does not have, so they live in `antislop-ui`'s `references/CORE-WEB-VITALS.md` for when real measurements exist.
+
+- **REQUIRED**: every `<img>`, `<video>`, and `<iframe>` has `width` and `height` (or `aspect-ratio`); space for late content (ads, embeds, banners) is reserved
+- **REQUIRED**: the hero image is an `<img>` in the HTML, never `loading="lazy"`, with `fetchpriority="high"`
+- **REQUIRED**: no render-blocking third-party script in `<head>`; non-critical scripts are `defer`/`async` or loaded on interaction
+- **FORBIDDEN**: reporting a Lighthouse score or a Web Vitals number that was not measured (see R-36). If it was not measured, say "not measured"
 
 #### Group 2: Purpose-Gate (technique allowed, purpose required)
 
@@ -618,6 +642,8 @@ Before declaring the design done, answer every question below. All answers must 
 - [ ] Are there any fabricated security, compliance, performance, or customer claims? *(R-36)*
 - [ ] Was the design built without direction and not labeled *"draft without direction"* with honest default dials ENERGY 1 / RHYTHM 1 / MOTION 1? *(R-37)*
 - [ ] Is there any realistically-styled content that was fabricated (testimonials, features, statistics, ghost links, fictional team) without a real source? *(R-38)*
+- [ ] Does any control lack `cursor: pointer`, a native element, an accessible name, or hover/active/disabled states; any field a visible label or image its `alt`; does motion ignore `prefers-reduced-motion` or run longer than 5 seconds without a pause control; does ARIA contradict the native role; or does a whole document lack `lang`, `<title>`, or landmarks, or block zoom? *(R-39)*
+- [ ] Does any media element ship without dimensions, any late content without reserved space, the hero image load lazily or without `fetchpriority="high"`, a third-party script block render in `<head>`, or a performance number get reported that was not measured? *(R-40)*
 
 #### Block 2: Purpose-Gate (technique allowed, reason required)
 
@@ -958,6 +984,38 @@ The patterns above are landing-page shapes. These are the app-side equivalents: 
 - **Why:** a page where everything animates has no focal point. Motion becomes wallpaper.
 - **Fix:** choreograph motion to a purpose and to the MOTION dial (R-19). Not everything moves. The hero speaks, the supporting elements stay calm. Claimed "cinematic" pages must actually move; claimed "static" pages must not.
 
+### Performance
+
+A page that looks finished but shifts under the thumb or shows its main image last was built for the screenshot, not for use. R-40 gates what the code shows; the LCP, INP, and CLS thresholds are field data and live in `references/CORE-WEB-VITALS.md` in the upstream antislop-ui skill (not carried here: field-data thresholds to read upstream when a real measurement exists), read when a real measurement exists. Never report a number that was not measured (R-36).
+
+#### Unsized Media That Shifts the Layout
+
+- **Tell:** `<img>`, `<video>`, `<iframe>`, ads, or embeds with no `width`/`height` or `aspect-ratio`; a banner or late font that pushes content down.
+- **Why:** the page jumps while people read or tap, and they hit the wrong control (R-40).
+- **Fix:** give every media element intrinsic dimensions or `aspect-ratio`, reserve space for anything that loads late, and overlay banners instead of inserting them above content.
+
+#### Hero Image Loaded Like Any Other Image
+
+- **Tell:** the largest above-the-fold image is `loading="lazy"`, set as a CSS background, or injected by JavaScript.
+- **Why:** the browser discovers the most important pixel last, and the first impression is an empty box (R-40).
+- **Fix:** an `<img>` in the HTML with `fetchpriority="high"`, never lazy; lazy-load only what is below the fold.
+
+#### Render-Blocking Third-Party Script
+
+- **Tell:** synchronous analytics, chat, or tag-manager scripts in `<head>`.
+- **Why:** nothing paints until someone else's server answers, which on a phone on a slow network is the whole first impression (R-40).
+- **Fix:** `defer`/`async`, or load on interaction.
+
+### Page Basics
+
+Optional page-level checks. Not a gate.
+
+#### Web Baseline Checklist
+
+- **Tell:** a page shipped with no doctype, mixed `http://` content, a secret in client code, or an unpinned third-party script.
+- **Why:** none of it shows in a screenshot, so it is the first thing skipped, and each one is expensive to find after launch.
+- **Fix:** run the checklist in `references/WEB-BASELINE.md` in the upstream antislop-ui skill (not carried here) when the task asks for a production-ready page or a web-quality review.
+
 ### UI Skill Checklist
 
 Run these alongside the core Delivery Gate when the task is UI work. All answers must be **yes**:
@@ -977,14 +1035,15 @@ Run these alongside the core Delivery Gate when the task is UI work. All answers
 - [ ] Do empty form fields and table cells stay empty or carry honest placeholders (Your Name, email@example.com) instead of fake-looking data (John Doe, johndoe@example.com)? (R-23, R-38)
 - [ ] Do the empty, loading, and error states name the cause and the next action instead of saying "No data"? (R-27)
 - [ ] Does the page hold up at every breakpoint, theme, and state, and pass keyboard-only use? (R-03, R-34, C-4)
+- [ ] Is every media element sized, the hero image in the HTML with `fetchpriority="high"` and not lazy, no third-party script blocking render, and every reported metric actually measured? (R-40, R-36)
 
 ## Pick the diagram type, then be honest about the artifact
 
 > `archify` / `archify-method` / any request for a system, flow, sequence, dataflow or lifecycle picture
 
-> **Merge note.** Three sections of a 1 456-word skill: the five-type router, the Mermaid mapping, and the reporting rule. The renderer sections (fast authoring path, delivery gates, setup and fallback, update awareness) are dropped by name because every one of them runs the Node toolchain. The three declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step.
+> **Merge note.** Two sections of a 2 500-word skill at the 2026-11-02 pin: the diagram-type router (ten native types now) and the Mermaid mapping. The Output section is no longer kept: upstream rewrote it into renderer receipts plus an offer to enrol a proactive mode in the user's global rules file, and a merged skill produces no receipts and edits no entry file. The remaining renderer sections are dropped by name as before, and the two declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step. The honesty rule from the dropped Output section is kept here verbatim in substance: Do not claim success for a command that did not run, and do not claim visual inspection you did not perform.
 
-> *(not carried here: Existing candidate handoff, Fast authoring path, Update awareness, Delivery, Optional viewer capabilities, Setup and fallback. Its procedure is a run of the upstream tool, which this bundle does not ship. Nothing to fetch, install or delegate to inside a merged skill.)*
+> *(not carried here: Choose the artifact, Existing candidate handoff, Native diagram authoring, Update awareness, Delivery, Optional viewer capabilities, Setup and fallback, Output. Its procedure is a run of the upstream tool, which this bundle does not ship. Nothing to fetch, install or delegate to inside a merged skill.)*
 
 ### Type router
 
@@ -995,10 +1054,15 @@ Run these alongside the core Delivery Gate when the task is UI work. All answers
 | `sequence` | API call chains, request lifecycles, async traces, returns; back-and-forth between people | `schemas/sequence.schema.json` | `examples/cache-miss-request.sequence.json` |
 | `dataflow` | Pipelines, ETL/ELT, lineage, governance, consumers; where money or documents go | `schemas/dataflow.schema.json` | `examples/product-analytics.dataflow.json` |
 | `lifecycle` | State/status transitions, retries, waiting and terminal states; where an application or order stands | `schemas/lifecycle.schema.json` | `examples/deployment-release.lifecycle.json` |
+| `erd` | Tables/entities, attributes, primary/foreign/unique keys, cardinality between them | `schemas/erd.schema.json` | `examples/orders.erd.json` |
+| `tree` | Single-parent containment: repository/module trees, capability or feature breakdowns, org-style decomposition | `schemas/tree.schema.json` | `examples/payment-platform.tree.json` |
+| `class` | Classes, interfaces, selected members, and dependency/association/inheritance/realization/composition between types | `schemas/class.schema.json` | `examples/payments.class.json` |
+| `timeline` | When things happened: incident reviews, release histories, timestamped events on a proportional clock with source lanes | `schemas/timeline.schema.json` | `examples/payment-incident.timeline.json` |
+| `waterfall` | Where the time went: span durations, overlap, and nesting of one request or agent run on a common time axis | `schemas/waterfall.schema.json` | `examples/checkout-request.waterfall.json` |
 
-When ambiguous, choose the row whose `Use for` column matches the question being asked. The `Schema` and `Example` cells name files in the upstream package, which this skill does not carry: read the type and its use, then author the diagram by hand. Scenario proof examples are structural references, not facts to copy.
+When choosing among native diagram types is ambiguous, choose the row whose `Use for` column matches the question being asked. The `Schema` and `Example` cells name files in the upstream package, which this skill does not carry: read the type and its use, then author the diagram by hand. Scenario proof examples are structural references, not facts to copy.
 
-For an everyday subject, keep the same five modes and semantic types, then name them for the reader: choose everyday `icon` values and `meta.legend` labels, the way the upstream authoring contract asks of its node icons. Ask for missing personal facts instead of inventing dates, amounts, or rules.
+For an everyday subject, keep the same diagram modes and semantic types, then name them for the reader: choose everyday `icon` values and `meta.legend` labels, the way the upstream authoring contract asks of its node icons. Ask for missing personal facts instead of inventing dates, amounts, or rules.
 
 ### Mermaid input
 
@@ -1007,7 +1071,5 @@ Read Mermaid for topology and meaning, then author fresh Archify JSON; do not me
 - `flowchart` / `graph` → `workflow`, or `architecture` for a component map.
 - `sequenceDiagram` → `sequence`; participants become semantic participants and arrows become messages.
 - `stateDiagram` → `lifecycle`; states and transitions retain meaning, not Mermaid style.
-
-### Output
-
-Report what you actually have: the file you wrote and where, the diagram type you chose, and explicitly which of these you did not do — validate against a schema, render, open in a browser, review it visually. Do not claim success for a command that did not run, and do not claim visual inspection you did not perform.
+- `erDiagram` → `erd`; entity and relationship names, keys, and cardinality retain meaning, not Mermaid style.
+- `classDiagram` → `class`; type kinds, selected members, and relationship kinds retain meaning, not Mermaid style.

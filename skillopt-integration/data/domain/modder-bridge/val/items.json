@@ -1,0 +1,29 @@
+[
+  {
+    "id": "mod-version-drift",
+    "skill": "modder-bridge",
+    "language": "en",
+    "instruction": "The game just auto-updated. My mod notes say offset 0x41F0. Continue?",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "re-pin",
+        "repin",
+        "version"
+      ]
+    ],
+    "must_any": [
+      [
+        "hash"
+      ],
+      [
+        "drift",
+        "invalidate",
+        "patch"
+      ]
+    ],
+    "must_not": [
+      "same offset works"
+    ]
+  }
+]

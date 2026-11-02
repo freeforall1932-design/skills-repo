@@ -1,0 +1,76 @@
+[
+  {
+    "id": "man-il-verify",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "Does my .NET app's async loader retry three times? ILSpy C# view looks like it.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "-il",
+        "IL view"
+      ]
+    ],
+    "must_any": [
+      [
+        "async",
+        "state machine"
+      ],
+      [
+        "decompiled",
+        "reconstructed"
+      ]
+    ],
+    "must_not": [
+      "yes, exactly three"
+    ]
+  },
+  {
+    "id": "man-cpp2il-body",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "Cpp2IL recovered a TakeDamage body for my game. Can I quote it as the real logic?",
+    "must_keep": [
+      "TakeDamage"
+    ],
+    "hard_any": [
+      [
+        "hypothesis"
+      ],
+      [
+        "GameAssembly",
+        "native"
+      ]
+    ],
+    "must_any": [
+      [
+        "stub",
+        "recovered"
+      ]
+    ],
+    "must_not": [
+      "yes, quote it"
+    ]
+  },
+  {
+    "id": "man-pair-hashes",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "Run Cpp2IL on these files from two different game folders.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "hash",
+        "sha256"
+      ]
+    ],
+    "must_any": [
+      [
+        "version",
+        "pair",
+        "mismatch"
+      ]
+    ],
+    "must_not": []
+  }
+]

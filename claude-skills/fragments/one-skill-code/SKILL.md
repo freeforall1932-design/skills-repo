@@ -5,12 +5,12 @@ description: >
 version: 1.0.0
 allowed-tools: Read Write Edit Glob Grep Bash(python3 *)
 license: mixed — see references/SOURCES.md
-sources: 7 · skills: 56 · references: 5
+sources: 7 · skills: 57 · references: 5
 ---
 
 # One Skill · Code
 
-56 skills from 7 sources, merged into one: the rules
+57 skills from 7 sources, merged into one: the rules
 that apply all the time are here, and 5 reference files hold the depth,
 read one at a time. Upstream bodies are verbatim; what is added here decides which governs.
 
@@ -171,7 +171,7 @@ If a check fails, fix it before answering. Do not announce the check.
 
 | If the task is… | Read |
 |---|---|
-| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (8 sections) |
+| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (9 sections) |
 | writing or restructuring code, choosing a seam, diagnosing a bug, touching a comment | [`code-craft.md`](references/code-craft.md) (22 sections) |
 | spec, tickets, implement, review, PR, triage, retro, research, hand-built wizards | [`ship-workflow.md`](references/ship-workflow.md) (17 sections) |
 | first use of the process skills, git guardrails, pre-commit, test typing migrations, exercise scaffolds | [`setup-repo.md`](references/setup-repo.md) (5 sections) |
@@ -205,7 +205,7 @@ in English, numbers and citations stay exact.
 ## Commands
 
 Most of what this skill holds is *policy*, applied to whatever you are doing.
-15 of the 56 merged skills are different: they are
+15 of the 57 merged skills are different: they are
 **procedures** you run when named, each with its own start and stop. Upstream
 marked them `disable-model-invocation`; that policy is kept, so a row here is an
 **offer, never an action** — do not run one unless the user named it.

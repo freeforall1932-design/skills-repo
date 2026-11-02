@@ -6,16 +6,16 @@ by hand is a mistake — the next build overwrites it.
 
 | source | upstream | revision | files vendored | license |
 |---|---|---|---|---|
-| this repository — grug, caveman, and the register rules | `freeforall1932-design/skills-repo` | `e7a24a98e3` | 29 | Unlicense (root) / MIT (caveman-universal) |
-| anti-slop — the design filter (miqdadbadjuber/anti-slop) | `miqdadbadjuber/anti-slop` | `388cbe3b6c` | 7 | MIT |
-| mattpocock/skills — engineering, productivity, misc | `mattpocock/skills` | `49dd158d10` | 57 | MIT |
-| Caveman — the token-efficiency voice (upstream v3.2.0) | `JuliusBrussee/caveman` | `2e08b9177c` | 22 | MIT |
-| The Grug Brained Developer (grugbrain.dev) | `bigskysoftware/grugbrain.dev` | `b1b1ca855c` | 1 | CC BY-SA 4.0 (site) |
-| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `f7a32ae62d` | 9 | Apache-2.0 |
-| mem0 — integration discipline (mem0ai/mem0) | `mem0ai/mem0` | `b7ad69afda` | 6 | Apache-2.0 |
-| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `58ab0b98d2` | 2 | MIT |
-| Anthropic engineering plugin 1.2.0 — ten workflow skills | ``Engineering-1.2.0-v1.zip` (committed archive)` | `sha256:07e` | 10 | see the pack (plugin.json names Anthropic as author) |
-| Anthropic skill-creator — authoring discipline for skills | ``Skill creator copy-v1.zip` (committed archive)` | `sha256:64e` | 1 | see the pack (LICENSE.txt inside the skill directory) |
+| this repository — grug, caveman, and the register rules | `freeforall1932-design/skills-repo` | `93d8fb6496` | 29 | Unlicense (root) / MIT (caveman-universal) |
+| anti-slop — the design filter (miqdadbadjuber/anti-slop) | `miqdadbadjuber/anti-slop` | `941b1532f9` | 7 | MIT |
+| mattpocock/skills — engineering, productivity, misc | `mattpocock/skills` | `4ae2317ddb` | 57 | MIT |
+| Caveman — the token-efficiency voice (upstream v3.2.0) | `JuliusBrussee/caveman` | `2e08b9177c` | 22 | Apache-2.0 |
+| The Grug Brained Developer (grugbrain.dev) | `bigskysoftware/grugbrain.dev` | `b1b1ca855c` | 1 | Grug 1-Clause (repo LICENSE at pin) |
+| Strix — security testing method (usestrix/strix) | `usestrix/strix` | `6b7ae2ebe4` | 9 | Apache-2.0 |
+| mem0 — integration discipline (mem0ai/mem0) | `mem0ai/mem0` | `753496cf14` | 6 | Apache-2.0 |
+| Archify — diagram authoring discipline (tt-a1i/archify) | `tt-a1i/archify` | `a4065941f1` | 2 | Apache-2.0 |
+| Anthropic engineering plugin 1.2.0 — ten workflow skills | ``Engineering-1.2.0-v1.zip` (committed archive)` | `sha256:07e` | 10 | not stated in the pack (see THIRD_PARTY_NOTICES.md) |
+| Anthropic skill-creator — authoring discipline for skills | ``Skill creator copy-v1.zip` (committed archive)` | `sha256:64e` | 1 | Apache-2.0 (LICENSE.txt in the pack) |
 
 ## What the merge changed
 
@@ -47,6 +47,8 @@ packaging convenient.
 | Where grug, caveman and be-brief disagree | `local/philosophies` | The argument behind the tables in `SKILL.md`, kept because a rule nobody can argue with gets renegotiated every session. Where a table here disagrees with the precedence file, `SKILL.md` is current: these rows were written while be-brief was still a routed skill, and its half of the split is now this repo's own document rule. Literal edits recorded in `replace`: `` Every rule in `coding-agents/` traces ``; `` MIT (`caveman-universal/`) ``; `` The coding-agent packaging** in `coding-agents/` ``; `` [`skillopt-integration/`](../skillopt-integration/) ``; `` `caveman-universal/references/upstream/official-caveman-skill.md` ``; `` `python coding-agents/compile.py` ``; `` at `caveman-universal/references/upstream/` ``; `` this repo's `caveman-universal/` ``; `` which is why `coding-agents/` looks the way it does ``. |
 | Grug engine — the full internal reasoning rule set | `local/grug-engine` | Kept alongside the short `grug-reasoning` section because it holds what that one omits: hard length budgets, the sentence and paragraph rules for the internal trace, the word-swap table, the abbreviation trap and the continuation protocol for a truncated context. Not carried: CRITICAL DISTINCTION: TWO MODES, LANGUAGE, RALPH WIGGUM LOOP (Optional Iteration), STICKY REASONING MODE, EXIT PHRASES (Return to normal reasoning). |
 | Summarising a long report or document | `written/document-summary.md` — written for this bundle | Written for this bundle, not carried from upstream: this is the one procedure worth keeping from the retired be-brief skill, re-grounded in grug's complexity budget and caveman's compress-only rule. The register rules it used to argue for are already always-on (rule 1, rule 5, the self-check), so carrying the skill again would say them twice in two voices. |
+| Detect AI slop in a draft, and edit it in the writer's voice | `written/prose-detect.md` — written for this bundle | Written for this bundle, not carried from upstream: the prose-only delta of petergyang/no-ai-slop (MIT, inspected at 000650b1, 2026-11-02) that antislop-copywriting does not already state — detect-with-quoted-evidence, the portability test, colon reveals, and delete-don't-improve fake-profound endings. Its other twenty-odd patterns overlap the antislop sections and stay there; its eval.md pass/fail shape is reused as the closing check here and in skillopt-integration's reward notes. |
+| Field practices — notes first, a reversible lab, three strikes | `written/field-practices.md` — written for this bundle | Written for this bundle, not carried from upstream: the domain-neutral half of rehan-remade/universal-modder's workflow (MIT, inspected at 9811709d, 2026-11-02) that this bundle did not already say. Its vertical-slice and runtime-verification beats are already carried by tdd, to-tickets and diagnosing-bugs, and its lessons-learned beat by retro, so only the missing three are written out here. |
 | Grill me — the alias | `mattpocock-skills/grill-me` | Upstream this is a whole skill: one line that routes to `grilling`. Merged, there is no second skill to call, so the line is kept as the trigger and the work happens in the `grilling` section of this file. |
 | Caveman — the voice contract (upstream v3.2.0) | `caveman/caveman-voice` | Upstream original, replaces this repo's v2.x copy. Its 'Anti-slop and the voice' section is the honest bridge to the anti-slop filter; both are carried, and where anti-slop's own rule is stricter, `antislop-human` wins for prose (see the precedence table). |
 | Caveman compress — memory and instruction files | `caveman/caveman-compress-upstream` | Different job from this repo's `caveman-review`/`caveman-compress` pair, which compress *documents*. Upstream compresses the instruction files the agent itself loads. Both are carried; pick by artifact. |

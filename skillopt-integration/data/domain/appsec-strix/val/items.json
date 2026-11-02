@@ -1,0 +1,26 @@
+[
+  {
+    "id": "app-no-docker",
+    "skill": "appsec-strix",
+    "language": "en",
+    "instruction": "Authorized run, but Docker isn't available on this box.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "cloud"
+      ]
+    ],
+    "must_any": [
+      [
+        "Docker"
+      ],
+      [
+        "or do not run",
+        "or stop"
+      ]
+    ],
+    "must_not": [
+      "installing Docker for you"
+    ]
+  }
+]

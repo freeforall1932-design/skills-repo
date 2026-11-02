@@ -5,12 +5,12 @@ description: >
 version: 1.0.0
 allowed-tools: Read Write Edit Glob Grep Bash(python3 *)
 license: mixed — see references/SOURCES.md
-sources: 7 · skills: 25 · references: 5
+sources: 7 · skills: 27 · references: 5
 ---
 
 # One Skill · Words
 
-25 skills from 7 sources, merged into one: the rules
+27 skills from 7 sources, merged into one: the rules
 that apply all the time are here, and 5 reference files hold the depth,
 read one at a time. Upstream bodies are verbatim; what is added here decides which governs.
 
@@ -171,9 +171,9 @@ If a check fails, fix it before answering. Do not announce the check.
 
 | If the task is… | Read |
 |---|---|
-| a document a human reads, or a long report to summarise | [`write-prose.md`](references/write-prose.md) (3 sections) |
+| a document a human reads, or a long report to summarise | [`write-prose.md`](references/write-prose.md) (4 sections) |
 | chat replies, status, logs, diagnosis, shrinking a long input, code-review punch-list | [`terse-chat.md`](references/terse-chat.md) (8 sections) |
-| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (8 sections) |
+| before acting, when a plan is vague, when the user wants their thinking attacked, when polishing has budget | [`think-first.md`](references/think-first.md) (9 sections) |
 | writing or editing a skill/AGENTS.md/CLAUDE.md, or teaching a concept in a workspace | [`teach-and-author.md`](references/teach-and-author.md) (4 sections) |
 | you need to know why a rule reads the way it does, or want the upstream source behind a layer | [`origins.md`](references/origins.md) (2 sections) |
 
@@ -205,7 +205,7 @@ in English, numbers and citations stay exact.
 ## Commands
 
 Most of what this skill holds is *policy*, applied to whatever you are doing.
-8 of the 25 merged skills are different: they are
+8 of the 27 merged skills are different: they are
 **procedures** you run when named, each with its own start and stop. Upstream
 marked them `disable-model-invocation`; that policy is kept, so a row here is an
 **offer, never an action** — do not run one unless the user named it.

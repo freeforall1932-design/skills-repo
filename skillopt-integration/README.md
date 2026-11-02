@@ -27,6 +27,8 @@ skillopt-integration/
 │   ├── train.py                      # python -m caveman_skillopt.train
 │   ├── eval_only.py                  # python -m caveman_skillopt.eval_only
 │   ├── score.py                      # offline scoring, no API calls
+│   ├── domain_rewards.py             # per-domain-skill deterministic rewards
+│   ├── score_domain.py               # mock/CI scorer for the domain skills
 │   └── envs/caveman_brief/
 │       ├── adapter.py                # EnvAdapter wiring
 │       ├── dataloader.py             # train / val / test splits
@@ -40,9 +42,12 @@ skillopt-integration/
 │   ├── default.yaml                  # all registers mixed
 │   ├── be-brief.yaml · caveman.yaml · grug.yaml · coding-agent.yaml
 ├── data/caveman_brief_split/         # 45 items, stratified 27 / 9 / 9
+├── data/domain/                      # 36 items, 6 per domain skill, never merged
+├── configs/domain/                   # one inert-until-adapter YAML per domain skill
+├── TRAINING.md                       # exact train-later recipe for the domain skills
 ├── examples/                         # reference + naive predictions
 ├── scripts/build_dataset.py          # rebuild the splits deterministically
-└── tests/                            # 39 tests
+└── tests/                            # 44 test functions
 ```
 
 **No SkillOpt source was vendored.** The environment plugs into an installed
@@ -186,6 +191,25 @@ pip install -e "skillopt-integration[dev]"
 pytest skillopt-integration/tests -q
 ```
 
-39 tests. The reward-function tests encode philosophy, not just behaviour —
-for example, `test_fact_loss_beats_compression_gain` asserts that a shorter
-output which drops data scores below a longer one that keeps it.
+44 test functions. The reward-function tests encode philosophy, not just
+behaviour — for example, `test_fact_loss_beats_compression_gain` asserts
+that a shorter output which drops data scores below a longer one that keeps
+it, and `tests/test_domain_rewards.py` asserts every reference output passes
+its own skill's gate while every tempting-wrong output fails it.
+
+## Domain skills: the offline half
+
+The six domain skills in `../domain-skills/` each get their own dataset,
+reward and config here — trained alone later, never averaged together,
+because a gated skill running without scope must not be able to borrow
+points from an easy one. Only the offline half ships: datasets, rewards,
+configs, and a mock scorer that runs in CI with no model and no API key.
+
+```bash
+python -m caveman_skillopt.score_domain --split all   # reference outputs: must pass
+python -m caveman_skillopt.score_domain --split all \
+    --predictions skillopt-integration/examples/domain-predictions-bad.json  # must fail
+```
+
+Nothing has been trained. The exact adapter wiring, training and promotion
+steps live in [TRAINING.md](TRAINING.md).

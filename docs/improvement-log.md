@@ -3,6 +3,50 @@
 Chronicles substantive changes and the reasoning behind them. Entries are
 dated; newest first.
 
+## 2026-11-02 — domain skills beside one-skill, sources refreshed, numbers derived
+
+**Change (three parts, one round):**
+
+1. **Six authored domain skills** (`domain-skills/`, published by the new
+   `build.py pack` into `skills/`, `claude-skills/domain/`, deterministic
+   zips and paste copies): `evidence-notes`, `re-triage`, `re-native`,
+   `re-managed`, `appsec-strix`, `modder-bridge`. Each ≤500 words, gated
+   where it must be, tool-probing, usable without one-skill. They exist
+   *because* the merge rule refuses tool drivers as decoration: REA,
+   Ghidra/IDA MCP, ILSpy, Cpp2IL, Strix and universal-modder are driven or
+   deferred to, never simulated. One-skill itself got no router pointer.
+2. **Source refresh through the manifest.** Pocock `4ae2317d`, anti-slop
+   v3.2.25 `941b1532` (deleted wizard's strip retired with it; adapted
+   web-quality docs excused, links de-linked), Strix and mem0 to HEAD with
+   carried text byte-identical, Archify `a4065941` (Apache-2.0 at the pin;
+   rewritten `Output` no longer kept; three new internal skills excused).
+   Licence labels corrected from evidence: caveman Apache-2.0, grug "Grug
+   1-Clause", skill-creator Apache-2.0 — full audit in
+   `THIRD_PARTY_NOTICES.md`. Two authored deltas joined the merge
+   (`written/prose-detect.md` from no-ai-slop's non-overlapping patterns,
+   `written/field-practices.md` from universal-modder's neutral habits),
+   both re-written, not carried. 78→80 routed, ≈90.5k→≈93.6k reference
+   words, `SKILL.md` still 2394/2400.
+3. **The README can no longer drift.** `build.py stats` derives every
+   quoted number; `check` fails unless the README contains the derived
+   phrases. The old README disagreed with itself (85/86/78 skills, 34 vs
+   41 cast-aside). All install zips (app, fragments, domain) are now
+   written with fixed `ZipInfo` timestamps: two `build+install` runs are
+   byte-identical across 139 published files, closing the pack-
+   reproducibility gap the handoff used to record.
+
+**Also:** SkillOpt gained the offline half for the domain skills (per-
+skill datasets/rewards/configs + mock scorer; reference outputs 36/36,
+tempting-wrong 0/36; nothing trained — see
+`skillopt-integration/TRAINING.md`). A pinned experiment
+(`docs/modularization-experiment.md`) measured fragments-as-routed-skills
+at 7/12 coverage and ~1.9× always-on cost on cross-family tasks, so
+one-skill stays unified. CodeQL's empty matrix was repaired (python +
+actions). Decision records: `docs/decisions.md`; per-source verdicts:
+`docs/capability-matrix.md`; baseline: `docs/baseline.md`. 66 one-skill
+tests collected, 28+2 skipped skillopt tests, register baseline unchanged
+at 0.9784.
+
 ## 2026-10-11 — a review pass: what the last round got wrong, plus two packs
 
 **Change:** the merge was read back end to end instead of grown, two archives the owner

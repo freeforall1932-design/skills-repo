@@ -8,17 +8,17 @@
     "core/40-commands.md": "dbc02fa2fc79",
     "core/50-sources.md": "17a20c306953"
   },
-  "manifest_sha": "0b2637327630",
+  "manifest_sha": "7f3180dc9df7",
   "skills": {
     "anti-slop/antislop-core": {
       "bucket": "ui-craft",
       "entry": "upstream/anti-slop/antislop.md",
-      "sha": "64a1ff70bafb"
+      "sha": "30bc532fb59d"
     },
     "anti-slop/antislop-human": {
       "bucket": "responsive-access",
       "entry": "upstream/anti-slop/antislop-human.md",
-      "sha": "5bc7c8e56cc7"
+      "sha": "49421878e0c0"
     },
     "anti-slop/antislop-layoutmobile": {
       "bucket": "responsive-access",
@@ -28,12 +28,12 @@
     "anti-slop/antislop-ui": {
       "bucket": "ui-craft",
       "entry": "upstream/anti-slop/antislop-ui.md",
-      "sha": "47d989277125"
+      "sha": "e8cb54f3d436"
     },
     "archify/archify-method": {
       "bucket": "ui-craft",
       "entry": "upstream/archify/archify/SKILL.md",
-      "sha": "cf348309c535"
+      "sha": "1382cfb7108b"
     }
   }
 }

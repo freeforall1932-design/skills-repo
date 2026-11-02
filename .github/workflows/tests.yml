@@ -42,6 +42,22 @@ jobs:
             exit 1
           }
 
+      - name: Domain pack is a fixed point
+        # `pack` republishes domain-skills/ into skills/, claude-skills/domain/,
+        # deterministic zips and paste copies. `check` above already compares
+        # bytes; packing here and diffing also catches new files a pack would
+        # create but nobody committed.
+        run: |
+          python one-skill/build.py pack
+          git diff --exit-code -- skills claude-skills/domain pseudo-skills || {
+            echo "::error::domain skill mirrors are stale. Run 'python one-skill/build.py pack' and commit."
+            exit 1
+          }
+          git status --porcelain --untracked-files=all -- skills claude-skills/domain pseudo-skills | grep . && {
+            echo "::error::pack produced uncommitted files (see above)."
+            exit 1
+          } || true
+
       - name: Build twice, offline, and prove it settles
         # `build` reads only one-skill/{sources.json,core,upstream}, so a merge is
         # reproducible with no network. Only `sync` may reach it, and only when a
@@ -81,6 +97,20 @@ jobs:
             --split test \
             --predictions skillopt-integration/examples/predictions-good.json \
             --show-violations
+
+      # Mock/dry-run for the domain skills: no model, no API key. Reference
+      # outputs must pass every per-skill hard gate; the tempting-wrong
+      # outputs must fail (exit 1), proving the rewards discriminate.
+      - name: Score the domain references (mock, must pass)
+        run: python -m caveman_skillopt.score_domain --split all --show-violations
+
+      - name: Score the domain bad outputs (mock, must fail)
+        run: |
+          if python -m caveman_skillopt.score_domain --split all \
+              --predictions skillopt-integration/examples/domain-predictions-bad.json; then
+            echo "::error::bad domain predictions passed a hard gate; the reward no longer discriminates."
+            exit 1
+          fi
 
   skillopt-integration:
     name: SkillOpt integration

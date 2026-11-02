@@ -1,0 +1,27 @@
+# ──────────────────────────────────────────────────────────────
+# domain skill: evidence-notes — trained alone, against its own reward only
+# ──────────────────────────────────────────────────────────────
+# Status: dataset + reward + offline scorer are shipped and run in CI
+# (python -m caveman_skillopt.score_domain --skill evidence-notes). Live training
+# additionally needs the small `domain_skill` EnvAdapter described step
+# by step in skillopt-integration/TRAINING.md; until it is registered this
+# config is inert by design. Never point two skills at one run, and never
+# average their scores (see TRAINING.md "Why per-skill").
+
+_base_: ../_base_/default.yaml
+
+env:
+  name: domain_skill
+  skill_filter: evidence-notes
+  skill_init: domain-skills/evidence-notes/SKILL.md
+  split_dir: skillopt-integration/data/domain/evidence-notes
+  out_root: runs/domain/evidence-notes
+  workers: 4
+  max_completion_tokens: 4096
+
+train:
+  num_epochs: 3
+  batch_size: 3
+
+optimizer:
+  learning_rate: 2

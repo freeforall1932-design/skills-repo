@@ -1,31 +1,36 @@
 # Session handoff
 
-Written 2026-10-10, updated the same day for the second round of sources and again on
-2026-10-11 after a review pass. Branch `arena/b5b2025d-skills-repo`. State: the
-repository publishes **one** skill, built from **78 skills across ten sources** (two of
-them archives committed here, not remotes), plus three generated fragment fallbacks; the
-six-skill era, be-brief, and the old `unified` self-description are frozen under `legacy/`.
+Written 2026-10-10, updated the same day for the second round of sources, on
+2026-10-11 after a review pass, and on 2026-11-02 after the domain-skills round
+(branch `arena/ee0f820f-skills-repo`, PR #12). State: the repository publishes **one**
+merged skill, built from **80 skills across ten sources** (two of them archives
+committed here, not remotes), three generated fragment fallbacks, and **six small
+domain skills installed beside it** (`domain-skills/`); the six-skill era, be-brief,
+and the old `unified` self-description are frozen under `legacy/`.
 
 ## What exists now
 
 | Path | Role |
 |---|---|
 | `one-skill/sources.json` | ★ the manifest: sources → skills → buckets, plus `families` and each source's `not_merged` / `not_vendored` / `not_routed` records. The only file to edit to add a source. |
-| `one-skill/build.py` | `sync` · `build` · `install` · `all` · `check` |
+| `one-skill/build.py` | `sync` · `build` · `install` · `all` · `check` · `pack` (publish domain skills) · `stats` (the numbers the README must match) |
 | `one-skill/core/` | six hand-written files: the merge's judgement (layers, precedence, always-on, router, commands, provenance) |
-| `one-skill/written/` | prose this bundle writes itself, for a job no upstream covers (`document-summary.md`). Outside `upstream/` so `sync` never treats it as someone else's; labelled by `authored: true` |
+| `one-skill/written/` | prose this bundle writes itself, for a job no upstream covers (`document-summary.md`, `prose-detect.md`, `field-practices.md`). Outside `upstream/` so `sync` never treats it as someone else's; labelled by `authored: true` |
 | `one-skill/upstream/` | vendored inputs, revision-pinned in `PROVENANCE.json`. `local/` reads this repo's working tree (`legacy/`), not a clone. |
 | `one-skill/dist/skill/`, `dist/families/*/` | scratch build output — gitignored, so it does not exist in CI. The published skill is the mirrors below. |
 | `.claude/skills/one-skill/`, `claude-skills/app/one-skill/`, `claude-skills/app/zips/one-skill.zip`, `pseudo-skills/one-skill.md` | mirrors written by `install`. Never hand-edit. |
 | `claude-skills/fragments/one-skill-{prose,code,design}/` + `fragments/zips/*.zip` | the fallback skills, same rules / subset of references. Also mirrors, also never hand-edited. |
-| `skillopt-integration/` | unchanged: trains the four **register** documents, which are now in `legacy/` |
+| `domain-skills/` | authored sources of the six domain skills + `manifest.json` (provenance, tool probes, routing keywords) + `tests/routing.json`. Published by `pack`; never edit the mirrors. Not in `.claude/skills/` on purpose (see `docs/decisions.md` D2) |
+| `skills/`, `claude-skills/domain/` (+ `zips/`), `pseudo-skills/<name>.md` | domain-skill mirrors written by `pack`. Deterministic zips. Never hand-edit. |
+| `skillopt-integration/` | trains the four **register** documents (in `legacy/`); also holds per-domain-skill datasets/rewards/configs and the mock scorer — offline half only, `TRAINING.md` has the rest |
+| `THIRD_PARTY_NOTICES.md`, `docs/decisions.md`, `docs/capability-matrix.md` | licence inventory (with owner-decision flags), decision records, per-source verdicts |
 | `legacy/` | `coding-agents/` (variants, profiles, packs, `compile.py`, philosophy), `caveman-universal/`, old `claude-skills/` trees + old install guide, old `pseudo-skills/`, `claude-reasoning-caveman.skill` |
 
 Sources: this repo (`legacy/`, 12 skills), `miqdadbadjuber/anti-slop` (6),
 `mattpocock/skills` (31), `JuliusBrussee/caveman` v3.2.0 (13),
 `bigskysoftware/grugbrain.dev` (1 — the whole site text), `usestrix/strix` (4 of 9),
-`mem0ai/mem0` (1 of 6), `tt-a1i/archify` (1 of 2). **21 skills are cast aside with a
-written reason**, and `inventory()` fails the build if a vendored `SKILL.md` ends up
+`mem0ai/mem0` (1 of 6), `tt-a1i/archify` (1 of 5). **45 cast-aside records carry a
+written reason** (25 whole skills, 11 files, 9 vendoring records), and `inventory()` fails the build if a vendored `SKILL.md` ends up
 neither routed nor excused, so that list cannot rot silently when upstream grows.
 Also not merged, on the record: `mattpocock/skills` `in-progress/` (betas) and
 `deprecated/` (empty upstream).
@@ -38,7 +43,9 @@ the network, to clone a source it does not have.
 ```bash
 python3 one-skill/build.py all         # rebuild the skill + every mirror + every zip
 python3 one-skill/build.py check       # fail if any published copy is not what the manifest builds
-python3 -m pytest one-skill/tests -q   # 48 tests: fidelity, links, budget, gates, mirrors
+python3 -m pytest one-skill/tests -q   # 66 tests: fidelity, links, budget, gates, mirrors, domain pack
+python3 one-skill/build.py pack        # validate + republish the domain skills
+python3 one-skill/build.py stats       # the derived numbers the README is gated on
 python3 one-skill/build.py sync        # re-vendor upstream (needs network for a first clone)
 python3 -m pytest skillopt-integration/tests -q
 ```
@@ -99,11 +106,9 @@ From the user, explicitly. Do not reverse them without asking.
    Decide first whether per-register scoring survives a single document, or the
    gate quietly averages the conflict away — which is what the four-variant split
    exists to prevent.
-2. **Fix CodeQL — the one red check, pre-existing.** `codeql.yml` is the unmodified
-   GitHub template with an **empty** `strategy.matrix.include`, so zero jobs run and
-   GitHub marks it failed. Broken on `main` since 2026-08-19, not a regression here.
-   Fix: `- language: python` with `build-mode: none`; consider `actions` for the
-   workflow files. Verify by watching a run.
+2. ~~Fix CodeQL — the one red check, pre-existing.~~ **Closed 2026-11-02** (PR #12):
+   the matrix now analyzes `python` and `actions`, both `build-mode: none`, and both
+   jobs were watched green.
 3. **`scripts/` name collisions.** `build.py` keeps the first script it sees per
    basename and skips later duplicates silently. Namespaced paths or a hard fail is
    needed before another source ships a `contrast-check.py` of its own.
@@ -125,16 +130,16 @@ From the user, explicitly. Do not reverse them without asking.
 8. **Determine Qwen Chat Agent's real conventions** — whether it parses `SKILL.md`
    frontmatter is unknown; if tested, upgrade `profiles/qwen-agent.json` and drop
    `skills: null`.
-9. **Re-check upstreams periodically, then `sync` + rebuild.** The pins are each
-   source's `origin.ref`: a full 40-character revision (caveman `2e08b9177c07…`,
-   grug `b1b1ca855ca1…`, strix `f7a32ae62d94…`, mem0 `b7ad69afda6b…`, archify
-   `58ab0b98d2d0…`, anti-slop `388cbe3b6c37…`, mattpocock `49dd158d1076…`) or, for the
-   two archives, the `sha256:` of the file. `local` floats on `HEAD` and says so. If a
+9. **Re-check upstreams periodically, then `sync` + rebuild.** Last done 2026-11-02
+   (PR #12; pins in `docs/baseline.md` and `docs/capability-matrix.md`). The pins are
+   each source's `origin.ref`: a full 40-character revision or, for the two archives,
+   the `sha256:` of the file. `local` floats on `HEAD` and says so. If a
    release renames a section, the strips/keeps/replaces go stale — and the build fails
    loudly instead of shipping a dead rule. `git checkout -- <path>` on an uncommitted
    `core/` file will not restore it, so do not probe the gates that way.
-10. **ZIP ceiling.** 229 KiB for the main skill (fragments: 48–115 KiB). If the app
-    upload limit becomes a problem, trim `references/`, never the router.
+10. **ZIP ceiling.** 248 KiB for the main skill (fragments: 53–124 KiB; domain
+    skills: 2–6 KiB each). If the app upload limit becomes a problem, trim
+    `references/`, never the router.
 
 ## Gotchas
 
@@ -212,10 +217,11 @@ From the user, explicitly. Do not reverse them without asking.
 - **No pyyaml in this environment.** That is why the manifest is JSON and the parser in
   `build.py` is a hand-rolled frontmatter subset (scalars, block scalars, inline lists)
   rather than `yaml.safe_load`.
-- **Pack reproducibility (legacy).** `legacy/coding-agents/compile.py` writes `ZipInfo`
-  with a fixed timestamp so its archive is byte-reproducible. `build.py install` does not
-  yet: `zipfile` records mtimes, so no zip is bit-stable across rebuilds. They are not
-  CI-gated on content, only on the trees that produced them.
+- **Pack reproducibility.** `build.py install` and `pack` now write every zip through
+  `deterministic_zip_bytes` (fixed `ZipInfo` timestamp), the same trick the legacy
+  compiler used: two `build+install` runs are byte-identical across all published
+  files, and `check` compares committed domain zips against fresh bytes. If a zip
+  ever churns in a diff without content changing, someone reintroduced `ZipFile.write`.
 - **`one-skill/.cache/` is scratch clones** (gitignored, and it inflates `du` to ~5 MB).
   `rm -rf one-skill/.cache` before measuring the tree.
 - **Lazy imports are load-bearing** in `caveman_skillopt` — they keep the offline
@@ -240,10 +246,14 @@ From the user, explicitly. Do not reverse them without asking.
   paraphrase the verbatim rule exists to prevent. Where a section is a true duplicate
   of another *file*, it is not routed at all and is listed under `not_routed` with the
   reason (that is what happened to this repo's v2.x caveman copy).
-- **87k words of references is a lot of skill.** The counterweight is the router and
+- **93k words of references is a lot of skill.** The counterweight is the router and
   the "one reference at a time" rule; if that rule is not honoured in practice, the
   answer is the fragments, then fewer sources merged — never a longer `SKILL.md`.
 - **The security layer is method, not a scanner.** It says which OWASP categories an
   agent-driven review can and cannot prove and how to report honestly; it carries no
   exploitation capability and its reference file opens with the authorization rule.
-  If a user wants actual scanning, the answer is Strix itself, in their repo.
+  If a user wants actual scanning, the answer is Strix itself — now fronted by the
+  `appsec-strix` domain skill, which governs scope and verification and defers all
+  tool-driving to Strix's own skill. The same shape repeats for RE (`re-triage`
+  defers to REA) and modding (`modder-bridge` defers to universal-modder): gate
+  first, probe for the real tool, never simulate its output.

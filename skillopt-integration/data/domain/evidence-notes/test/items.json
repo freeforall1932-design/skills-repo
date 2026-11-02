@@ -1,0 +1,54 @@
+[
+  {
+    "id": "ev-notes-id",
+    "skill": "evidence-notes",
+    "language": "id",
+    "instruction": "Tolong catat temuan ini: berkas game.exe sha256 ab12cd34 memakai pemeriksaan tanggal di Menu.Utama.",
+    "must_keep": [
+      "ab12cd34",
+      "Menu.Utama"
+    ],
+    "hard_any": [
+      [
+        "klaim",
+        "temuan"
+      ],
+      [
+        "keyakinan",
+        "confidence"
+      ]
+    ],
+    "must_any": [
+      [
+        "batas",
+        "limits"
+      ]
+    ],
+    "must_not": []
+  },
+  {
+    "id": "ev-no-hash-tool",
+    "skill": "evidence-notes",
+    "language": "en",
+    "instruction": "This box has no sha256sum. Still start notes for sample.bin and tell me the hash.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "hypothesis",
+        "cannot pin",
+        "no hash"
+      ]
+    ],
+    "must_any": [
+      [
+        "weaker",
+        "listing",
+        "size"
+      ]
+    ],
+    "must_not": [
+      "sha256:9f2c",
+      "sha256 is"
+    ]
+  }
+]

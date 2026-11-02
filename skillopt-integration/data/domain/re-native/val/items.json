@@ -1,0 +1,22 @@
+[
+  {
+    "id": "nat-rename-guess",
+    "skill": "re-native",
+    "language": "en",
+    "instruction": "This function in my game probably checks the licence. Label and move on?",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "guess_"
+      ]
+    ],
+    "must_any": [
+      [
+        "until",
+        "second",
+        "confirm"
+      ]
+    ],
+    "must_not": []
+  }
+]

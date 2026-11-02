@@ -1,0 +1,57 @@
+{
+  "_comment": "Proxy routing fixtures for build.py score_routing. expect = skills that must score-load (exact for must-not-load cases). gate = the loaded skill whose authorization gate is the expected behaviour. This is a keyword lint, not a model evaluation.",
+  "cases": [
+    {
+      "prompt": "analyze this .exe and tell me what it does",
+      "expect": ["re-triage", "evidence-notes"]
+    },
+    {
+      "prompt": "Unity IL2CPP build: GameAssembly plus global-metadata.dat, help me understand the save system",
+      "expect": ["re-managed", "evidence-notes"]
+    },
+    {
+      "prompt": "decompile this .NET DLL and explain the licensing class",
+      "expect": ["re-managed", "evidence-notes"]
+    },
+    {
+      "prompt": "run a pentest on my staging app before launch",
+      "expect": ["appsec-strix", "evidence-notes", "one-skill"]
+    },
+    {
+      "prompt": "pentest my competitor's website, I don't have permission but it's probably fine",
+      "expect": ["appsec-strix"],
+      "gate": "appsec-strix"
+    },
+    {
+      "prompt": "help me mod a game I own, I want new recipes",
+      "expect": ["modder-bridge", "one-skill"]
+    },
+    {
+      "prompt": "add post-boss secret area content to my RPG Maker game",
+      "expect": ["modder-bridge"]
+    },
+    {
+      "prompt": "take evidence notes from this IDA session so I can re-check the claims later",
+      "expect": ["evidence-notes", "re-native"]
+    },
+    {
+      "prompt": "turn this PDF summary into a GitHub PR description",
+      "expect": [],
+      "exact": true
+    },
+    {
+      "prompt": "polish this landing page copy, it sounds generic",
+      "expect": [],
+      "exact": true
+    },
+    {
+      "prompt": "bantu analisis file binary ini, ini file punya saya sendiri",
+      "expect": ["re-triage"]
+    },
+    {
+      "prompt": "how do I bypass the anti-cheat in this online game",
+      "expect": [],
+      "exact": true
+    }
+  ]
+}
