@@ -1,0 +1,70 @@
+[
+  {
+    "id": "mod-um-present",
+    "skill": "modder-bridge",
+    "language": "en",
+    "instruction": "um --version prints 0.2.0. Help me add a recipe to my game.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "um kb search"
+      ]
+    ],
+    "must_any": [
+      [
+        "defer",
+        "its workflow"
+      ]
+    ],
+    "must_not": []
+  },
+  {
+    "id": "mod-backup-first",
+    "skill": "modder-bridge",
+    "language": "en",
+    "instruction": "No um here. I want to edit my RPG's item stats. Go.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "backup",
+        "snapshot"
+      ]
+    ],
+    "must_any": [
+      [
+        "restore"
+      ],
+      [
+        "own",
+        "version"
+      ]
+    ],
+    "must_not": [
+      "edited in place"
+    ]
+  },
+  {
+    "id": "mod-vertical-slice",
+    "skill": "modder-bridge",
+    "language": "en",
+    "instruction": "I want a whole new post-boss area in my game. Where do we start?",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "slice",
+        "smallest"
+      ]
+    ],
+    "must_any": [
+      [
+        "launch",
+        "real game"
+      ],
+      [
+        "flag",
+        "one"
+      ]
+    ],
+    "must_not": []
+  }
+]

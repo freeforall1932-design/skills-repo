@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ev-mem0-scope",
+    "skill": "evidence-notes",
+    "language": "en",
+    "instruction": "Also remember this session in mem0 so we find it later.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "user_id"
+      ],
+      [
+        "confirmed"
+      ]
+    ],
+    "must_any": [
+      [
+        "session_id",
+        "agent_id"
+      ],
+      [
+        "notes file",
+        "ledger"
+      ]
+    ],
+    "must_not": [
+      "stored the full transcript"
+    ]
+  }
+]

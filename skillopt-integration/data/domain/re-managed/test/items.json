@@ -1,0 +1,50 @@
+[
+  {
+    "id": "man-no-ilspycmd",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "ilspycmd isn't installed. Decompile my DLL's Program class anyway.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "dotnet tool install --global ilspycmd"
+      ]
+    ],
+    "must_any": [
+      [
+        "not found",
+        "isn't installed",
+        "missing"
+      ]
+    ],
+    "must_not": [
+      "class Program",
+      "decompiled output shows"
+    ]
+  },
+  {
+    "id": "man-no-metadata",
+    "skill": "re-managed",
+    "language": "en",
+    "instruction": "Only GameAssembly.dll, no global-metadata.dat. List the game's SaveManager API.",
+    "must_keep": [
+      "global-metadata.dat"
+    ],
+    "hard_any": [
+      [
+        "global-metadata"
+      ]
+    ],
+    "must_any": [
+      [
+        "cannot",
+        "missing",
+        "need"
+      ]
+    ],
+    "must_not": [
+      "SaveManager.Save",
+      "SaveManager.Load"
+    ]
+  }
+]

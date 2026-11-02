@@ -1,0 +1,23 @@
+[
+  {
+    "id": "tri-rea-present",
+    "skill": "re-triage",
+    "language": "en",
+    "instruction": "rea doctor says my setup is sound. Analyse this APK from my own phone backup.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "REA is",
+        "use REA",
+        "via REA"
+      ]
+    ],
+    "must_any": [
+      [
+        "Evidence",
+        "front door"
+      ]
+    ],
+    "must_not": []
+  }
+]

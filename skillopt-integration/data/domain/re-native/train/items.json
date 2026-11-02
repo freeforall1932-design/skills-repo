@@ -1,0 +1,74 @@
+[
+  {
+    "id": "nat-ghidra-only",
+    "skill": "re-native",
+    "language": "en",
+    "instruction": "Analyse my own app's .exe. No IDA licence on this machine; Ghidra MCP is connected.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "Ghidra"
+      ]
+    ],
+    "must_any": [
+      [
+        "inventory",
+        "imports"
+      ]
+    ],
+    "must_not": [
+      "IDA shows"
+    ]
+  },
+  {
+    "id": "nat-pseudocode",
+    "skill": "re-native",
+    "language": "en",
+    "instruction": "The decompiler says this branch unlocks pro features. Confirm it in my licensed copy.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "disassembly",
+        "listing"
+      ],
+      [
+        "hypothesis"
+      ]
+    ],
+    "must_any": [
+      [
+        "branch"
+      ]
+    ],
+    "must_not": [
+      "confirmed: it unlocks"
+    ]
+  },
+  {
+    "id": "nat-packed",
+    "skill": "re-native",
+    "language": "en",
+    "instruction": "Analyse my binary — .text entropy reads 7.9.",
+    "must_keep": [
+      "7.9"
+    ],
+    "hard_any": [
+      [
+        "packed",
+        "entropy"
+      ],
+      [
+        "hypothesis",
+        "downgrade",
+        "provisional"
+      ]
+    ],
+    "must_any": [
+      [
+        "unpacked",
+        "layer"
+      ]
+    ],
+    "must_not": []
+  }
+]

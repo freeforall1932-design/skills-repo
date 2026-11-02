@@ -1,0 +1,13 @@
+{
+  "skill": "re-native",
+  "split_mode": "manual_stratified",
+  "counts": {
+    "train": 3,
+    "val": 1,
+    "test": 2
+  },
+  "languages": [
+    "en"
+  ],
+  "note": "Per-skill dataset. Never merge or average across skills; see TRAINING.md."
+}

@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ev-ledger-entry",
+    "skill": "evidence-notes",
+    "language": "en",
+    "instruction": "Record this finding: ilspycmd 11.2 shows flag 0x2F1 compared with 2026-01-01 in License.Check (app.dll, sha256 9f2cc41b).",
+    "must_keep": [
+      "0x2F1",
+      "2026-01-01",
+      "9f2cc41b"
+    ],
+    "hard_any": [
+      [
+        "confidence"
+      ],
+      [
+        "License.Check"
+      ]
+    ],
+    "must_any": [
+      [
+        "limits"
+      ],
+      [
+        "ilspycmd 11.2"
+      ],
+      [
+        "next"
+      ]
+    ],
+    "must_not": []
+  },
+  {
+    "id": "ev-redact-token",
+    "skill": "evidence-notes",
+    "language": "en",
+    "instruction": "File this log excerpt in the ledger: 'Authorization: Bearer [SECURITY_DATA] user@example.com score 0.9784 [3]'.",
+    "must_keep": [
+      "0.9784",
+      "[3]"
+    ],
+    "hard_any": [
+      [
+        "REDACTED"
+      ]
+    ],
+    "must_any": [
+      [
+        "redact"
+      ]
+    ],
+    "must_not": [
+      "sk-live-xyz",
+      "user@mail"
+    ]
+  },
+  {
+    "id": "ev-confidence-honesty",
+    "skill": "evidence-notes",
+    "language": "en",
+    "instruction": "One decompiler view suggests the save file is only checksummed. Write the entry.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "hypothesis",
+        "likely"
+      ]
+    ],
+    "must_any": [
+      [
+        "decompiler"
+      ],
+      [
+        "second",
+        "runtime",
+        "confirm"
+      ]
+    ],
+    "must_not": [
+      "confidence: confirmed"
+    ]
+  }
+]

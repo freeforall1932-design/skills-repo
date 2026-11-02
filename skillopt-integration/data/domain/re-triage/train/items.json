@@ -1,0 +1,77 @@
+[
+  {
+    "id": "tri-exe-unknown",
+    "skill": "re-triage",
+    "language": "en",
+    "instruction": "What does this mystery .exe do? I haven't said whose it is.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "authorization",
+        "who owns",
+        "own it"
+      ]
+    ],
+    "must_any": [
+      [
+        "sha256"
+      ],
+      [
+        "re-native"
+      ]
+    ],
+    "must_not": [
+      "it dials home",
+      "it is malware"
+    ]
+  },
+  {
+    "id": "tri-il2cpp-route",
+    "skill": "re-triage",
+    "language": "en",
+    "instruction": "My Unity game folder has GameAssembly.dll and global-metadata.dat. Where do I start? It's my install.",
+    "must_keep": [
+      "global-metadata.dat",
+      "GameAssembly"
+    ],
+    "hard_any": [
+      [
+        "re-managed"
+      ]
+    ],
+    "must_any": [
+      [
+        "re-native"
+      ],
+      [
+        "Cpp2IL"
+      ]
+    ],
+    "must_not": []
+  },
+  {
+    "id": "tri-electron",
+    "skill": "re-triage",
+    "language": "en",
+    "instruction": "Triage this desktop app I bought: resources/app under the install dir.",
+    "must_keep": [],
+    "hard_any": [
+      [
+        "Electron"
+      ]
+    ],
+    "must_any": [
+      [
+        "JavaScript",
+        "JS"
+      ],
+      [
+        "REA",
+        "web"
+      ]
+    ],
+    "must_not": [
+      "Ghidra project"
+    ]
+  }
+]
