@@ -106,11 +106,9 @@ From the user, explicitly. Do not reverse them without asking.
    Decide first whether per-register scoring survives a single document, or the
    gate quietly averages the conflict away — which is what the four-variant split
    exists to prevent.
-2. **Fix CodeQL — the one red check, pre-existing.** `codeql.yml` is the unmodified
-   GitHub template with an **empty** `strategy.matrix.include`, so zero jobs run and
-   GitHub marks it failed. Broken on `main` since 2026-08-19, not a regression here.
-   Fix: `- language: python` with `build-mode: none`; consider `actions` for the
-   workflow files. Verify by watching a run.
+2. ~~Fix CodeQL — the one red check, pre-existing.~~ **Closed 2026-11-02** (PR #12):
+   the matrix now analyzes `python` and `actions`, both `build-mode: none`, and both
+   jobs were watched green.
 3. **`scripts/` name collisions.** `build.py` keeps the first script it sees per
    basename and skips later duplicates silently. Namespaced paths or a hard fail is
    needed before another source ships a `contrast-check.py` of its own.
@@ -132,11 +130,10 @@ From the user, explicitly. Do not reverse them without asking.
 8. **Determine Qwen Chat Agent's real conventions** — whether it parses `SKILL.md`
    frontmatter is unknown; if tested, upgrade `profiles/qwen-agent.json` and drop
    `skills: null`.
-9. **Re-check upstreams periodically, then `sync` + rebuild.** The pins are each
-   source's `origin.ref`: a full 40-character revision (caveman `2e08b9177c07…`,
-   grug `b1b1ca855ca1…`, strix `f7a32ae62d94…`, mem0 `b7ad69afda6b…`, archify
-   `58ab0b98d2d0…`, anti-slop `388cbe3b6c37…`, mattpocock `49dd158d1076…`) or, for the
-   two archives, the `sha256:` of the file. `local` floats on `HEAD` and says so. If a
+9. **Re-check upstreams periodically, then `sync` + rebuild.** Last done 2026-11-02
+   (PR #12; pins in `docs/baseline.md` and `docs/capability-matrix.md`). The pins are
+   each source's `origin.ref`: a full 40-character revision or, for the two archives,
+   the `sha256:` of the file. `local` floats on `HEAD` and says so. If a
    release renames a section, the strips/keeps/replaces go stale — and the build fails
    loudly instead of shipping a dead rule. `git checkout -- <path>` on an uncommitted
    `core/` file will not restore it, so do not probe the gates that way.
