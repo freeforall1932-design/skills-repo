@@ -13,6 +13,7 @@ provenance and every declared edit listed in `SOURCES.md` beside this file.
 | [Grug reasoning — internal, never shown](#grug-reasoning-internal-never-shown) | `local` | always |
 | [Grug engine — the full internal reasoning rule set](#grug-engine-the-full-internal-reasoning-rule-set) | `local` | always |
 | [Ralph Wiggum loop — iterative polish](#ralph-wiggum-loop-iterative-polish) | `local` | command |
+| [Field practices — notes first, a reversible lab, three strikes](#field-practices-notes-first-a-reversible-lab-three-strikes) | `local` | always |
 | [Grilling — relentless interview on a plan](#grilling-relentless-interview-on-a-plan) | `mattpocock-skills` | always |
 | [Grill me — the alias](#grill-me-the-alias) | `mattpocock-skills` | command |
 | [Grill with docs — grilling that writes ADRs and glossary](#grill-with-docs-grilling-that-writes-adrs-and-glossary) | `mattpocock-skills` | command |
@@ -567,6 +568,47 @@ No coupling. No forced token burn. Speed when you need it, polish when you want 
 
 *OFF by default. ON only when quality matters.*
 
+## Field practices — notes first, a reversible lab, three strikes
+
+> `local` / `field-practices` / starting an investigation someone may have done before, or making an invasive change
+
+> **Merge note.** Written for this bundle, not carried from upstream: the domain-neutral half of rehan-remade/universal-modder's workflow (MIT, inspected at 9811709d, 2026-11-02) that this bundle did not already say. Its vertical-slice and runtime-verification beats are already carried by tdd, to-tickets and diagnosing-bugs, and its lessons-learned beat by retro, so only the missing three are written out here.
+
+Working habits borrowed from a field where a wrong move destroys the
+artifact you were studying: game modding, where the running game is the only
+authority and every install is one bad write from being unplayable.
+
+### Search the notes before investigating
+
+Before opening a target, search whatever record the project keeps — field
+notes, investigation logs, ADRs, closed issues, the evidence ledger of the
+last look at the same problem. A prior note hands over exact versions, the
+route that worked and the dead ends, and repeating a recorded dead end costs
+the same as finding it the first time. Cite the note you built on; where the
+notes disagree with the target in front of you, the target wins and the note
+gets corrected.
+
+### Set up a reversible lab before anything invasive
+
+Any change that writes over something working — a migration, a wide
+refactor, a binary or save you cannot recreate — starts from a snapshot
+taken first: a branch, a backup directory, a copy of the profile or world.
+Work happens in the copy; the original stays pristine and restorable. State
+where the snapshot is and how to put it back before the first edit, not
+after the first surprise. Derived or extracted material (decompiled dumps,
+generated files, scratch data) stays out of the committed tree, the same way
+game files stay out of a mod's repository.
+
+### Three identical failures: change approach, don't repeat
+
+If the same approach fails the same way three times, stop re-running it. A
+fourth attempt with more force produces a more confident wrong result, not
+information. Change the route — a different tool, a different seam, a
+smaller question — and write down what the three failures jointly rule out
+before changing: that shared shape is usually the actual finding. Retrying
+an unchanged call is only justified when something outside the approach
+changed, and then it is a new attempt, counted fresh.
+
 ## Grilling — relentless interview on a plan
 
 > `mattpocock-skills` / `grilling` / "grill me", or thinking that needs pressure-testing
@@ -593,7 +635,7 @@ Word each question so "yes" accepts your recommended answer.
 
 Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
 
-Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
+Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
 
 The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
 

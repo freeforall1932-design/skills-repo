@@ -383,6 +383,26 @@
           "when": "the user hands over a long report, thesis, dataset or paper and wants the part that matters, or asks what a document says",
           "entry": "written/document-summary.md",
           "note": "Written for this bundle, not carried from upstream: this is the one procedure worth keeping from the retired be-brief skill, re-grounded in grug's complexity budget and caveman's compress-only rule. The register rules it used to argue for are already always-on (rule 1, rule 5, the self-check), so carrying the skill again would say them twice in two voices."
+        },
+        {
+          "id": "prose-detect",
+          "bucket": "write-prose",
+          "order": 45,
+          "authored": true,
+          "title": "Detect AI slop in a draft, and edit it in the writer's voice",
+          "when": "the user asks whether prose reads as AI, or wants a draft de-slopped without losing their voice",
+          "entry": "written/prose-detect.md",
+          "note": "Written for this bundle, not carried from upstream: the prose-only delta of petergyang/no-ai-slop (MIT, inspected at 000650b1, 2026-11-02) that antislop-copywriting does not already state — detect-with-quoted-evidence, the portability test, colon reveals, and delete-don't-improve fake-profound endings. Its other twenty-odd patterns overlap the antislop sections and stay there; its eval.md pass/fail shape is reused as the closing check here and in skillopt-integration's reward notes."
+        },
+        {
+          "id": "field-practices",
+          "bucket": "think-first",
+          "order": 35,
+          "authored": true,
+          "title": "Field practices — notes first, a reversible lab, three strikes",
+          "when": "starting an investigation someone may have done before, or making an invasive change",
+          "entry": "written/field-practices.md",
+          "note": "Written for this bundle, not carried from upstream: the domain-neutral half of rehan-remade/universal-modder's workflow (MIT, inspected at 9811709d, 2026-11-02) that this bundle did not already say. Its vertical-slice and runtime-verification beats are already carried by tdd, to-tickets and diagnosing-bugs, and its lessons-learned beat by retro, so only the missing three are written out here."
         }
       ],
       "not_routed": [
@@ -453,9 +473,9 @@
       "attribution": "freeforall1932-design/anti-slop-fork",
       "origin": {
         "repo": "miqdadbadjuber/anti-slop",
-        "ref": "388cbe3b6c37d5175b9f460015bb092ef9e34894",
+        "ref": "941b1532f9cc8ffde766bca5921d75257c9e5762",
         "license": "see upstream",
-        "note": "Vendored from the origin, not from freeforall1932-design/anti-slop-fork. Verified 2026-10-10: `diff -rq` of the two `skills/` trees is empty and both carry antislop VERSION 3.2.20, so the fork had no local edits to keep."
+        "note": "Vendored from the origin, not from freeforall1932-design/anti-slop-fork. Verified 2026-10-10: `diff -rq` of the two `skills/` trees is empty and both carry antislop VERSION 3.2.20, so the fork had no local edits to keep. Refreshed 2026-11-02 to the v3.2.25 tag (HEAD): upstream removed the First-Run Install Wizard, added rules R-39/R-40, and grew antislop-human by an Interaction Affordances section."
       },
       "sync": {
         "include": [
@@ -498,10 +518,9 @@
           "when": "always for interface work",
           "entry": "upstream/anti-slop/antislop.md",
           "strip_sections": [
-            "First-Run Install Wizard",
             "Already installed, and the user asks how to update"
           ],
-          "note": "The upstream install wizard and its pointer-block step are dropped: in this merged skill every sibling is already inside the same skill, so there is nothing for the agent to fetch and no entry file to edit.",
+          "note": "Upstream removed its first-run install wizard in v3.2.25, so the strip that used to name it is gone with it; what remains stripped is the update pointer for standalone installs. In this merged skill every sibling is already inside the same skill, so there is nothing for the agent to fetch and no entry file to edit.",
           "strip_reason": "Install-time instructions: a merged skill has nothing to fetch and no entry file to edit."
         },
         {
@@ -510,7 +529,19 @@
           "order": 20,
           "title": "antislop-ui — colour, layout, components, decoration, motion",
           "when": "building or editing any interface",
-          "entry": "upstream/anti-slop/antislop-ui.md"
+          "entry": "upstream/anti-slop/antislop-ui.md",
+          "replace": [
+            {
+              "from": "[references/CORE-WEB-VITALS.md](references/CORE-WEB-VITALS.md)",
+              "to": "`references/CORE-WEB-VITALS.md` in the upstream antislop-ui skill (not carried here: field-data thresholds to read upstream when a real measurement exists)",
+              "reason": "link pointed at an adapted reference file that is not vendored (see this source's not_vendored)"
+            },
+            {
+              "from": "[references/WEB-BASELINE.md](references/WEB-BASELINE.md)",
+              "to": "`references/WEB-BASELINE.md` in the upstream antislop-ui skill (not carried here)",
+              "reason": "same: an adapted reference file that is not vendored"
+            }
+          ]
         },
         {
           "id": "antislop-copywriting",
@@ -539,6 +570,16 @@
             {
               "from": "point the script path at this skill's folder directly",
               "to": "point the script path at `scripts/contrast-check.py` inside this skill directly"
+            },
+            {
+              "from": "[references/A11Y-PATTERNS.md](references/A11Y-PATTERNS.md)",
+              "to": "`references/A11Y-PATTERNS.md` in the upstream antislop-human skill (not carried here: copy-ready patterns to read upstream when implementing)",
+              "reason": "link pointed at an adapted reference file that is not vendored (see this source's not_vendored)"
+            },
+            {
+              "from": "[references/WCAG.md](references/WCAG.md)",
+              "to": "`references/WCAG.md` in the upstream antislop-human skill (not carried here: the WCAG 2.2 criterion table)",
+              "reason": "same: an adapted reference file that is not vendored"
             }
           ]
         },
@@ -562,6 +603,12 @@
       "not_routed": [],
       "discover": [
         "skills"
+      ],
+      "not_vendored": [
+        {
+          "what": "skills/antislop-human/references/ and skills/antislop-ui/references/ (A11Y-PATTERNS, WCAG, CORE-WEB-VITALS, WEB-BASELINE), contrast-mcp.py, skills/antislop/VERSION",
+          "reason": "Added upstream in the v3.2.2x line: the four reference files are adapted from addyosmani/web-quality-skills (MIT, carried under LICENSE-web-quality-skills in each upstream skill folder). They are lookup tables and copy-ready patterns behind the R-39/R-40 rules this bundle does carry; vendoring them would add ~3.4k words and a second author's text for depth the rules already state, so the links to them are de-linked by declared replaces instead. contrast-mcp.py drives an MCP server this skill does not register. VERSION is a release marker, not an instruction."
+        }
       ]
     },
     {
@@ -572,7 +619,7 @@
       "origin": {
         "kind": "github",
         "repo": "mattpocock/skills",
-        "ref": "49dd158d1076134a641b33efb035946536778336"
+        "ref": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d"
       },
       "sync": {
         "include": [
@@ -1017,12 +1064,12 @@
     {
       "slug": "caveman",
       "title": "Caveman — the token-efficiency voice (upstream v3.2.0)",
-      "license": "MIT",
+      "license": "Apache-2.0",
       "attribution": "JuliusBrussee/caveman",
       "origin": {
         "repo": "JuliusBrussee/caveman",
         "ref": "2e08b9177c07bb7249a8a2d1a6758e5db281d002",
-        "note": "Synced at the v3.2.0 tag, 2026-10-08. Replaces the repo's own v2.x-era copies. The 'be brief' instruction is this skill's own trigger wording; there is no separate upstream repository for it."
+        "note": "Synced at the v3.2.0 tag, 2026-10-08. Replaces the repo's own v2.x-era copies. The 'be brief' instruction is this skill's own trigger wording; there is no separate upstream repository for it. License corrected 2026-11-02: LICENSING.md at this pin puts the whole repo under Apache-2.0 from Caveman 3.0.0 (pre-3.0 MIT parts keep their MIT notice in LICENSE-MIT); the manifest previously said MIT."
       },
       "sync": {
         "include": [
@@ -1207,12 +1254,12 @@
     {
       "slug": "grug",
       "title": "The Grug Brained Developer (grugbrain.dev)",
-      "license": "CC BY-SA 4.0 (site)",
+      "license": "Grug 1-Clause (repo LICENSE at pin)",
       "attribution": "bigskysoftware/grugbrain.dev",
       "origin": {
         "repo": "bigskysoftware/grugbrain.dev",
         "ref": "b1b1ca855ca1242b61bd15109fab10312f5bb9b8",
-        "note": "The canonical grug text, `index.md`, at the site's latest commit (2025-05-05)."
+        "note": "The canonical grug text, `index.md`, at the site's latest commit (2025-05-05). License corrected 2026-11-02: the repo LICENSE at this pin is the Grug 1-Clause License ('do what want') and package.json says BSD; no CC BY-SA statement was found in the repo or on the live site, which the manifest previously claimed. See THIRD_PARTY_NOTICES.md."
       },
       "sync": {
         "include": [
@@ -1248,8 +1295,8 @@
       "attribution": "usestrix/strix",
       "origin": {
         "repo": "usestrix/strix",
-        "ref": "f7a32ae62d94872631bc8415073868d02a6ffdaf",
-        "note": "Latest commit of the origin at sync time (2026-10-08), not the user's fork."
+        "ref": "6b7ae2ebe4d47037a927aade23265ff4e4f27e84",
+        "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. The four carried method skills were byte-identical to the previous pin; only two cast-aside driver skills moved."
       },
       "sync": {
         "include": [
@@ -1358,8 +1405,8 @@
       "attribution": "mem0ai/mem0",
       "origin": {
         "repo": "mem0ai/mem0",
-        "ref": "b7ad69afda6b6ed030347c66d48a13e4de9dec08",
-        "note": "Latest commit of the origin at sync time (2026-10-07), not the user's fork."
+        "ref": "753496cf1435d76c3a711f3af51303f7fdcb6420",
+        "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. The six skills under skills/ were byte-identical to the previous pin; the new integrations/* plugin skill trees are outside the sync include and the discover list, so they are neither vendored nor carried (see docs/capability-matrix.md)."
       },
       "sync": {
         "include": [
@@ -1429,12 +1476,12 @@
     {
       "slug": "archify",
       "title": "Archify — diagram authoring discipline (tt-a1i/archify)",
-      "license": "MIT",
+      "license": "Apache-2.0",
       "attribution": "tt-a1i/archify (based on Cocoon-AI/architecture-diagram-generator)",
       "origin": {
         "repo": "tt-a1i/archify",
-        "ref": "58ab0b98d2d0def8e49dced705c7b566936723ec",
-        "note": "Latest commit of the origin at sync time (2026-10-10), not the user's fork."
+        "ref": "a4065941f12be7967436261d9934784e381d423c",
+        "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. Current upstream source is Apache-2.0 (the pin it replaced was MIT; upstream keeps LICENSE-MIT for historical releases)."
       },
       "sync": {
         "include": [
@@ -1452,6 +1499,18 @@
         {
           "skill": "archify-review",
           "reason": "Marked `internal: true` by its author and aimed at triaging Archify's own issues and PRs. Its value/cost/impact rubric is good, but the project it judges is not this one."
+        },
+        {
+          "skill": "archify-tuning",
+          "reason": "Marked `internal: true` by its author: it tunes Archify's own layout, routing and acceptance rules against agent traces. The judgement it protects (a passing check is not a good diagram) belongs to Archify's development loop, not to a consumer of its method."
+        },
+        {
+          "skill": "simplify-codebase",
+          "reason": "Marked `internal: true` by its author. A codebase-simplification audit aimed at the Archify repo's own maintenance; the consumer-facing half (cut a concept only with evidence, keep the contract) is already carried by caveman's investigate-first, safe-refactor and Pocock's codebase-design."
+        },
+        {
+          "skill": "test-value",
+          "reason": "Marked `internal: true` by its author. It audits Archify's own snapshot/matrix test suite; the general rule it carries (a test and its implementation can share one wrong assumption) is stated in the carried tdd and code-review sections."
         }
       ],
       "skills": [
@@ -1464,8 +1523,7 @@
           "entry": "upstream/archify/archify/SKILL.md",
           "keep_sections": [
             "Type router",
-            "Mermaid input",
-            "Output"
+            "Mermaid input"
           ],
           "replace": [
             {
@@ -1477,14 +1535,9 @@
               "from": "then name them for the reader: use everyday `icon` values and `meta.legend` labels as in [Node icons](references/authoring-contract.md#node-icons).",
               "to": "then name them for the reader: choose everyday `icon` values and `meta.legend` labels, the way the upstream authoring contract asks of its node icons.",
               "reason": "link pointed at a reference file that is not carried"
-            },
-            {
-              "from": "Return the checked HTML as an absolute path, diagram type, validation summary, specification/artifact receipt, browser-evidence status, and truthful visual-review status. Do not claim success for a non-zero command or claim visual inspection you did not perform.",
-              "to": "Report what you actually have: the file you wrote and where, the diagram type you chose, and explicitly which of these you did not do — validate against a schema, render, open in a browser, review it visually. Do not claim success for a command that did not run, and do not claim visual inspection you did not perform.",
-              "reason": "the sentence asked for four receipts this skill cannot produce (no renderer ships with it), which is an invitation to fabricate them; the honesty rule is kept word-for-word"
             }
           ],
-          "note": "Three sections of a 1 456-word skill: the five-type router, the Mermaid mapping, and the reporting rule. The renderer sections (fast authoring path, delivery gates, setup and fallback, update awareness) are dropped by name because every one of them runs the Node toolchain. The three declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step.",
+          "note": "Two sections of a 2 500-word skill at the 2026-11-02 pin: the diagram-type router (ten native types now) and the Mermaid mapping. The Output section is no longer kept: upstream rewrote it into renderer receipts plus an offer to enrol a proactive mode in the user's global rules file, and a merged skill produces no receipts and edits no entry file. The remaining renderer sections are dropped by name as before, and the two declared edits below exist because upstream keeps pointing at artifacts this bundle does not ship. Read the type table as a *choice of what to draw*, not as a validation step. The honesty rule from the dropped Output section is kept here verbatim in substance: Do not claim success for a command that did not run, and do not claim visual inspection you did not perform.",
           "strip_reason": "Its procedure is a run of the upstream tool, which this bundle does not ship. Nothing to fetch, install or delegate to inside a merged skill."
         }
       ],
@@ -1506,7 +1559,7 @@
     {
       "slug": "engineering-plugin",
       "title": "Anthropic engineering plugin 1.2.0 — ten workflow skills",
-      "license": "see the pack (plugin.json names Anthropic as author)",
+      "license": "not stated in the pack (see THIRD_PARTY_NOTICES.md)",
       "attribution": "Anthropic — engineering plugin v1.2.0",
       "origin": {
         "kind": "zip",
@@ -1673,7 +1726,7 @@
     {
       "slug": "skill-creator",
       "title": "Anthropic skill-creator — authoring discipline for skills",
-      "license": "see the pack (LICENSE.txt inside the skill directory)",
+      "license": "Apache-2.0 (LICENSE.txt in the pack)",
       "attribution": "Anthropic — skill-creator (uploaded as `Skill creator copy-v1.zip`)",
       "origin": {
         "kind": "zip",

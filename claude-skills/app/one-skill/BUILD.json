@@ -18,7 +18,7 @@
     "upstream/local/variants/grug-reasoning/references/grug-canon.md": "db1d115a3495",
     "upstream/mattpocock-skills/engineering/ask-matt/PHASE-BOUNDARIES.md": "a8aa20158609",
     "upstream/mattpocock-skills/engineering/codebase-design/DEEPENING.md": "f3dd099ce992",
-    "upstream/mattpocock-skills/engineering/codebase-design/DESIGN-IT-TWICE.md": "52b52e75655a",
+    "upstream/mattpocock-skills/engineering/codebase-design/DESIGN-IT-TWICE.md": "c222ab5a82e0",
     "upstream/mattpocock-skills/engineering/domain-modeling/ADR-FORMAT.md": "944c92aa790e",
     "upstream/mattpocock-skills/engineering/domain-modeling/GLOSSARY-FORMAT.md": "21dcc40cdec8",
     "upstream/mattpocock-skills/engineering/improve-codebase-architecture/HTML-REPORT.md": "581e8bb5a521",
@@ -26,8 +26,8 @@
     "upstream/mattpocock-skills/engineering/prototype/LOGIC.md": "f61c7d249e78",
     "upstream/mattpocock-skills/engineering/prototype/UI.md": "723211e878ac",
     "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/domain.md": "593a70422186",
-    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-github.md": "f0653fe106dd",
-    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-gitlab.md": "591a9e705738",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-github.md": "6fdb3e9b00b7",
+    "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-gitlab.md": "947602d33a80",
     "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/issue-tracker-local.md": "7dcda20a2eb4",
     "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/triage-labels.md": "ae512af838c7",
     "upstream/mattpocock-skills/engineering/tdd/mocking.md": "3ceb807fdf4a",
@@ -40,7 +40,7 @@
     "upstream/mattpocock-skills/productivity/teach/RESOURCES-FORMAT.md": "e9cacf34026e",
     "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c"
   },
-  "manifest_sha": "0b2637327630",
+  "manifest_sha": "8eb0e4a8658f",
   "skills": {
     "anti-slop/antislop-code": {
       "bucket": "code-craft",
@@ -55,12 +55,12 @@
     "anti-slop/antislop-core": {
       "bucket": "ui-craft",
       "entry": "upstream/anti-slop/antislop.md",
-      "sha": "64a1ff70bafb"
+      "sha": "30bc532fb59d"
     },
     "anti-slop/antislop-human": {
       "bucket": "responsive-access",
       "entry": "upstream/anti-slop/antislop-human.md",
-      "sha": "5bc7c8e56cc7"
+      "sha": "49421878e0c0"
     },
     "anti-slop/antislop-layoutmobile": {
       "bucket": "responsive-access",
@@ -70,12 +70,12 @@
     "anti-slop/antislop-ui": {
       "bucket": "ui-craft",
       "entry": "upstream/anti-slop/antislop-ui.md",
-      "sha": "47d989277125"
+      "sha": "e8cb54f3d436"
     },
     "archify/archify-method": {
       "bucket": "ui-craft",
       "entry": "upstream/archify/archify/SKILL.md",
-      "sha": "cf348309c535"
+      "sha": "1382cfb7108b"
     },
     "caveman/cavecrew": {
       "bucket": "code-craft",
@@ -217,6 +217,11 @@
       "entry": "written/document-summary.md",
       "sha": "eb206d2d81c4"
     },
+    "local/field-practices": {
+      "bucket": "think-first",
+      "entry": "written/field-practices.md",
+      "sha": "3517dfd80218"
+    },
     "local/grug-engine": {
       "bucket": "think-first",
       "entry": "upstream/local/app/grug-reasoning.md",
@@ -242,6 +247,11 @@
       "entry": "upstream/local/universal/references/patterns.md",
       "sha": "4166c58272f7"
     },
+    "local/prose-detect": {
+      "bucket": "write-prose",
+      "entry": "written/prose-detect.md",
+      "sha": "714d47366fd4"
+    },
     "local/ralph-wiggum": {
       "bucket": "think-first",
       "entry": "upstream/local/app/ralph-wiggum.md",
@@ -255,7 +265,7 @@
     "mattpocock-skills/code-review": {
       "bucket": "ship-workflow",
       "entry": "upstream/mattpocock-skills/engineering/code-review/SKILL.md",
-      "sha": "09eb147f793e"
+      "sha": "9c921a8d8813"
     },
     "mattpocock-skills/codebase-design": {
       "bucket": "code-craft",
@@ -290,7 +300,7 @@
     "mattpocock-skills/grilling": {
       "bucket": "think-first",
       "entry": "upstream/mattpocock-skills/productivity/grilling/SKILL.md",
-      "sha": "befdff1e27a1"
+      "sha": "a146842ed93c"
     },
     "mattpocock-skills/handoff": {
       "bucket": "think-first",
@@ -305,12 +315,12 @@
     "mattpocock-skills/implement-spec": {
       "bucket": "ship-workflow",
       "entry": "upstream/mattpocock-skills/engineering/implement-spec/SKILL.md",
-      "sha": "7a22dd2e60b8"
+      "sha": "1993a473cec4"
     },
     "mattpocock-skills/improve-codebase-architecture": {
       "bucket": "code-craft",
       "entry": "upstream/mattpocock-skills/engineering/improve-codebase-architecture/SKILL.md",
-      "sha": "552240a5ab5c"
+      "sha": "35b03a3db61e"
     },
     "mattpocock-skills/migrate-to-shoehorn": {
       "bucket": "setup-repo",
@@ -330,7 +340,7 @@
     "mattpocock-skills/research": {
       "bucket": "ship-workflow",
       "entry": "upstream/mattpocock-skills/engineering/research/SKILL.md",
-      "sha": "985569f15739"
+      "sha": "1f629e18ab89"
     },
     "mattpocock-skills/retro": {
       "bucket": "ship-workflow",
@@ -345,7 +355,7 @@
     "mattpocock-skills/setup-matt-pocock-skills": {
       "bucket": "setup-repo",
       "entry": "upstream/mattpocock-skills/engineering/setup-matt-pocock-skills/SKILL.md",
-      "sha": "f148858ffb7f"
+      "sha": "b01e05bfe8c3"
     },
     "mattpocock-skills/setup-pre-commit": {
       "bucket": "setup-repo",
@@ -390,7 +400,7 @@
     "mattpocock-skills/wayfinder": {
       "bucket": "ship-workflow",
       "entry": "upstream/mattpocock-skills/engineering/wayfinder/SKILL.md",
-      "sha": "9be7b478c389"
+      "sha": "0c9fa96791ae"
     },
     "mattpocock-skills/wizard": {
       "bucket": "ship-workflow",

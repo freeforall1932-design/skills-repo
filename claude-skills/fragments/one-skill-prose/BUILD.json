@@ -22,7 +22,7 @@
     "upstream/mattpocock-skills/productivity/teach/RESOURCES-FORMAT.md": "e9cacf34026e",
     "upstream/mattpocock-skills/productivity/writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c"
   },
-  "manifest_sha": "0b2637327630",
+  "manifest_sha": "8eb0e4a8658f",
   "skills": {
     "anti-slop/antislop-copywriting": {
       "bucket": "write-prose",
@@ -74,6 +74,11 @@
       "entry": "written/document-summary.md",
       "sha": "eb206d2d81c4"
     },
+    "local/field-practices": {
+      "bucket": "think-first",
+      "entry": "written/field-practices.md",
+      "sha": "3517dfd80218"
+    },
     "local/grug-engine": {
       "bucket": "think-first",
       "entry": "upstream/local/app/grug-reasoning.md",
@@ -99,6 +104,11 @@
       "entry": "upstream/local/universal/references/patterns.md",
       "sha": "4166c58272f7"
     },
+    "local/prose-detect": {
+      "bucket": "write-prose",
+      "entry": "written/prose-detect.md",
+      "sha": "714d47366fd4"
+    },
     "local/ralph-wiggum": {
       "bucket": "think-first",
       "entry": "upstream/local/app/ralph-wiggum.md",
@@ -117,7 +127,7 @@
     "mattpocock-skills/grilling": {
       "bucket": "think-first",
       "entry": "upstream/mattpocock-skills/productivity/grilling/SKILL.md",
-      "sha": "befdff1e27a1"
+      "sha": "a146842ed93c"
     },
     "mattpocock-skills/handoff": {
       "bucket": "think-first",

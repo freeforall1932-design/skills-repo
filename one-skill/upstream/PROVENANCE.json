@@ -13,27 +13,30 @@
     "license": "MIT",
     "origin": {
       "license": "see upstream",
-      "note": "Vendored from the origin, not from freeforall1932-design/anti-slop-fork. Verified 2026-10-10: `diff -rq` of the two `skills/` trees is empty and both carry antislop VERSION 3.2.20, so the fork had no local edits to keep.",
-      "ref": "388cbe3b6c37d5175b9f460015bb092ef9e34894",
+      "note": "Vendored from the origin, not from freeforall1932-design/anti-slop-fork. Verified 2026-10-10: `diff -rq` of the two `skills/` trees is empty and both carry antislop VERSION 3.2.20, so the fork had no local edits to keep. Refreshed 2026-11-02 to the v3.2.25 tag (HEAD): upstream removed the First-Run Install Wizard, added rules R-39/R-40, and grew antislop-human by an Interaction Affordances section.",
+      "ref": "941b1532f9cc8ffde766bca5921d75257c9e5762",
       "repo": "miqdadbadjuber/anti-slop"
     },
-    "revision": "388cbe3b6c37d5175b9f460015bb092ef9e34894",
+    "revision": "941b1532f9cc8ffde766bca5921d75257c9e5762",
     "title": "anti-slop \u2014 the design filter (miqdadbadjuber/anti-slop)"
   },
   "archify": {
     "attribution": "tt-a1i/archify (based on Cocoon-AI/architecture-diagram-generator)",
     "discovered_upstream": [
       "archify",
-      "archify-review"
+      "archify-review",
+      "archify-tuning",
+      "simplify-codebase",
+      "test-value"
     ],
     "files": 2,
-    "license": "MIT",
+    "license": "Apache-2.0",
     "origin": {
-      "note": "Latest commit of the origin at sync time (2026-10-10), not the user's fork.",
-      "ref": "58ab0b98d2d0def8e49dced705c7b566936723ec",
+      "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. Current upstream source is Apache-2.0 (the pin it replaced was MIT; upstream keeps LICENSE-MIT for historical releases).",
+      "ref": "a4065941f12be7967436261d9934784e381d423c",
       "repo": "tt-a1i/archify"
     },
-    "revision": "58ab0b98d2d0def8e49dced705c7b566936723ec",
+    "revision": "a4065941f12be7967436261d9934784e381d423c",
     "title": "Archify \u2014 diagram authoring discipline (tt-a1i/archify)"
   },
   "caveman": {
@@ -63,9 +66,9 @@
       "verify-and-stop"
     ],
     "files": 22,
-    "license": "MIT",
+    "license": "Apache-2.0",
     "origin": {
-      "note": "Synced at the v3.2.0 tag, 2026-10-08. Replaces the repo's own v2.x-era copies. The 'be brief' instruction is this skill's own trigger wording; there is no separate upstream repository for it.",
+      "note": "Synced at the v3.2.0 tag, 2026-10-08. Replaces the repo's own v2.x-era copies. The 'be brief' instruction is this skill's own trigger wording; there is no separate upstream repository for it. License corrected 2026-11-02: LICENSING.md at this pin puts the whole repo under Apache-2.0 from Caveman 3.0.0 (pre-3.0 MIT parts keep their MIT notice in LICENSE-MIT); the manifest previously said MIT.",
       "ref": "2e08b9177c07bb7249a8a2d1a6758e5db281d002",
       "repo": "JuliusBrussee/caveman"
     },
@@ -87,7 +90,7 @@
       "testing-strategy"
     ],
     "files": 10,
-    "license": "see the pack (plugin.json names Anthropic as author)",
+    "license": "not stated in the pack (see THIRD_PARTY_NOTICES.md)",
     "origin": {
       "file": "Engineering-1.2.0-v1.zip",
       "kind": "zip",
@@ -102,9 +105,9 @@
     "attribution": "bigskysoftware/grugbrain.dev",
     "discovered_upstream": [],
     "files": 1,
-    "license": "CC BY-SA 4.0 (site)",
+    "license": "Grug 1-Clause (repo LICENSE at pin)",
     "origin": {
-      "note": "The canonical grug text, `index.md`, at the site's latest commit (2025-05-05).",
+      "note": "The canonical grug text, `index.md`, at the site's latest commit (2025-05-05). License corrected 2026-11-02: the repo LICENSE at this pin is the Grug 1-Clause License ('do what want') and package.json says BSD; no CC BY-SA statement was found in the repo or on the live site, which the manifest previously claimed. See THIRD_PARTY_NOTICES.md.",
       "ref": "b1b1ca855ca1242b61bd15109fab10312f5bb9b8",
       "repo": "bigskysoftware/grugbrain.dev"
     },
@@ -134,8 +137,8 @@
       "ref": "HEAD",
       "repo": "freeforall1932-design/skills-repo"
     },
-    "revision": "e7a24a98e356f1eca58c5046d35fdba68b0d24c5",
-    "title": "caveman-or-be-brief (this repository)"
+    "revision": "93d8fb6496519ab60f116ed3835d96b744726fa7",
+    "title": "this repository \u2014 grug, caveman, and the register rules"
   },
   "mattpocock-skills": {
     "attribution": "mattpocock/skills",
@@ -176,10 +179,10 @@
     "license": "MIT",
     "origin": {
       "kind": "github",
-      "ref": "49dd158d1076134a641b33efb035946536778336",
+      "ref": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
       "repo": "mattpocock/skills"
     },
-    "revision": "49dd158d1076134a641b33efb035946536778336",
+    "revision": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
     "title": "mattpocock/skills \u2014 engineering, productivity, misc"
   },
   "mem0": {
@@ -195,11 +198,11 @@
     "files": 6,
     "license": "Apache-2.0",
     "origin": {
-      "note": "Latest commit of the origin at sync time (2026-10-07), not the user's fork.",
-      "ref": "b7ad69afda6b6ed030347c66d48a13e4de9dec08",
+      "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. The six skills under skills/ were byte-identical to the previous pin; the new integrations/* plugin skill trees are outside the sync include and the discover list, so they are neither vendored nor carried (see docs/capability-matrix.md).",
+      "ref": "753496cf1435d76c3a711f3af51303f7fdcb6420",
       "repo": "mem0ai/mem0"
     },
-    "revision": "b7ad69afda6b6ed030347c66d48a13e4de9dec08",
+    "revision": "753496cf1435d76c3a711f3af51303f7fdcb6420",
     "title": "mem0 \u2014 integration discipline (mem0ai/mem0)"
   },
   "skill-creator": {
@@ -208,7 +211,7 @@
       "skill-creator-copy"
     ],
     "files": 1,
-    "license": "see the pack (LICENSE.txt inside the skill directory)",
+    "license": "Apache-2.0 (LICENSE.txt in the pack)",
     "origin": {
       "file": "Skill creator copy-v1.zip",
       "kind": "zip",
@@ -235,11 +238,11 @@
     "files": 9,
     "license": "Apache-2.0",
     "origin": {
-      "note": "Latest commit of the origin at sync time (2026-10-08), not the user's fork.",
-      "ref": "f7a32ae62d94872631bc8415073868d02a6ffdaf",
+      "note": "Refreshed 2026-11-02 to origin HEAD, not the user's fork. The four carried method skills were byte-identical to the previous pin; only two cast-aside driver skills moved.",
+      "ref": "6b7ae2ebe4d47037a927aade23265ff4e4f27e84",
       "repo": "usestrix/strix"
     },
-    "revision": "f7a32ae62d94872631bc8415073868d02a6ffdaf",
+    "revision": "6b7ae2ebe4d47037a927aade23265ff4e4f27e84",
     "title": "Strix \u2014 security testing method (usestrix/strix)"
   }
 }
