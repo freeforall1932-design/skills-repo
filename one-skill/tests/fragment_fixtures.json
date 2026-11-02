@@ -1,0 +1,17 @@
+{
+  "_comment": "Hand-labelled tasks for the modularization experiment (docs/modularization-experiment.md). buckets = the one-skill reference buckets a correct answer needs, taken from the router table in the published SKILL.md. Ground truth is editorial, not model-measured; the arithmetic over it is exact.",
+  "cases": [
+    { "task": "tighten a thesis paragraph without losing citations", "buckets": ["write-prose"] },
+    { "task": "debug a failing test and fix the code", "buckets": ["code-craft"] },
+    { "task": "build a landing page with persuasive copy", "buckets": ["ui-craft", "write-prose"] },
+    { "task": "write a PR description from a diff", "buckets": ["ship-workflow", "write-prose"] },
+    { "task": "implement an accessible form component", "buckets": ["ui-craft", "responsive-access", "code-craft"] },
+    { "task": "write a commit message for staged changes", "buckets": ["ship-workflow"] },
+    { "task": "draw an architecture diagram for a README", "buckets": ["ui-craft"] },
+    { "task": "summarize a long PDF report faithfully", "buckets": ["write-prose"] },
+    { "task": "plan security hardening for this repo", "buckets": ["secure-and-harden"] },
+    { "task": "teach a junior the repo's Git workflow", "buckets": ["teach-and-author", "setup-repo"] },
+    { "task": "answer a chat question tersely", "buckets": ["terse-chat"] },
+    { "task": "review a design-system PR (code + interface rules)", "buckets": ["code-craft", "ui-craft"] }
+  ]
+}
